@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "team": "Equipo",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Somos un",
+    "subtitle": "laboratorio",
+    "description": "de ideas"
+  },
+  "team": {
+    "title": "Este es nuestro equipo",
+    "subtitle": "Hacemos las reglas"
+  },
+  "projects": {
+    "title": "PROYECTOS",
+    "subtitle": "Trabajos realizados",
+    "devinAi": "Devin AI",
+    "porsche": "Porsche: Dream Machine",
+    "synthetic": "Synthetic Human",
+    "meta": "Meta: Spatial Fusion",
+    "viewProject": "Ver Proyecto",
+    "category": "Categoría"
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Lo que ofrecemos",
+    "service1": "Diseño Web",
+    "service2": "Desarrollo",
+    "service3": "Branding",
+    "service4": "Marketing Digital"
+  },
+  "contact": {
+    "title": "Ponte en Contacto",
+    "subtitle": "Hablemos sobre tu proyecto",
+    "email": "Correo Electrónico",
+    "phone": "Teléfono",
+    "message": "Mensaje",
+    "send": "Enviar",
+    "followUs": "Síguenos",
+    "copyright": "© 2025 Cascade. Todos los derechos reservados.",
+    "forgetToCall": "¿Olvidaste llamar?",
+    "forgetToCallDescription": "No olvides de llamarnos"
+  },
+  "socialRoom": {
+    "title": "Social Room",
+    "description": "Bienvenido a nuestro espacio"
+  }
+}

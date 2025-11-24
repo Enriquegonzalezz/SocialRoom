@@ -1,0 +1,164 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import { gsap } from 'gsap';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/app/hooks/useTranslation';
+
+// Lazy load FeaturedWork para reducir carga inicial
+const FeaturedWork = dynamic(() => import('../../components/FeaturedWork'), {
+  loading: () => (
+    <div className="min-h-screen bg-[#f3f3f3] flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+    </div>
+  ),
+});
+
+const projects = [
+  {
+    id: '1',
+    title: 'Auge',
+    category: 'branding • design • strategy',
+    imageUrl: '/auge1.png',
+    href: '/projects/auge',
+  },
+  {
+    id: '2',
+    title: 'Leap',
+    category: 'design • development • innovation',
+    imageUrl: '/leap1.webp',
+    href: '/projects/leap',
+  },
+  {
+    id: '3',
+    title: 'Leble',
+    category: 'web • design • development',
+    imageUrl: '/leble1.png',
+    href: '/projects/leble',
+  },
+  {
+    id: '4',
+    title: 'LGM',
+    category: 'strategy • design • branding',
+    imageUrl: '/lgm1.png',
+    href: '/projects/lgm',
+  },
+  {
+    id: '5',
+    title: 'Enfoque',
+    category: 'focus • strategy • design',
+    imageUrl: '/enfoque1.png',
+    href: '/projects/enfoque',
+  },
+  {
+    id: '6',
+    title: 'Supper',
+    category: 'premium • branding • design',
+    imageUrl: '/supper1.png',
+    href: '/projects/supper',
+  },
+];
+
+export default function ProjectsPage() {
+  const router = useRouter();
+  const { t, locale } = useTranslation();
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const numberRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Usar requestAnimationFrame para asegurar que el DOM está listo
+    const animationFrame = requestAnimationFrame(() => {
+      // Pequeño delay para que el DOM esté completamente renderizado
+      setTimeout(() => {
+        // Animar letras del título PROJECTS
+        if (titleRef.current && titleRef.current.textContent) {
+          const letters = titleRef.current.textContent.split('');
+          titleRef.current.innerHTML = letters
+            .map((letter) => `<span class="inline-block">${letter === ' ' ? '&nbsp;' : letter}</span>`)
+            .join('');
+
+          if (titleRef.current.children.length > 0) {
+            gsap.from(titleRef.current.children, {
+              y: 100,
+              opacity: 0,
+              duration: 0.8,
+              stagger: 0.05,
+              ease: 'power3.out',
+            });
+          }
+        }
+
+        // Animar número y flecha
+        if (numberRef.current) {
+          gsap.from(numberRef.current, {
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.3,
+            ease: 'power3.out',
+          });
+        }
+      }, 50);
+    });
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-[#f3f3f3]">
+      {/* Header Section - Estilo Lusion */}
+      <section className="relative px-6 md:px-12 lg:px-16 pt-20 ">
+        {/* Logo en la esquina superior izquierda */}
+        <button 
+          onClick={() => router.push(`/${locale}`)}
+          className="absolute top-8 left-6 md:left-12 lg:left-16 cursor-pointer hover:opacity-70 transition-opacity"
+        >
+          <Image
+            src="/socialroomnegro.svg"
+            alt="Social Room"
+            width={120}
+            height={40}
+            className="w-24 md:w-32"
+          />
+        </button>
+
+        {/* Título grande PROJECTS */}
+        <div className="flex items-center justify-between mt-16">
+          <h1 
+            ref={titleRef}
+            className="text-[120px] md:text-[180px] lg:text-[240px] font-bold leading-none tracking-tight text-black font-helvetica overflow-hidden"
+          >
+            {t('projects.title')}
+          </h1>
+          
+          {/* Número y flecha a la derecha */}
+          <div ref={numberRef} className="flex flex-col items-end gap-4">
+            <span className="text-6xl md:text-7xl lg:text-8xl font-light text-black font-helvetica">
+              {projects.length}
+            </span>
+            <svg 
+              width="60" 
+              height="60" 
+              viewBox="0 0 60 60" 
+              fill="none" 
+              className="text-black"
+            >
+              <path 
+                d="M10 30H50M50 30L30 10M50 30L30 50" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Work Section */}
+      <FeaturedWork projects={projects} />
+    </main>
+  );
+}

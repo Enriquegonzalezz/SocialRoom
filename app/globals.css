@@ -1,0 +1,670 @@
+@import "tailwindcss";
+
+/* ========================================
+   HELVETICA NEUE FONT FAMILY
+   ======================================== */
+
+
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueUltraLight.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueUltraLightItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueThin.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueThinItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueLight.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueLightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueRoman.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueMedium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueMediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueBoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueHeavy.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueHeavyItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueBlack.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/HelveticaNeueBlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+/* ========================================
+   SOCIAL GOTHIC FONT FAMILY
+   ======================================== */
+
+@font-face {
+  font-family: 'Social Gothic';
+  src: url('/fonts/Social Gothic Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Social Gothic';
+  src: url('/fonts/Social Gothic Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Social Gothic';
+  src: url('/fonts/Social Gothic DemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Social Gothic';
+  src: url('/fonts/Social Gothic Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Social Gothic Rough';
+  src: url('/fonts/Social Gothic Rough.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Social Gothic Soft';
+  src: url('/fonts/Social Gothic Soft.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Social Gothic Stencil';
+  src: url('/fonts/Social Gothic Stencil.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ========================================
+   RST THERMAL FONT FAMILY
+   ======================================== */
+
+/* RST THERMAL - EXTRA LIGHT (200) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraLight-Text-BF65a5d7827fb96.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraLight-Text-Italic-BF65a5d78185641.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraLight-Headline-BF65a5d78228c14.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraLight-Headline-Italic-BF65a5d78133c51.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraLight-Display-BF65a5d781e2a1f.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraLight-Display-Italic-BF65a5d77feb6b9.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+/* RST THERMAL - THIN (100) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Thin-Text-BF65a5d78294391.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Thin-Text-Italic-BF65a5d7819beae.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Thin-Headline-BF65a5d78231fd2.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Thin-HeadlineI-talic-BF65a5d7819550c.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Thin-Display-BF65a5d781e6e76.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Thin-Display-Italic-BF65a5d780c72ee.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+/* RST THERMAL - LIGHT (300) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Light-Text-BF65a5d7821ad4f.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Light-Text-Italic-BF65a5d7816d84b.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Light-Headline-BF65a5d7821ad4f.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Light-Headline-Italic-BF65a5d7815f956.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Light-Display-BF65a5d782140e4.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Light-Display-Italic-BF65a5d78045ae1.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+/* RST THERMAL - REGULAR (400) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Regular-Text-BF65a5d781dde8d.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Regular-TextI-talic-BF65a5d781a2246.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Regular-Headline-BF65a5d7827bdc9.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Regular-Headline-Italic-BF65a5d7816b1ce.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Regular-Display-BF65a5d7827d5bd.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Regular-Display-Italic-BF65a5d78056d91.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+/* RST THERMAL - MEDIUM (500) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Medium-Text-BF65a5d781da62a.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Medium-TextI-talic-BF65a5d7816c6e7.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Medium-Headline-BF65a5d78217d47.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Medium-Headline-Italic-BF65a5d78144f4f.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Medium-Display-BF65a5d781e7265.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Medium-Display-Italic-BF65a5d780b6542.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+/* RST THERMAL - BOLD (700) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Bold-Text-BF65a5d782076f7.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Bold-Text-Italic-BF65a5d78149d33.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Bold-Headline-BF65a5d781ea655.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Bold-Headline-Italic-BF65a5d77fc667c.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Bold-Display-BF65a5d781a97dc.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Bold-Display-Italic-BF65a5d77fc0ea6.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+/* RST THERMAL - EXTRA BOLD (800) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraBold-Text-BF65a5d782234ef.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraBold-Text-Italic-BF65a5d78169407.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraBold-Headline-BF65a5d781df91b.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraBold-Headline-Italic-BF65a5d78012cf9.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraBold-Display-BF65a5d781d99dc.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-ExtraBold-Display-Italic-BF65a5d77fc8e0f.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+/* RST THERMAL - BLACK (900) */
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Black-Text-BF65a5d7827aae5.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Black-Text-Italic-BF65a5d7810af24.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Black-Headline-BF65a5d781af638.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Black-Headline-Italic-BF65a5d77fa21e9.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Black-Display-BF65a5d781dd661.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
+@font-face {
+  font-family: 'RST Thermal';
+  src: url('/fonts/RST-Thermal-Trial-Black-Display-Italic-BF65a5d77edfdd2.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: expanded;
+}
+
+:root {
+  --background: #f3f3f3;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-playfair: var(--font-playfair);
+  --font-helvetica: 'Helvetica Neue', sans-serif;
+  --font-social: 'Social Gothic', sans-serif;
+  --font-social-rough: 'Social Gothic Rough', sans-serif;
+  --font-social-soft: 'Social Gothic Soft', sans-serif;
+  --font-social-stencil: 'Social Gothic Stencil', sans-serif;
+  --font-thermal: 'RST Thermal', sans-serif;
+  --font-thermal-thin: 'RST Thermal', sans-serif;
+  --font-thermal-extralight: 'RST Thermal', sans-serif;
+  --font-thermal-light: 'RST Thermal', sans-serif;
+  --font-thermal-normal: 'RST Thermal', sans-serif;
+  --font-thermal-medium: 'RST Thermal', sans-serif;
+  --font-thermal-bold: 'RST Thermal', sans-serif;
+  --font-thermal-extrabold: 'RST Thermal', sans-serif;
+  --font-thermal-black: 'RST Thermal', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ========================================
+   CÓMO USAR LAS FUENTES EN TAILWIND
+   ======================================== 
+   
+   HELVETICA NEUE (todos los pesos):
+   - font-helvetica (con font-thin, font-light, font-normal, font-medium, font-bold, font-extrabold, font-black)
+   
+   Ejemplos:
+   className="font-helvetica font-thin"      → Helvetica Neue UltraLight (100)
+   className="font-helvetica font-extralight" → Helvetica Neue Thin (200)
+   className="font-helvetica font-light"     → Helvetica Neue Light (300)
+   className="font-helvetica font-normal"    → Helvetica Neue Roman (400)
+   className="font-helvetica font-medium"    → Helvetica Neue Medium (500)
+   className="font-helvetica font-bold"      → Helvetica Neue Bold (700)
+   className="font-helvetica font-extrabold" → Helvetica Neue Heavy (800)
+   className="font-helvetica font-black"     → Helvetica Neue Black (900)
+   
+   Agregar italic para itálicas:
+   className="font-helvetica font-bold italic"
+   
+   SOCIAL GOTHIC (4 variantes):
+   className="font-social font-normal"  → Social Gothic Regular (400)
+   className="font-social font-medium"  → Social Gothic Medium (500)
+   className="font-social font-semibold" → Social Gothic DemiBold (600)
+   className="font-social font-bold"    → Social Gothic Bold (700)
+   
+   SOCIAL GOTHIC ESPECIALES:
+   className="font-social-rough"   → Social Gothic Rough
+   className="font-social-soft"    → Social Gothic Soft  
+   className="font-social-stencil" → Social Gothic Stencil
+   
+   RST THERMAL (familia completa - 7 pesos):
+   
+   Uso con pesos estándar:
+   className="font-thermal font-thin"       → RST Thermal Thin (100)
+   className="font-thermal font-extralight" → RST Thermal ExtraLight (200)
+   className="font-thermal font-light"      → RST Thermal Light (300)
+   className="font-thermal font-normal"     → RST Thermal Regular (400)
+   className="font-thermal font-medium"     → RST Thermal Medium (500)
+   className="font-thermal font-bold"       → RST Thermal Bold (700)
+   className="font-thermal font-extrabold"  → RST Thermal ExtraBold (800)
+   className="font-thermal font-black"      → RST Thermal Black (900)
+   
+   O usando clases específicas:
+   className="font-thermal-thin"       → RST Thermal Thin
+   className="font-thermal-extralight" → RST Thermal ExtraLight
+   className="font-thermal-light"      → RST Thermal Light
+   className="font-thermal-normal"     → RST Thermal Regular
+   className="font-thermal-medium"     → RST Thermal Medium
+   className="font-thermal-bold"       → RST Thermal Bold
+   className="font-thermal-extrabold"  → RST Thermal ExtraBold
+   className="font-thermal-black"      → RST Thermal Black
+   
+   Itálicas: agregar "italic" a cualquiera
+   className="font-thermal font-bold italic"
+   
+   NOTA: RST Thermal tiene automáticamente 3 variantes (Text/Headline/Display)
+   según el font-stretch (normal/condensed/expanded) que se aplicará
+   según el contexto y tamaño del texto.
+   
+   ======================================== */
