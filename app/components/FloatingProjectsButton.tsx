@@ -42,7 +42,7 @@ export default function FloatingProjectsButton() {
   return (
     <Link href="/projects">
       <button
-        className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-40 px-8 py-3 border transition-all duration-700 ease-in-out hover:scale-105 ${
+        className={`hidden lg:block fixed bottom-8 left-1/2 -translate-x-1/2 z-40 px-8 py-3 border transition-all duration-700 ease-in-out hover:scale-105 ${
           isDarkBackground 
             ? 'border-white text-white hover:bg-white hover:text-black' 
             : 'border-black text-black hover:bg-black hover:text-white'

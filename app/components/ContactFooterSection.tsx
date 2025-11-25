@@ -57,13 +57,13 @@ export default function ContactFooterSection() {
   return (
     <>
       {/* Sección de contacto */}
-      <section className="w-full bg-[#f3f3f3] py-20 px-6 md:px-12 lg:px-20 h-[70vh] flex items-center">
+      <section className="w-full bg-[#f3f3f3] py-12 md:py-20 px-6 md:px-12 lg:px-20 min-h-[70vh] flex items-center">
         <div className="max-w-[1600px] mx-auto w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
             
             {/* Columna izquierda - Título y info */}
             <div>
-              <h2 className="text-6xl md:text-7xl lg:text-8xl font-light mb-12 leading-tight font-serif text-black">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light mb-8 md:mb-12 leading-tight font-serif text-black">
                 {t('contact.forgetToCall')}<br />{t('contact.forgetToCallDescription')}
               </h2>
               
