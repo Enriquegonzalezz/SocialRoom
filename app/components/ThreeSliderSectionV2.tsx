@@ -236,6 +236,80 @@ export default function ThreeSliderSectionV2() {
         }
       });
 
+      // === Grupo de texto final ===
+      const finalTextGroup = new THREE.Group();
+      const finalTextMeshes: THREE.Mesh[] = [];
+
+      // Controles para ajustar interletrado e interlineado
+      const LETTER_SCALE_X = 0.90; // 1 = normal, <1 letras más juntas, >1 más separadas
+      const LINE_SPACING = 70;    // distancia vertical entre líneas
+
+      // Crear un canvas por línea de texto y convertirlo en textura
+      const finalLines = ['Hacemos', 'tus ideas', 'realidad'];
+
+      finalLines.forEach((line, i) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 200;
+        const ctx = canvas.getContext('2d');
+
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.save();
+
+          // Color negro y estilo similar a los títulos de SocialRoom (Helvetica bold, tracking-tight)
+          ctx.fillStyle = '#000000';
+          ctx.font = '700 110px "Helvetica Neue", "Helvetica", Arial, sans-serif';
+          ctx.textBaseline = 'middle';
+
+          // Posicionar en vertical y ajustar interletrado con escala en X
+          ctx.translate(0, canvas.height / 2);
+          ctx.scale(LETTER_SCALE_X, 1);
+          ctx.fillText(line, 0, 0);
+
+          ctx.restore();
+        }
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.minFilter = THREE.LinearFilter;
+        const geo = new THREE.PlaneGeometry(800, 150);
+        const mat = new THREE.MeshBasicMaterial({
+          map: texture,
+          transparent: true,
+          side: THREE.DoubleSide,
+        });
+
+        const mesh = new THREE.Mesh(geo, mat);
+        // Separar verticalmente las líneas usando LINE_SPACING
+        mesh.position.y = (finalLines.length - 1) * (LINE_SPACING / 2) - i * LINE_SPACING;
+        finalTextGroup.add(mesh);
+        finalTextMeshes.push(mesh);
+      });
+
+      // Posicionar el grupo cerca de la última tarjeta
+      finalTextGroup.position.set(
+        650,           // centro-derecha (ajusta este valor: 0=centro, 200=un poco a la derecha)
+        0,
+        (projects.length - 1) * -distanceBetweenSlides // misma profundidad que la última
+      );
+
+      scene.add(finalTextGroup);
+
+      // === Animación GSAP para el texto final ===
+      timeline.from(finalTextGroup.position, {
+        x: 500,          // entra desde la izquierda
+        ease: 'power3.out',
+      }, '+=0.3');
+
+      // Animar opacidad de cada línea con stagger
+      finalTextMeshes.forEach((mesh, index) => {
+        timeline.from(mesh.material, {
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.out',
+        }, `<+=${index * 0.15}`);
+      });
+
       // Loop de render
       let animationFrameId: number;
       const animate = () => {
@@ -278,6 +352,15 @@ export default function ThreeSliderSectionV2() {
               }
             }
           });
+        });
+        
+        // Limpiar texto final
+        finalTextMeshes.forEach(mesh => {
+          mesh.geometry.dispose();
+          if (mesh.material instanceof THREE.MeshBasicMaterial) {
+            if (mesh.material.map) mesh.material.map.dispose();
+            mesh.material.dispose();
+          }
         });
         
         // Dispose del renderer
