@@ -24,6 +24,8 @@ interface EquipmentItem {
   barcode: string;
   category: string;
   status: 'available' | 'checked_out';
+  checked_out_by?: string | null;
+  checked_out_at?: string | null;
 }
 
 export default function EquipmentDashboard() {
@@ -35,6 +37,9 @@ export default function EquipmentDashboard() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState('');
+  const [scannedBarcode, setScannedBarcode] = useState<string | null>(null);
+  const [modalUserName, setModalUserName] = useState('');
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   useEffect(() => {
     // Verificar autenticación
@@ -46,7 +51,9 @@ export default function EquipmentDashboard() {
       return;
     }
 
-    setUserName(user || 'Usuario');
+    const resolvedUser = user || 'Usuario';
+    setUserName(resolvedUser);
+    setModalUserName(resolvedUser);
 
     // Cargar datos iniciales
     fetchLogs();
@@ -77,7 +84,18 @@ export default function EquipmentDashboard() {
     }
   };
 
-  const handleScan = async (barcode: string) => {
+  const handleScan = (barcode: string) => {
+    // Solo guardar el código escaneado y abrir la modal de confirmación
+    setScannedBarcode(barcode);
+    setMessage('');
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmScan = async () => {
+    if (!scannedBarcode) return;
+
+    const finalUserName = modalUserName.trim() || userName || 'Usuario';
+
     setLoading(true);
     setMessage('');
 
@@ -86,9 +104,9 @@ export default function EquipmentDashboard() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          barcode,
+          barcode: scannedBarcode,
           action,
-          userName
+          userName: finalUserName
         })
       });
 
@@ -98,16 +116,16 @@ export default function EquipmentDashboard() {
         setMessage(`✅ ${data.message}`);
         fetchLogs(); // Actualizar historial
         fetchItems(); // Actualizar lista de equipos
-        
-        // Limpiar mensaje después de 3 segundos
-        setTimeout(() => setMessage(''), 3000);
       } else {
-        setMessage(`❌ ${data.message}`);
+        setMessage(`❌ ${data.message || 'Error al procesar el escaneo'}`);
       }
     } catch (err) {
-      setMessage('❌ Error al registrar el escaneo');
+      console.error('Error al procesar el escaneo:', err);
+      setMessage('❌ Error al procesar el escaneo');
     } finally {
       setLoading(false);
+      setIsConfirmModalOpen(false);
+      setScannedBarcode(null);
     }
   };
 
@@ -249,8 +267,21 @@ export default function EquipmentDashboard() {
                     <div className="font-bold text-black mb-1">
                       {log.equipment_items?.name || 'Equipo desconocido'}
                     </div>
-                    <div className="font-mono text-sm text-black/60">
+                    <div className="font-mono text-sm text-black/60 mb-1">
                       {log.barcode}
+                    </div>
+                    {/* Mostrar nombre de quien hizo la acción */}
+                    <div className="flex items-center gap-1 text-sm text-black/70 mt-2">
+                      <span className="font-medium">👤 {log.user_name}</span>
+                      <span className="text-black/40">•</span>
+                      <span className="text-black/40">
+                        {new Date(log.timestamp).toLocaleString('es-ES', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
                     </div>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ml-2 ${
@@ -260,15 +291,6 @@ export default function EquipmentDashboard() {
                   }`}>
                     {log.action === 'checkout' ? '📤 Retirado' : '📥 Devuelto'}
                   </span>
-                </div>
-                <div className="text-xs text-black/40">
-                  {new Date(log.timestamp).toLocaleString('es-ES', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })} • {log.user_name}
                 </div>
               </div>
             ))}
@@ -310,7 +332,26 @@ export default function EquipmentDashboard() {
                   </span>
                 </div>
                 <div className="font-bold text-black mb-1">{item.name}</div>
-                <div className="font-mono text-sm text-black/60">{item.barcode}</div>
+                <div className="font-mono text-sm text-black/60 mb-2">{item.barcode}</div>
+                
+                {/* Mostrar quién tiene el equipo si está retirado */}
+                {item.status === 'checked_out' && item.checked_out_by && (
+                  <div className="mt-2 pt-2 border-t border-orange-200">
+                    <div className="text-xs text-orange-700 font-medium">
+                      👤 Retirado por: {item.checked_out_by}
+                    </div>
+                    {item.checked_out_at && (
+                      <div className="text-xs text-orange-600 mt-1">
+                        📅 {new Date(item.checked_out_at).toLocaleString('es-ES', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
 
@@ -324,6 +365,57 @@ export default function EquipmentDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Modal de Confirmación de Escaneo */}
+      {isConfirmModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
+            <h3 className="text-xl font-bold text-black mb-2">
+              Confirmar {action === 'checkout' ? 'retiro' : 'devolución'}
+            </h3>
+            <p className="text-sm text-black/60 mb-4">
+              Código escaneado:
+              <span className="font-mono text-black block mt-1">
+                {scannedBarcode}
+              </span>
+            </p>
+
+            <label className="block text-sm font-medium text-black mb-1">
+              Nombre de quien {action === 'checkout' ? 'retira' : 'gestiona'} el equipo
+            </label>
+            <input
+              type="text"
+              className="w-full border border-black/10 rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-black/80"
+              value={modalUserName}
+              onChange={(e) => setModalUserName(e.target.value)}
+              placeholder="Ej: Juan Pérez"
+            />
+
+            <div className="flex justify-end gap-3 mt-2">
+              <button
+                type="button"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-black/70 bg-gray-100 hover:bg-gray-200 transition-colors"
+                onClick={() => {
+                  setIsConfirmModalOpen(false);
+                  setScannedBarcode(null);
+                }}
+                disabled={loading}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-black hover:bg-black/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                onClick={handleConfirmScan}
+                disabled={loading}
+              >
+                {loading ? 'Procesando...' : 'Confirmar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }

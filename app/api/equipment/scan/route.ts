@@ -44,9 +44,23 @@ export async function POST(request: Request) {
 
     // Actualizar estado del equipo
     const newStatus = action === 'checkout' ? 'checked_out' : 'available';
+    
+    // Preparar datos de actualización
+    const updateData: any = { status: newStatus };
+    
+    if (action === 'checkout') {
+      // Al retirar: guardar quién lo retiró y cuándo
+      updateData.checked_out_by = userName;
+      updateData.checked_out_at = new Date().toISOString();
+    } else {
+      // Al devolver: limpiar quién lo tenía
+      updateData.checked_out_by = null;
+      updateData.checked_out_at = null;
+    }
+    
     const { error: updateError } = await supabase
       .from('equipment_items')
-      .update({ status: newStatus })
+      .update(updateData)
       .eq('id', equipment.id);
 
     if (updateError) {
@@ -73,9 +87,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ 
       success: true,
       log,
-      equipment: { ...equipment, status: newStatus },
+      equipment: { 
+        ...equipment, 
+        status: newStatus,
+        checked_out_by: action === 'checkout' ? userName : null,
+        checked_out_at: action === 'checkout' ? new Date().toISOString() : null
+      },
       message: action === 'checkout' 
-        ? `${equipment.name} retirado exitosamente` 
+        ? `${equipment.name} retirado por ${userName}` 
         : `${equipment.name} devuelto exitosamente`
     });
     

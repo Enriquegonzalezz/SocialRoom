@@ -18,6 +18,8 @@ CREATE TABLE equipment_items (
   barcode TEXT UNIQUE NOT NULL,
   category TEXT CHECK (category IN ('camera', 'microphone', 'tripod', 'lighting', 'other')),
   status TEXT DEFAULT 'available' CHECK (status IN ('available', 'checked_out')),
+  checked_out_by TEXT,
+  checked_out_at TIMESTAMP WITH TIME ZONE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

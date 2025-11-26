@@ -288,7 +288,7 @@ export default function ThreeSliderSectionV2() {
 
       // Posicionar el grupo cerca de la última tarjeta
       finalTextGroup.position.set(
-        650,           // centro-derecha (ajusta este valor: 0=centro, 200=un poco a la derecha)
+        650,         
         0,
         (projects.length - 1) * -distanceBetweenSlides // misma profundidad que la última
       );
