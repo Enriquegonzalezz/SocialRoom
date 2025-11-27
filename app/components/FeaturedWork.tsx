@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import ImageSkeleton from './ImageSkeleton';
 
 // Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {
@@ -269,21 +270,13 @@ function WorkItem({ project, locale }: { project: Project; locale: string }) {
                 }}
               />
             ) : project.imageUrl ? (
-              <img
-                ref={imageRef}
+              <ImageSkeleton
                 src={project.imageUrl}
-                className="w-full h-full object-cover"
-                style={{
-                  opacity: mediaLoaded ? 1 : 0,
-                  transition: 'opacity 0.6s ease-in-out',
-                }}
                 alt={project.title}
+                className="w-full h-full"
+                objectFit="cover"
               />
             ) : null}
-            {/* Placeholder while loading */}
-            {!mediaLoaded && (
-              <div className="absolute inset-0 bg-linear-to-br from-[#e5e5e5] to-[#d5d5d5] animate-pulse" />
-            )}
           </div>
         </div>
 

@@ -419,7 +419,7 @@ export default function TeamSection() {
         {/* Grid de miembros - 22 personas */}
         <div
           ref={containerRef}
-          className="grid grid-cols-12 grid-rows-12 gap-2"
+          className="grid grid-cols-12 grid-rows-9 gap-2"
         >
           <div className="col-span-2 row-span-2" data-card>
             <TeamCard member={teamMembers[0]} onImageClick={handleImageClick} />

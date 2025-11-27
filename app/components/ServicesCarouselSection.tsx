@@ -2,37 +2,28 @@
 
 import { useRef, useState } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { getImageUrl } from '@/lib/supabase-images';
 
 const services = [
   {
     title: 'STUDIO',
     description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/studio-image.jpg',
-    bgColor: '#2a2a2a',
+    filename: 'STUDIO.jpg',
   },
   {
     title: 'PODCAST',
     description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/podcast-image.jpg',
-    bgColor: '#3a3a3a',
+    filename: 'PODCAST2.jpg',
   },
   {
     title: 'TOOLS',
     description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/tools-image.jpg',
-    bgColor: '#4a4a4a',
-  },
-  {
-    title: 'CREATIVE',
-    description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/creative-image.jpg',
-    bgColor: '#2a2a2a',
+    filename: 'TOOLS.jpg',
   },
   {
     title: 'DESIGN',
     description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/design-image.jpg',
-    bgColor: '#3a3a3a',
+    filename: 'DESIGN.jpg',
   },
 ];
 
@@ -114,10 +105,10 @@ export default function ServicesCarouselSection() {
             >
               {/* Card */}
               <div className="relative h-[500px] overflow-hidden transition-transform duration-500 hover:scale-[1.02]">
-                {/* Background con placeholder de color */}
+                {/* Background con imagen */}
                 <div 
-                  className="absolute inset-0"
-                  style={{ backgroundColor: service.bgColor }}
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${getImageUrl('others', service.filename)})` }}
                 >
                   {/* Aquí irá la imagen cuando la agregues */}
                   {/* <Image

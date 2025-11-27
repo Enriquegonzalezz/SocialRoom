@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'assets.mixkit.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'dhynxqtviwosfvljzfmi.supabase.co',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,

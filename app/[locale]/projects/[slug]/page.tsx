@@ -1,15 +1,18 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { getImageUrl } from '@/lib/supabase-images';
+import { preloadImagesWithDelay } from '@/lib/image-preloader';
+import ImageSkeleton from '@/app/components/ImageSkeleton';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Datos de los proyectos (puedes moverlos a un archivo separado después)
+// Datos de los proyectos con descripción e imágenes de Supabase
 const projectsData: Record<string, any> = {
   'auge': {
     title: 'Auge',
@@ -18,23 +21,21 @@ const projectsData: Record<string, any> = {
     year: '2025',
     client: 'Auge Studio',
     role: 'Creative Direction',
-    heroImage: '/auge1.png',
-    sections: [
-      {
-        type: 'image',
-        src: '/auge2.png',
-        alt: 'Auge Project 2',
-      },
-      {
-        type: 'image',
-        src: '/auge3.png',
-        alt: 'Auge Project 3',
-      },
-      {
-        type: 'image',
-        src: '/auge4.png',
-        alt: 'Auge Project 4',
-      },
+    heroImage: getImageUrl('auge', 'auge-08.jpg'),
+    description: `En Auge, nuestra filosofía se cimenta en una estructura simple, pero profunda, que garantiza la excelencia en cada creación. Esta estructura se sintetiza en las cuatro letras de nuestro nombre, reflejando una precisión arquitectónica y una transparencia total en el arte de la orfebrería moderna.
+
+Nuestro compromiso es con la disciplina del diseño y la consistencia de la mano experta. Rechazamos el brillo efímero por la permanencia del detalle. Las ideas audaces que imaginas no solo son materializadas; son cinceladas bajo la exigencia de la perfección para convertirse en un legado personal.`,
+    images: [
+      getImageUrl('auge', 'auge-01.jpg'),
+      getImageUrl('auge', 'auge-02.jpg'),
+      getImageUrl('auge', 'auge-03.jpg'),
+      getImageUrl('auge', 'auge-04.jpg'),
+      getImageUrl('auge', 'auge-05.jpg'),
+      getImageUrl('auge', 'auge-06.jpg'),
+      getImageUrl('auge', 'auge-07.jpg'),
+      getImageUrl('auge', 'auge-26.jpg'),
+      getImageUrl('auge', 'auge-09.jpg'),
+      getImageUrl('auge', 'auge-10.jpg'),
     ],
   },
   'leap': {
@@ -44,23 +45,30 @@ const projectsData: Record<string, any> = {
     year: '2024',
     client: 'Leap Inc.',
     role: 'Full Stack Development',
-    heroImage: '/leap1.webp',
-    sections: [
-      {
-        type: 'image',
-        src: '/leap2.webp',
-        alt: 'Leap Project 2',
-      },
-      {
-        type: 'image',
-        src: '/leap3.webp',
-        alt: 'Leap Project 3',
-      },
-      {
-        type: 'image',
-        src: '/leap4.webp',
-        alt: 'Leap Project 4',
-      },
+    heroImage: getImageUrl('L4h', 'Mesa de trabajo 54.png'),
+    description: 'Nuestro lenguaje gráfico fue creado para ser visto y sentido. Con formas audaces, contrastes marcados y composiciones dinámicas, transforma cada aplicación en una declaración visual. 2025 Más que una cuestión estética, es identidad en movimiento, visible, expresiva y fiel a la esencia de la marca. El estilo fotográfico de L4H refleja con autenticidad los valores y la energía de nuestra comunidad. Vibrante, audaz y lleno de actitud, no solo captura imágenes — comunica transformación. Con encuadres libres y ángulos inesperados, la fotografía nos posiciona como participantes activos junto a nuestros héroes 2025',
+    images: [
+      getImageUrl('L4h', 'Mesa de trabajo 54.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 55.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 56.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 57.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 58.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 59.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 60.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 61.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 63.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 64.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 65.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 66.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 67.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 68.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 69.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 70.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 71.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 72.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 73.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 74.png'),
+      getImageUrl('L4h', 'Mesa de trabajo 75.png'),
     ],
   },
   'leble': {
@@ -70,23 +78,24 @@ const projectsData: Record<string, any> = {
     year: '2024',
     client: 'Leble Studios',
     role: 'UX/UI Design',
-    heroImage: '/leble1.png',
-    sections: [
-      {
-        type: 'image',
-        src: '/leble2.png',
-        alt: 'Leble Project 2',
-      },
-      {
-        type: 'image',
-        src: '/leble3.png',
-        alt: 'Leble Project 3',
-      },
-      {
-        type: 'image',
-        src: '/leble4.png',
-        alt: 'Leble Project 4',
-      },
+    heroImage: getImageUrl('leble', 'leble-01.jpg'),
+    description: 'Experiencia web excepcional con diseño intuitivo y desarrollo robusto.',
+    images: [
+      getImageUrl('leble', 'leble-01.jpg'),
+      getImageUrl('leble', 'leble-02.jpg'),
+      getImageUrl('leble', 'leble-03.jpg'),
+      getImageUrl('leble', 'leble-04.jpg'),
+      getImageUrl('leble', 'leble-05.jpg'),
+      getImageUrl('leble', 'leble-06.jpg'),
+      getImageUrl('leble', 'leble-07.jpg'),
+      getImageUrl('leble', 'leble-08.jpg'),
+      getImageUrl('leble', 'leble-09.jpg'),
+      getImageUrl('leble', 'leble-10.jpg'),
+      getImageUrl('leble', 'leble-11.jpg'),
+      getImageUrl('leble', 'leble-12.jpg'),
+      getImageUrl('leble', 'leble-13.jpg'),
+      getImageUrl('leble', 'leble-14.jpg'),
+      getImageUrl('leble', 'leble-15.jpg'),
     ],
   },
   'lgm': {
@@ -96,23 +105,19 @@ const projectsData: Record<string, any> = {
     year: '2025',
     client: 'LGM Group',
     role: 'Brand Strategy',
-    heroImage: '/lgm1.png',
-    sections: [
-      {
-        type: 'image',
-        src: '/supper1.png',
-        alt: 'LGM Project 2',
-      },
-      {
-        type: 'image',
-        src: '/supper2.png',
-        alt: 'LGM Project 3',
-      },
-      {
-        type: 'image',
-        src: '/supper3.png',
-        alt: 'LGM Project 4',
-      },
+    heroImage: getImageUrl('lgm', 'LGM-01.jpg'),
+    description: 'Estrategia de marca que define la identidad corporativa con precisión.',
+    images: [
+      getImageUrl('lgm', 'LGM-01.jpg'),
+      getImageUrl('lgm', 'LGM-02.jpg'),
+      getImageUrl('lgm', 'LGM-03.jpg'),
+      getImageUrl('lgm', 'LGM-04.jpg'),
+      getImageUrl('lgm', 'LGM-05.jpg'),
+      getImageUrl('lgm', 'LGM-06.jpg'),
+      getImageUrl('lgm', 'LGM-07.jpg'),
+      getImageUrl('lgm', 'LGM-08.jpg'),
+      getImageUrl('lgm', 'LGM-09.jpg'),
+      getImageUrl('lgm', 'LGM-10.jpg'),
     ],
   },
   'enfoque': {
@@ -122,23 +127,29 @@ const projectsData: Record<string, any> = {
     year: '2025',
     client: 'Enfoque Studio',
     role: 'Strategic Design',
-    heroImage: '/enfoque1.png',
-    sections: [
-      {
-        type: 'image',
-        src: '/enfoque2.png',
-        alt: 'Enfoque Project 2',
-      },
-      {
-        type: 'image',
-        src: '/enfoque3.png',
-        alt: 'Enfoque Project 3',
-      },
-      {
-        type: 'image',
-        src: '/enfoque4.png',
-        alt: 'Enfoque Project 4',
-      },
+    heroImage: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
+    description: `Enfóque es un ecosistema fitness desarrollado a partir de la idea de entrenar enfocado, tanto en el cuerpo como en la mente y en los objetivos personales. El nombre adoptado para la marca refleja claramente su propuesta y lo que quiere ofrecer: un espacio que ayuda a las personas a dirigir su atención hacia lo que importa, sin distracciones.
+
+La propuesta es ofrecer un ambiente accesible pero bien estructurado, que entregue organización, claridad y enfoque. Se aleja de los excesos de lenguaje y distracciones, alineando cuerpo y mente con los objetivos personales de cada consumidor.
+
+Así se construye un público sólido y fiel que vivirá la experiencia del ecosistema de marca.`,
+    images: [
+      getImageUrl('enfoque', 'Mesa de trabajo 40.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 43.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 44.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 45.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 46.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 47.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 48.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 49.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 50.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 51.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 52.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 53.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 54.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 55.png'),
+      getImageUrl('enfoque', 'Mesa de trabajo 56.png'),
     ],
   },
   'supper': {
@@ -148,23 +159,32 @@ const projectsData: Record<string, any> = {
     year: '2025',
     client: 'Supper Inc.',
     role: 'Brand Development',
-    heroImage: '/supper1.png',
-    sections: [
-      {
-        type: 'image',
-        src: '/supper2.png',
-        alt: 'Supper Project 2',
-      },
-      {
-        type: 'image',
-        src: '/supper3.png',
-        alt: 'Supper Project 3',
-      },
-      {
-        type: 'image',
-        src: '/supper4.png',
-        alt: 'Supper Project 4',
-      },
+    heroImage: getImageUrl('supper', 'Mesa de trabajo 97.png'),
+    description: 'Experiencia de marca premium con diseño exclusivo y desarrollo de calidad.',
+    images: [
+      getImageUrl('supper', 'Mesa de trabajo 97.png'),
+    ],
+  },
+  'kitckly': {
+    title: 'Kitckly',
+    subtitle: 'Food & Beverage Brand',
+    category: 'food & beverage • branding • design',
+    year: '2025',
+    client: 'Kitckly',
+    role: 'Brand & Design',
+    heroImage: getImageUrl('kitckly', 'Mesa de trabajo 48.png'),
+    description: 'Kitckly es una marca de alimentos y bebidas que combina calidad, innovación y experiencia culinaria. Nuestro enfoque es crear una identidad visual que refleje la esencia de la marca y conecte con el público objetivo.',
+    images: [
+      getImageUrl('kitckly', 'Mesa de trabajo 33.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 34.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 35.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 36.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 37.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 38.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 39.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 40.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 41.png'),
+      getImageUrl('kitckly', 'Mesa de trabajo 42.png'),
     ],
   },
 };
@@ -177,10 +197,18 @@ export default function ProjectDetailPage() {
   const project = projectsData[slug];
 
   const heroRef = useRef<HTMLDivElement>(null);
-  const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const imagesRef = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
     if (!project) return;
+
+    // Precargar imágenes con delay para no sobrecargar
+    if (project.images && project.images.length > 0) {
+      preloadImagesWithDelay(project.images, 80).catch(err => 
+        console.warn('Error preloading images:', err)
+      );
+    }
 
     // Animar hero
     if (heroRef.current) {
@@ -192,20 +220,36 @@ export default function ProjectDetailPage() {
       });
     }
 
-    // Animar secciones con scroll trigger
-    sectionsRef.current.forEach((section, index) => {
-      if (section) {
-        gsap.from(section, {
+    // Animar descripción
+    if (descriptionRef.current) {
+      gsap.from(descriptionRef.current, {
+        scrollTrigger: {
+          trigger: descriptionRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+        opacity: 0,
+        y: 60,
+        duration: 1,
+        ease: 'power3.out',
+      });
+    }
+
+    // Animar imágenes con scroll trigger
+    imagesRef.current.forEach((image, index) => {
+      if (image) {
+        gsap.from(image, {
           scrollTrigger: {
-            trigger: section,
+            trigger: image,
             start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none reverse',
+            end: 'top 60%',
+            toggleActions: 'play none none none',
           },
           opacity: 0,
           y: 100,
           duration: 1,
           ease: 'power3.out',
+          delay: index * 0.1,
         });
       }
     });
@@ -282,36 +326,46 @@ export default function ProjectDetailPage() {
         </div>
       </section>
 
-      {/* Content Sections - Alternating Image/Text */}
-      {project.sections.map((section: any, index: number) => (
-        <section
-          key={index}
-          ref={(el) => {
-            if (el) sectionsRef.current[index] = el;
-          }}
-          className="px-6 md:px-12 lg:px-16 py-20"
-        >
-          {section.type === 'text' ? (
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-6xl font-bold mb-8 text-black">
-                {section.title}
-              </h2>
-              <p className="text-xl md:text-2xl font-light leading-relaxed text-black/80">
-                {section.content}
-              </p>
-            </div>
-          ) : (
-            <div className="relative w-full h-[60vh] md:h-[80vh]">
-              <Image
-                src={section.src}
-                alt={section.alt}
-                fill
-                className="object-cover rounded-lg"
-              />
-            </div>
-          )}
+      {/* Description Section */}
+      {project.description && (
+        <section className="px-6 md:px-12 lg:px-16 py-20 border-b border-black/10">
+          <div
+            ref={descriptionRef}
+            className="max-w-4xl mx-auto"
+          >
+            <p className="text-lg md:text-xl font-light leading-relaxed text-black/80 whitespace-pre-line">
+              {project.description}
+            </p>
+          </div>
         </section>
-      ))}
+      )}
+
+      {/* Images Gallery Section */}
+      {project.images && project.images.length > 0 && (
+        <section className="px-6 md:px-12 lg:px-16 py-20">
+          <div className="space-y-12">
+            {project.images.map((imageUrl: string, index: number) => (
+              <div
+                key={index}
+                ref={(el) => {
+                  if (el) imagesRef.current[index] = el;
+                }}
+                className="relative w-full rounded-lg overflow-hidden bg-gray-100"
+                style={{
+                  aspectRatio: '16 / 9',
+                }}
+              >
+                <ImageSkeleton
+                  src={imageUrl}
+                  alt={`${project.title} - Image ${index + 1}`}
+                  className="w-full h-full"
+                  objectFit="cover"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Next Project CTA */}
       <section className="px-6 md:px-12 lg:px-16 py-32 text-center">

@@ -14,7 +14,14 @@ export function getImageUrl(folder: string, filename: string): string {
     .from(BUCKET_NAME)
     .getPublicUrl(`${folder}/${filename}`);
 
-  return data.publicUrl;
+  const url = data.publicUrl;
+  
+  // Debug: mostrar en consola (solo en desarrollo)
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    console.log(`📸 Image URL: ${folder}/${filename} → ${url}`);
+  }
+
+  return url;
 }
 
 /**

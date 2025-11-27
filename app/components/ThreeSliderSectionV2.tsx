@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
+import { getImageUrl } from '@/lib/supabase-images';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -14,37 +15,37 @@ const projects = [
     title: 'Auge',
     category: 'branding',
     year: '2025',
-    image: '/auge1.png',
+    image: getImageUrl('auge', 'auge-26.jpg'),
   },
   {
     title: 'Leap',
     category: 'design',
     year: '2024',
-    image: '/leap1.webp',
+    image: getImageUrl('L4h', 'Mesa de trabajo 54.png'),
   },
   {
     title: 'Leble',
     category: 'development',
     year: '2024',
-    image: '/leble1.png',
+    image: getImageUrl('leble', 'leble-01.jpg'),
   },
   {
     title: 'LGM',
     category: 'strategy',
     year: '2025',
-    image: '/lgm1.png',
+    image: getImageUrl('lgm', 'LGM-01.jpg'),
   },
   {
     title: 'Enfoque',
     category: 'focus',
     year: '2025',
-    image: '/enfoque1.png',
+    image: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
   },
   {
     title: 'Supper',
     category: 'premium',
     year: '2025',
-    image: '/supper1.png',
+    image: getImageUrl('supper', 'Mesa de trabajo 97.png'),
   },
 ];
 
@@ -63,7 +64,7 @@ export default function ThreeSliderSectionV2() {
       scene.background = new THREE.Color(0xf3f3f3);
       
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-      camera.position.z = 600;
+      camera.position.z = 700;
 
       // WebGL Renderer - Mejor performance que CSS3DRenderer
       const renderer = new THREE.WebGLRenderer({ 
@@ -82,7 +83,7 @@ export default function ThreeSliderSectionV2() {
       // Distancia entre slides (profundidad en Z)
       const distanceBetweenSlides = 1200;
       // Posición lateral (izquierda/derecha)
-      const lateralOffset = 250;
+      const lateralOffset = 300;
 
       // Cargar texturas y crear meshes
       const textureLoader = new THREE.TextureLoader();
@@ -214,7 +215,7 @@ export default function ThreeSliderSectionV2() {
           pin: true,
           scrub: 0.5,
           start: 'top top',
-          end: `+=${(projects.length - 1) * 150}vh`,
+          end: `+=${(projects.length - 1) * 800}vh`,
           invalidateOnRefresh: true,
           anticipatePin: 1,
         },

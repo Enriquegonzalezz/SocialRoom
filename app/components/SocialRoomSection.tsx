@@ -2,25 +2,23 @@
 
 import Image from 'next/image';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { getImageUrl } from '@/lib/supabase-images';
 
 const services = [
   {
     title: 'OFFLINE',
     description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/offline-image.jpg',
-    bgColor: '#3d2832', // Color placeholder morado oscuro
+    filename: 'OFFLINE.jpg',
   },
   {
     title: 'ONLINE',
     description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/online-image.jpg',
-    bgColor: '#4a4a2a', // Color placeholder verde oliva
+    filename: 'ONLINE.jpg',
   },
   {
     title: 'ESTRATEGIA',
     description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh',
-    image: '/estrategia-image.jpg',
-    bgColor: '#7a8a7a', // Color placeholder verde grisáceo
+    filename: 'ESTRATEGIA.jpg',
   },
 ];
 
@@ -35,10 +33,10 @@ export default function SocialRoomSection() {
             key={index}
             className="group relative overflow-hidden transition-transform duration-500 hover:scale-[1.02]"
           >
-            {/* Contenedor de imagen con placeholder de color */}
+            {/* Contenedor de imagen con background image */}
             <div 
-              className="relative w-full aspect-3/4 overflow-hidden"
-              style={{ backgroundColor: service.bgColor }}
+              className="relative w-full aspect-3/4 overflow-hidden bg-cover bg-center"
+              style={{ backgroundImage: `url(${getImageUrl('others', service.filename)})` }}
             >
               {/* Aquí irá la imagen cuando la agregues */}
               {/* <Image

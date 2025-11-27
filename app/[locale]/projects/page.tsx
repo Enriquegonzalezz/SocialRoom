@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { gsap } from 'gsap';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { getImageUrl } from '@/lib/supabase-images';
 
 // Lazy load FeaturedWork para reducir carga inicial
 const FeaturedWork = dynamic(() => import('../../components/FeaturedWork'), {
@@ -21,43 +22,50 @@ const projects = [
     id: '1',
     title: 'Auge',
     category: 'branding • design • strategy',
-    imageUrl: '/auge1.png',
+    imageUrl: getImageUrl('auge', 'auge-26.jpg'),
     href: '/projects/auge',
   },
   {
     id: '2',
     title: 'Leap',
     category: 'design • development • innovation',
-    imageUrl: '/leap1.webp',
+    imageUrl: getImageUrl('L4h', 'Mesa de trabajo 54.png'),
     href: '/projects/leap',
   },
   {
     id: '3',
     title: 'Leble',
     category: 'web • design • development',
-    imageUrl: '/leble1.png',
+    imageUrl: getImageUrl('leble', 'leble-01.jpg'),
     href: '/projects/leble',
   },
   {
     id: '4',
     title: 'LGM',
     category: 'strategy • design • branding',
-    imageUrl: '/lgm1.png',
+    imageUrl: getImageUrl('lgm', 'LGM-01.jpg'),
     href: '/projects/lgm',
   },
   {
     id: '5',
     title: 'Enfoque',
     category: 'focus • strategy • design',
-    imageUrl: '/enfoque1.png',
+    imageUrl: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
     href: '/projects/enfoque',
   },
   {
     id: '6',
     title: 'Supper',
     category: 'premium • branding • design',
-    imageUrl: '/supper1.png',
+    imageUrl: getImageUrl('supper', 'Mesa de trabajo 97.png'),
     href: '/projects/supper',
+  },
+  {
+    id: '7',
+    title: 'Kitckly',
+    category: 'food & beverage • branding • design',
+    imageUrl: getImageUrl('kitckly', 'Mesa de trabajo 48.png'),
+    href: '/projects/kitckly',
   },
 ];
 
