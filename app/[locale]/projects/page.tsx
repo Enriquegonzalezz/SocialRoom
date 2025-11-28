@@ -46,27 +46,27 @@ const projects = [
     imageUrl: getImageUrl('lgm', 'LGM-01.jpg'),
     href: '/projects/lgm',
   },
-  {
-    id: '5',
-    title: 'Enfoque',
-    category: 'focus • strategy • design',
-    imageUrl: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
-    href: '/projects/enfoque',
-  },
-  {
-    id: '6',
-    title: 'Supper',
-    category: 'premium • branding • design',
-    imageUrl: getImageUrl('supper', 'Mesa de trabajo 97.png'),
-    href: '/projects/supper',
-  },
-  {
-    id: '7',
-    title: 'Kitckly',
-    category: 'food & beverage • branding • design',
-    imageUrl: getImageUrl('kitckly', 'Mesa de trabajo 48.png'),
-    href: '/projects/kitckly',
-  },
+  // {
+  //   id: '5',
+  //   title: 'Enfoque',
+  //   category: 'focus • strategy • design',
+  //   imageUrl: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
+  //   href: '/projects/enfoque',
+  // },
+  // {
+  //   id: '6',
+  //   title: 'Supper',
+  //   category: 'premium • branding • design',
+  //   imageUrl: getImageUrl('supper', 'Mesa de trabajo 97.png'),
+  //   href: '/projects/supper',
+  // },
+  // {
+  //   id: '7',
+  //   title: 'Kitckly',
+  //   category: 'food & beverage • branding • design',
+  //   imageUrl: getImageUrl('kitckly', 'Mesa de trabajo 48.png'),
+  //   href: '/projects/kitckly',
+  // },
 ];
 
 export default function ProjectsPage() {
@@ -76,42 +76,35 @@ export default function ProjectsPage() {
   const numberRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Usar requestAnimationFrame para asegurar que el DOM está listo
-    const animationFrame = requestAnimationFrame(() => {
-      // Pequeño delay para que el DOM esté completamente renderizado
-      setTimeout(() => {
-        // Animar letras del título PROJECTS
-        if (titleRef.current && titleRef.current.textContent) {
-          const letters = titleRef.current.textContent.split('');
-          titleRef.current.innerHTML = letters
-            .map((letter) => `<span class="inline-block">${letter === ' ' ? '&nbsp;' : letter}</span>`)
-            .join('');
+    // Animar inmediatamente sin delays
+    // Animar letras del título PROJECTS
+    if (titleRef.current && titleRef.current.textContent) {
+      const letters = titleRef.current.textContent.split('');
+      titleRef.current.innerHTML = letters
+        .map((letter) => `<span class="inline-block">${letter === ' ' ? '&nbsp;' : letter}</span>`)
+        .join('');
 
-          if (titleRef.current.children.length > 0) {
-            gsap.from(titleRef.current.children, {
-              y: 100,
-              opacity: 0,
-              duration: 0.8,
-              stagger: 0.05,
-              ease: 'power3.out',
-            });
-          }
-        }
+      if (titleRef.current.children.length > 0) {
+        gsap.from(titleRef.current.children, {
+          y: 100,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.03,
+          ease: 'power3.out',
+        });
+      }
+    }
 
-        // Animar número y flecha
-        if (numberRef.current) {
-          gsap.from(numberRef.current, {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            delay: 0.3,
-            ease: 'power3.out',
-          });
-        }
-      }, 50);
-    });
-
-    return () => cancelAnimationFrame(animationFrame);
+    // Animar número y flecha
+    if (numberRef.current) {
+      gsap.from(numberRef.current, {
+        y: 50,
+        opacity: 0,
+        duration: 0.6,
+        delay: 0.1,
+        ease: 'power3.out',
+      });
+    }
   }, []);
 
   return (

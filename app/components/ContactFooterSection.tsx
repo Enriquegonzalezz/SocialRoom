@@ -1,58 +1,73 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { gsap } from 'gsap';
 
 // Variables configurables para información de contacto
 const contactInfo = {
   companyName: 'Social Room',
   companySubtitle: 'Marketing Agency',
-  location: 'Barcelona',
+  location: 'Valencia, Miami and LA',
   year: '2025',
   
   // Sección About us
   aboutLinks: [
-    { label: 'About us', url: '#' },
     { label: 'Services', url: '#' },
     { label: 'Contact', url: '#' },
   ],
   
   // Sección Team
   teamLinks: [
-    { label: 'Team', url: '#' },
+    
     { label: 'Careers', url: '#' },
   ],
   
   // Información de contacto
-  email: 'socialroommarketingagency@gmail.com',
-  phone: '+34 000 000 000',
-  address: 'Barcelona, Spain',
+  email: 'socsocialroommarketingagency@gmail.com',
+  phone: '+58 412 0639249',
+  address: 'Valencia, Miami and LA',
   
   // Legal
-  legalText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  legalText: 'No borders. No limits. Whenever your brand wants to go, we will make it happen.',
 };
+
+// Configuración del Google Form (reemplaza con tu URL)
+const GOOGLE_FORM_URL = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL || 'https://forms.gle/YOUR_FORM_ID';
 
 export default function ContactFooterSection() {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    project: '',
-    number: '',
-  });
+  const ctaRef = useRef<HTMLHeadingElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Aquí puedes agregar la lógica de envío del formulario
+    // Redirigir a Google Forms
+    window.open(GOOGLE_FORM_URL, '_blank');
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // Animación del texto de llamada al formulario con GSAP (staggered por letras)
+  useEffect(() => {
+    if (ctaRef.current) {
+      const text = ctaRef.current.textContent || '';
+      ctaRef.current.innerHTML = text
+        .split('')
+        .map((char) => {
+          const displayChar = char === ' ' ? '&nbsp;' : char;
+          return `<span style="display:inline-block;">${displayChar}</span>`;
+        })
+        .join('');
+
+      const spans = ctaRef.current.querySelectorAll('span');
+      gsap.from(spans, {
+        opacity: 0,
+        y: 50,
+        rotateX: -90,
+        duration: 0.8,
+        stagger: 0.03,
+        ease: 'back.out(1.7)',
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -63,7 +78,7 @@ export default function ContactFooterSection() {
             
             {/* Columna izquierda - Título y info */}
             <div>
-              <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light mb-8 md:mb-12 leading-tight font-serif text-black">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light mb-8 md:mb-12 leading-tight text-black font-helvetica">
                 {t('contact.forgetToCall')}<br />{t('contact.forgetToCallDescription')}
               </h2>
               
@@ -82,63 +97,28 @@ export default function ContactFooterSection() {
               </div>
 
               {/* Formulario con fondo verde claro */}
-              <div className="bg-[#d4ddd4] p-8 md:p-12">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name */}
-                  <div className="border-b border-black/30 pb-2">
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Name:"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="w-full bg-transparent outline-none text-base placeholder:text-black/70 font-serif"
-                    />
+              <div className="bg-[#d4ddd4] p-8 md:p-12 lg:p-16">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  <div>
+                    <h3
+                      ref={ctaRef}
+                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black font-helvetica tracking-tight leading-tight cursor-pointer transition-transform duration-500 hover:scale-[1.01]"
+                      style={{ perspective: '1000px' }}
+                    >
+                      {t('contact.readyToStart')}
+                    </h3>
+                    <p className="mt-4 text-sm md:text-base lg:text-lg text-black/70 font-helvetica max-w-md">
+                      {t('contact.formDescription')}
+                    </p>
                   </div>
 
-                  {/* Mail */}
-                  <div className="border-b border-black/30 pb-2">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Mail:"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full bg-transparent outline-none text-base placeholder:text-black/70 font-serif"
-                    />
-                  </div>
-
-                  {/* Proyect */}
-                  <div className="border-b border-black/30 pb-2">
-                    <input
-                      type="text"
-                      name="project"
-                      placeholder="Proyect:"
-                      value={formData.project}
-                      onChange={handleChange}
-                      className="w-full bg-transparent outline-none text-base placeholder:text-black/70 font-serif"
-                    />
-                  </div>
-
-                  {/* Number */}
-                  <div className="border-b border-black/30 pb-2">
-                    <input
-                      type="tel"
-                      name="number"
-                      placeholder="Number:"
-                      value={formData.number}
-                      onChange={handleChange}
-                      className="w-full bg-transparent outline-none text-base placeholder:text-black/70 font-serif"
-                    />
-                  </div>
-
-                  {/* Botón Enter */}
-                  <div className="flex justify-end pt-4">
+                  {/* Botón Enter - Abre Google Forms */}
+                  <div className="flex justify-start pt-4">
                     <button
                       type="submit"
-                      className="px-8 py-2 border border-black/30 hover:bg-black/5 transition-colors duration-300 text-sm font-serif"
+                      className="px-10 py-4 bg-black text-white hover:bg-black/80 transition-colors duration-300 text-base md:text-lg font-helvetica font-medium tracking-wide"
                     >
-                      Enter
+                      {t('contact.goToForm')} →
                     </button>
                   </div>
                 </form>

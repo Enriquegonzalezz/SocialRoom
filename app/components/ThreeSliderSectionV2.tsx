@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
 import { getImageUrl } from '@/lib/supabase-images';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -12,46 +13,60 @@ if (typeof window !== 'undefined') {
 
 const projects = [
   {
-    title: 'Auge',
+    title: 'AUGE',
     category: 'branding',
     year: '2025',
     image: getImageUrl('auge', 'auge-26.jpg'),
   },
   {
-    title: 'Leap',
-    category: 'design',
-    year: '2024',
-    image: getImageUrl('L4h', 'Mesa de trabajo 54.png'),
+    title: 'LEAP4HUMANITY',
+    category: 'BRANDING & SOCIAL MEDIA',
+    year: '2025',
+    image: getImageUrl('L4h', 'Mesa de trabajo 57.png'),
   },
   {
-    title: 'Leble',
-    category: 'development',
-    year: '2024',
+    title: 'LEBLE',
+    category: 'BRANDING & SOCIAL MEDIA',
+    year: '2025',
     image: getImageUrl('leble', 'leble-01.jpg'),
   },
   {
     title: 'LGM',
-    category: 'strategy',
+    category: 'BRANDING & DEVELOPMENT',
     year: '2025',
-    image: getImageUrl('lgm', 'LGM-01.jpg'),
+    image: getImageUrl('lgm', 'LGM-22.png'),
   },
-  {
-    title: 'Enfoque',
-    category: 'focus',
-    year: '2025',
-    image: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
-  },
-  {
-    title: 'Supper',
-    category: 'premium',
-    year: '2025',
-    image: getImageUrl('supper', 'Mesa de trabajo 97.png'),
-  },
+  // {
+  //   title: 'Enfoque',
+  //   category: 'focus',
+  //   year: '2025',
+  //   image: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
+  // },
+  // {
+  //   title: 'Supper',
+  //   category: 'premium',
+  //   year: '2025',
+  //   image: getImageUrl('supper', 'Mesa de trabajo 97.png'),
+  // },
+  // {
+  //   title: 'Kitckly',
+  //   category: 'food & beverage',
+  //   year: '2025',
+  //   image: getImageUrl('kitckly', 'Mesa de trabajo 48.png'),
+  // },
 ];
 
 export default function ThreeSliderSectionV2() {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
+
+  // Obtener las líneas traducidas
+  const finalLinesText = [
+    t('threeSlider.line1'),
+    t('threeSlider.line2'),
+    t('threeSlider.line3'),
+  ];
 
   useEffect(() => {
     if (!containerRef.current || !triggerRef.current || typeof window === 'undefined') return;
@@ -73,6 +88,7 @@ export default function ThreeSliderSectionV2() {
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.domElement.style.position = 'absolute';
       renderer.domElement.style.top = '0';
       containerRef.current.appendChild(renderer.domElement);
@@ -92,8 +108,8 @@ export default function ThreeSliderSectionV2() {
         // Crear grupo para cada proyecto
         const projectGroup = new THREE.Group();
         
-        // Crear geometría para la tarjeta (plano) - 800x600px
-        const cardGeometry = new THREE.PlaneGeometry(800, 600);
+        // Crear geometría para la tarjeta (plano) - 784x584px (16px menos para evitar desbordamiento)
+        const cardGeometry = new THREE.PlaneGeometry(784, 584);
         
         // Crear canvas para la imagen con bordes redondeados
         const imageCanvas = document.createElement('canvas');
@@ -105,6 +121,7 @@ export default function ThreeSliderSectionV2() {
         const texture = new THREE.CanvasTexture(imageCanvas);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
+        texture.colorSpace = THREE.SRGBColorSpace;
         
         // Cargar imagen y aplicar bordes redondeados
         const img = document.createElement('img');
@@ -114,10 +131,33 @@ export default function ThreeSliderSectionV2() {
           if (imageCtx) {
             // Limpiar canvas
             imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-            imageCtx.save();
             
-            // Crear path con bordes redondeados de 32px
+            // Calcular dimensiones para object-fit: cover
+            const canvasRatio = imageCanvas.width / imageCanvas.height;
+            const imgRatio = img.width / img.height;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+            
+            if (imgRatio > canvasRatio) {
+              // Imagen más ancha - ajustar por altura
+              drawHeight = imageCanvas.height;
+              drawWidth = img.width * (imageCanvas.height / img.height);
+              offsetX = (imageCanvas.width - drawWidth) / 2;
+              offsetY = 0;
+            } else {
+              // Imagen más alta - ajustar por ancho
+              drawWidth = imageCanvas.width;
+              drawHeight = img.height * (imageCanvas.width / img.width);
+              offsetX = 0;
+              offsetY = (imageCanvas.height - drawHeight) / 2;
+            }
+            
+            // Dibujar imagen sin clip (esto evita el desbordamiento)
+            imageCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+            
+            // Aplicar bordes redondeados dibujando una máscara encima
             const radius = 32;
+            imageCtx.globalCompositeOperation = 'destination-in';
             imageCtx.beginPath();
             imageCtx.moveTo(radius, 0);
             imageCtx.lineTo(imageCanvas.width - radius, 0);
@@ -129,22 +169,21 @@ export default function ThreeSliderSectionV2() {
             imageCtx.lineTo(0, radius);
             imageCtx.arcTo(0, 0, radius, 0, radius);
             imageCtx.closePath();
-            imageCtx.clip();
-            
-            // Dibujar imagen
-            imageCtx.drawImage(img, 0, 0, imageCanvas.width, imageCanvas.height);
-            imageCtx.restore();
+            imageCtx.fillStyle = '#000000';
+            imageCtx.fill();
+            imageCtx.globalCompositeOperation = 'source-over';
             
             // Actualizar textura
             texture.needsUpdate = true;
           }
         };
         
-        // Material con la textura
+        // Material con la textura - Sin transparencia para colores vibrantes
         const cardMaterial = new THREE.MeshBasicMaterial({ 
           map: texture,
           side: THREE.DoubleSide,
-          transparent: true
+          transparent: true,
+          opacity: 1.0
         });
         
         const cardMesh = new THREE.Mesh(cardGeometry, cardMaterial);
@@ -161,12 +200,12 @@ export default function ThreeSliderSectionV2() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           
           // Título
-          ctx.fillStyle = '#1a1a1a';
+          ctx.fillStyle = '#000';
           ctx.font = '300 32px "Social Gothic", Arial, sans-serif';
           ctx.fillText(project.title, 0, 40);
           
           // Categoría
-          ctx.fillStyle = '#666666';
+          ctx.fillStyle = '#000';
           ctx.font = '300 18px "Social Gothic", Arial, sans-serif';
           ctx.fillText(project.category, 0, 75);
           
@@ -184,7 +223,7 @@ export default function ThreeSliderSectionV2() {
         textTexture.minFilter = THREE.LinearFilter;
         
         // Crear plano para el texto (mismo ancho que la imagen, 150px de alto)
-        const textGeometry = new THREE.PlaneGeometry(800, 150);
+        const textGeometry = new THREE.PlaneGeometry(784, 150);
         const textMaterial = new THREE.MeshBasicMaterial({ 
           map: textTexture,
           transparent: true,
@@ -192,7 +231,7 @@ export default function ThreeSliderSectionV2() {
         });
         
         const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-        textMesh.position.y = -375; // Posicionar debajo de la imagen (600/2 + 150/2)
+        textMesh.position.y = -367; // Posicionar debajo de la imagen (584/2 + 150/2)
         projectGroup.add(textMesh);
         
         // Posicionar el grupo en el eje Z
@@ -246,7 +285,7 @@ export default function ThreeSliderSectionV2() {
       const LINE_SPACING = 70;    // distancia vertical entre líneas
 
       // Crear un canvas por línea de texto y convertirlo en textura
-      const finalLines = ['Hacemos', 'tus ideas', 'realidad'];
+      const finalLines = finalLinesText;
 
       finalLines.forEach((line, i) => {
         const canvas = document.createElement('canvas');
@@ -375,7 +414,7 @@ export default function ThreeSliderSectionV2() {
     }, triggerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [finalLinesText]);
 
   return (
     <section 

@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect } from 'react';
 import HeroSection from '../components/HeroSection';
 import SocialRoomSection from '../components/SocialRoomSection';
 import ThreeSliderSectionV2 from '../components/ThreeSliderSectionV2';
@@ -38,30 +41,35 @@ const projects = [
     imageUrl: getImageUrl('lgm', 'LGM-01.jpg'),
     href: '/projects/lgm',
   },
-  {
-    id: 'enfoque',
-    title: 'Enfoque',
-    category: 'focus',
-    imageUrl: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
-    href: '/projects/enfoque',
-  },
-  {
-    id: 'supper',
-    title: 'Supper',
-    category: 'premium',
-    imageUrl: getImageUrl('supper', 'Mesa de trabajo 97.png'),
-    href: '/projects/supper',
-  },
-  {
-    id: 'kitckly',
-    title: 'Kitckly',
-    category: 'food & beverage',
-    imageUrl: getImageUrl('kitckly', 'Mesa de trabajo 45.png'),
-    href: '/projects/kitckly',
-  },
+  // {
+  //   id: 'enfoque',
+  //   title: 'Enfoque',
+  //   category: 'focus',
+  //   imageUrl: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
+  //   href: '/projects/enfoque',
+  // },
+  // {
+  //   id: 'supper',
+  //   title: 'Supper',
+  //   category: 'premium',
+  //   imageUrl: getImageUrl('supper', 'Mesa de trabajo 97.png'),
+  //   href: '/projects/supper',
+  // },
+  // {
+  //   id: 'kitckly',
+  //   title: 'Kitckly',
+  //   category: 'food & beverage',
+  //   imageUrl: getImageUrl('kitckly', 'Mesa de trabajo 45.png'),
+  //   href: '/projects/kitckly',
+  // },
 ];
 
 export default function Home() {
+  // Resetear scroll al cargar la página
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Debug: mostrar URLs en consola
   if (typeof window !== 'undefined') {
     console.log('📸 Projects URLs:', projects.map(p => ({ id: p.id, url: p.imageUrl })));
@@ -69,11 +77,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <HeroSection />
-      <SocialRoomSection />
+      <div data-section="hero">
+        <HeroSection />
+      </div>
+      <div data-section="socialroom">
+        <SocialRoomSection />
+      </div>
       
       {/* ThreeSliderSectionV2 solo en desktop (lg y superior) */}
-      <div className="hidden lg:block">
+      <div data-section="threeslider" className="hidden lg:block">
         <ThreeSliderSectionV2 />
       </div>
       
@@ -82,9 +94,15 @@ export default function Home() {
         <FeaturedWork projects={projects} />
       </div>
       
-      <TeamSection />
-      <ServicesCarouselSection />
-      <ContactFooterSection />
+      <div data-section="team">
+        <TeamSection />
+      </div>
+      <div data-section="servicescarousel">
+        <ServicesCarouselSection />
+      </div>
+      <div data-section="contact">
+        <ContactFooterSection />
+      </div>
       <FloatingProjectsButton />
     </main>
   );

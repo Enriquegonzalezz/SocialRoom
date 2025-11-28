@@ -104,7 +104,6 @@ export default function HeroSection() {
     <section
       className="relative min-h-screen bg-black text-white overflow-hidden"
       style={{
-        backgroundImage: 'url("/piel de vaca.webp")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -141,8 +140,8 @@ export default function HeroSection() {
           
           {/* Drawer desde la derecha - Ocupa 100% de altura */}
           <div className="absolute right-0 top-0 h-full w-full bg-[#f3f3f3] shadow-2xl">
-            {/* Grid de 2 columnas - Home y Projects */}
-            <div className="grid grid-cols-2 h-full relative">
+            {/* Grid de 3 columnas - Home, Projects, Employees */}
+            <div className="grid grid-cols-3 h-full relative">
               {/* Columna 1 - Home (50%) */}
               <div className="flex flex-col items-center justify-center border-r border-black/10 hover:bg-black/5 transition-colors cursor-pointer group">
                 <button onClick={() => setMenuOpen(false)} className="text-center w-full h-full flex items-center justify-center">
@@ -152,9 +151,9 @@ export default function HeroSection() {
                 </button>
               </div>
               
-              {/* Columna 2 - Projects (50%) */}
+              {/* Columna 2 - Projects (33%) */}
               <div 
-                className="flex flex-col items-center justify-center cursor-pointer group relative"
+                className="flex flex-col items-center justify-center cursor-pointer group relative hover:bg-black/5 transition-colors"
                 onMouseEnter={() => setShowCowImage(true)}
                 onMouseLeave={() => setShowCowImage(false)}
               >
@@ -165,25 +164,25 @@ export default function HeroSection() {
                   }} 
                   className="text-center w-full h-full flex items-center justify-center relative z-10"
                 >
-                  <h3 ref={projectsRef} className="text-4xl md:text-6xl lg:text-7xl font-light text-black group-hover:text-white transition-colors">
+                  <h3 ref={projectsRef} className="text-4xl md:text-6xl lg:text-7xl font-light text-black group-hover:text-black/70 transition-colors">
                     Projects
                   </h3>
                 </button>
+              </div>
 
-                {/* Imagen de piel de vaca - Aparece en hover */}
-                {showCowImage && (
-                  <div 
-                    ref={cowImageRef}
-                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                  >
-                    <Image
-                      src="/piel de vaca.webp"
-                      alt="Cow texture"
-                      fill
-                      className="object-cover "
-                    />
-                  </div>
-                )}
+              {/* Columna 3 - Empleados/Employees (33%) */}
+              <div className="flex flex-col items-center justify-center border-l border-black/10 hover:bg-black/5 transition-colors cursor-pointer group">
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    router.push(`/${locale}/equipment/login`);
+                  }}
+                  className="text-center w-full h-full flex items-center justify-center"
+                >
+                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-light text-black group-hover:text-black/70 transition-colors">
+                    {locale === 'es' ? 'Empleados' : 'Employees'}
+                  </h3>
+                </button>
               </div>
             </div>
           </div>

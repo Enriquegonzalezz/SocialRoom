@@ -42,10 +42,51 @@
     "followUs": "Follow Us",
     "copyright": "© 2025 Cascade. All rights reserved.",
     "forgetToCall": "Forgot to call?",
-    "forgetToCallDescription": "No worries, we'll call you"
+    "forgetToCallDescription": "No worries, we'll call you",
+    "readyToStart": "Ready to start?",
+    "formDescription": "Click the button and fill out our form. We'll contact you!",
+    "goToForm": "Go to form"
   },
   "socialRoom": {
     "title": "Social Room",
-    "description": "Welcome to our space"
+    "description": "Welcome to our space",
+    "offline": {
+      "title": "OFFLINE",
+      "description": "We bring your message to traditional media with video, photography, design and more."
+    },
+    "online": {
+      "title": "ONLINE",
+      "description": "We boost your digital growth with social media management, SEO, Ads and web development."
+    },
+    "estrategia": {
+      "title": "STRATEGY",
+      "description": "We create the plan to connect your brand with your goals and ensure the desired success."
+    },
+    "eventos": {
+      "title": "EVENTS",
+      "description": "We create launches, pop-ups and experiences that connect in an unforgettable way."
+    }
+  },
+  "servicesCarousel": {
+    "studio": {
+      "title": "STUDIO",
+      "description": "Photo studio equipped to create high-quality, professional visual content."
+    },
+    "podcast": {
+      "title": "PODCAST",
+      "description": "Space with acoustic design and advanced technology for podcast recording."
+    }
+  },
+  "threeSlider": {
+    "line1": "We make",
+    "line2": "your ideas",
+    "line3": "reality"
+  },
+  "floatingButton": {
+    "viewProjects": "VIEW PROJECTS",
+    "viewOnlineServices": "VIEW ONLINE SERVICES",
+    "viewTeam": "VIEW TEAM",
+    "viewServices": "VIEW SERVICES",
+    "contactUs": "CONTACT US"
   }
 }

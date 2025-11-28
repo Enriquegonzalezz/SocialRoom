@@ -42,10 +42,51 @@
     "followUs": "Síguenos",
     "copyright": "© 2025 Cascade. Todos los derechos reservados.",
     "forgetToCall": "¿Olvidaste llamar?",
-    "forgetToCallDescription": "Nosotros te llamamos"
+    "forgetToCallDescription": "Nosotros te llamamos",
+    "readyToStart": "¿Listo para empezar?",
+    "formDescription": "Haz clic en el botón y completa nuestro formulario. ¡Te contactaremos!",
+    "goToForm": "Ir al formulario"
   },
   "socialRoom": {
     "title": "Social Room",
-    "description": "Bienvenido a nuestro espacio"
+    "description": "Bienvenido a nuestro espacio",
+    "offline": {
+      "title": "OFFLINE",
+      "description": "Llevamos tu mensaje a medios tradicionales con video, fotografía, diseño y más."
+    },
+    "online": {
+      "title": "ONLINE",
+      "description": "Impulsamos tu crecimiento digital con gestión de redes, SEO, Ads y desarrollo web."
+    },
+    "estrategia": {
+      "title": "ESTRATEGIA",
+      "description": "Creamos el plan para conectar tu marca con tus metas y asegurar el éxito deseado."
+    },
+    "eventos": {
+      "title": "EVENTOS",
+      "description": "Creamos lanzamientos, pop-ups y experiencias que conectan de forma inolvidable."
+    }
+  },
+  "servicesCarousel": {
+    "studio": {
+      "title": "STUDIO",
+      "description": "Estudio fotográfico equipado para crear contenido visual de alta calidad y profesional."
+    },
+    "podcast": {
+      "title": "PODCAST",
+      "description": "Espacio con diseño acústico y tecnología avanzada para la grabación de podcasts."
+    }
+  },
+  "threeSlider": {
+    "line1": "Hacemos",
+    "line2": "tus ideas",
+    "line3": "realidad"
+  },
+  "floatingButton": {
+    "viewProjects": "VER PROYECTOS",
+    "viewOnlineServices": "VER SERVICIOS EN LÍNEA",
+    "viewTeam": "VER EQUIPOS",
+    "viewServices": "VER SERVICIOS",
+    "contactUs": "CONTÁCTANOS"
   }
 }
