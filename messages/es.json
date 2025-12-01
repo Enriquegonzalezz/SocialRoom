@@ -11,8 +11,76 @@
     "description": "de ideas"
   },
   "team": {
-    "title": "Este es nuestro equipo",
-    "subtitle": "Hacemos las reglas"
+    "title": "Nuestro Equipo",
+    "subtitle": "Las mentes creativas",
+    "pageDescription": "Conoce a las mentes creativas detrás de nuestro trabajo. Cada miembro aporta habilidades únicas y pasión a cada proyecto.",
+    "roles": {
+      "communityManager": "Community Manager",
+      "projectCoordinator": "Coordinadora de Proyectos",
+      "designer": "Diseñador/a",
+      "photographer": "Fotógrafo",
+      "fullstackDeveloper": "Desarrollador Full Stack",
+      "videoEditor": "Editor de Video",
+      "coFounder": "Co-Fundador"
+    },
+    "members": {
+      "jeli": {
+        "bio": "Conectando marcas con audiencias a través de estrategias de contenido y gestión de comunidades.",
+        "skills": ["Redes Sociales", "Estrategia de Contenido", "Engagement", "Analytics"]
+      },
+      "dubraska": {
+        "bio": "Coordinando proyectos creativos desde la idea hasta la ejecución con precisión y pasión.",
+        "skills": ["Gestión de Proyectos", "Planificación", "Coordinación", "Liderazgo"]
+      },
+      "ellie": {
+        "bio": "Asegurando que cada proyecto fluya sin problemas desde el concepto hasta la entrega.",
+        "skills": ["Gestión de Proyectos", "Organización", "Comunicación", "Scrum"]
+      },
+      "angela": {
+        "bio": "Transformando conceptos en composiciones visuales impactantes y memorables.",
+        "skills": ["Diseño Gráfico", "Illustrator", "Branding", "Tipografía"]
+      },
+      "manuel": {
+        "bio": "Creando experiencias visuales que comunican y conectan con las audiencias.",
+        "skills": ["UI Design", "Figma", "Diseño Web", "Creatividad"]
+      },
+      "julia": {
+        "bio": "Diseñando interfaces intuitivas que equilibran estética y funcionalidad.",
+        "skills": ["UI/UX Design", "Figma", "Prototipado", "Design Systems"]
+      },
+      "carlitos": {
+        "bio": "Explorando soluciones creativas para cada desafío de diseño.",
+        "skills": ["Diseño Gráfico", "Creatividad", "Adobe Suite", "Branding"]
+      },
+      "maria": {
+        "bio": "Dando vida a las ideas a través del diseño visual y la creatividad.",
+        "skills": ["Diseño Gráfico", "Illustrator", "Photoshop", "Creatividad"]
+      },
+      "victor": {
+        "bio": "Capturando momentos únicos a través del lente con visión artística.",
+        "skills": ["Fotografía", "Iluminación", "Retoque", "Dirección de Arte"]
+      },
+      "fabian": {
+        "bio": "Contando historias visuales a través de la fotografía profesional.",
+        "skills": ["Fotografía", "Post-producción", "Lifestyle", "Comercial"]
+      },
+      "mavi": {
+        "bio": "Construyendo comunidades digitales y gestionando la presencia online de marcas.",
+        "skills": ["Redes Sociales", "Community Building", "Contenido", "Engagement"]
+      },
+      "enrique": {
+        "bio": "Arquitecto de esta web y soluciones digitales. Construyendo experiencias desde el código.",
+        "skills": ["React", "Next.js", "TypeScript", "Node.js", "Full Stack"]
+      },
+      "luisFelipe": {
+        "bio": "Dando vida a las historias a través de la edición y post-producción de video.",
+        "skills": ["Premiere Pro", "After Effects", "Color Grading", "Motion Graphics"]
+      },
+      "manuelPadre": {
+        "bio": "Líder visionario impulsando la innovación y la excelencia creativa.",
+        "skills": ["Liderazgo", "Visión", "Estrategia", "Negocios"]
+      }
+    }
   },
   "projects": {
     "title": "PROYECTOS",
@@ -83,10 +151,11 @@
     "line3": "realidad"
   },
   "floatingButton": {
-    "viewProjects": "VER PROYECTOS",
-    "viewOnlineServices": "VER SERVICIOS EN LÍNEA",
+    "aboutUs": "SOBRE NOSOTROS",
+    "services": "SERVICIOS",
+    "clients": "CLIENTES",
     "viewTeam": "VER EQUIPOS",
-    "viewServices": "VER SERVICIOS",
+    "theRoom": "LA SALA",
     "contactUs": "CONTÁCTANOS"
   }
 }

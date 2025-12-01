@@ -2,6 +2,7 @@
 
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { getImageUrl } from '@/lib/supabase-images';
+import SectionFooterButton from './SectionFooterButton';
 
 // Keys y filenames para los servicios
 const serviceKeys = ['studio', 'podcast'] as const;
@@ -61,6 +62,9 @@ export default function ServicesCarouselSection() {
             </div>
           ))}
         </div>
+
+        {/* Botón de footer de sección */}
+        <SectionFooterButton section="servicescarousel" />
       </div>
     </section>
   );

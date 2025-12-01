@@ -8,7 +8,6 @@ import FeaturedWork from '../components/FeaturedWork';
 import TeamSection from '../components/TeamSection';
 import ServicesCarouselSection from '../components/ServicesCarouselSection';
 import ContactFooterSection from '../components/ContactFooterSection';
-import FloatingProjectsButton from '../components/FloatingProjectsButton';
 import { getImageUrl } from '@/lib/supabase-images';
 
 // Proyectos para FeaturedWork
@@ -103,7 +102,6 @@ export default function Home() {
       <div data-section="contact">
         <ContactFooterSection />
       </div>
-      <FloatingProjectsButton />
     </main>
   );
 }

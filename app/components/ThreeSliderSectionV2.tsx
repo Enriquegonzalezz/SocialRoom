@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
 import { getImageUrl } from '@/lib/supabase-images';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import SectionFooterButton from './SectionFooterButton';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -238,9 +239,7 @@ export default function ThreeSliderSectionV2() {
         projectGroup.position.z = index * -distanceBetweenSlides;
         
         // Posicionar lateralmente alternado
-        if (index > 0) {
-          projectGroup.position.x = index % 2 === 0 ? lateralOffset : -lateralOffset;
-        }
+        projectGroup.position.x = index % 2 === 0 ? lateralOffset : -lateralOffset;
         
         scene.add(projectGroup);
         cardMeshes.push(cardMesh);
@@ -282,7 +281,7 @@ export default function ThreeSliderSectionV2() {
 
       // Controles para ajustar interletrado e interlineado
       const LETTER_SCALE_X = 0.90; // 1 = normal, <1 letras más juntas, >1 más separadas
-      const LINE_SPACING = 70;    // distancia vertical entre líneas
+      const LINE_SPACING = 75;    // distancia vertical entre líneas
 
       // Crear un canvas por línea de texto y convertirlo en textura
       const finalLines = finalLinesText;
@@ -299,7 +298,7 @@ export default function ThreeSliderSectionV2() {
 
           // Color negro y estilo similar a los títulos de SocialRoom (Helvetica bold, tracking-tight)
           ctx.fillStyle = '#000000';
-          ctx.font = '700 110px "Helvetica Neue", "Helvetica", Arial, sans-serif';
+          ctx.font = '700 110px "Social Gothic", "Helvetica", Arial, sans-serif';
           ctx.textBaseline = 'middle';
 
           // Posicionar en vertical y ajustar interletrado con escala en X
@@ -417,12 +416,18 @@ export default function ThreeSliderSectionV2() {
   }, [finalLinesText]);
 
   return (
-    <section 
-      ref={triggerRef} 
-      className="relative w-full bg-[#f3f3f3] overflow-hidden"
-      style={{ height: '100vh' }}
-    >
-      <div ref={containerRef} className="fixed top-0 left-0 w-full h-screen overflow-hidden" />
-    </section>
+    <>
+      <section 
+        ref={triggerRef} 
+        className="relative w-full bg-[#f3f3f3] overflow-hidden"
+        style={{ height: '100vh' }}
+      >
+        <div ref={containerRef} className="fixed top-0 left-0 w-full h-screen overflow-hidden" />
+      </section>
+      {/* Botón de footer de sección - fuera del pin para que aparezca al final */}
+      <div className="bg-[#f3f3f3]">
+        <SectionFooterButton section="threeslider" />
+      </div>
+    </>
   );
 }

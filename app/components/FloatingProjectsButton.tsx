@@ -44,7 +44,7 @@ const sectionConfigs: Record<SectionType, SectionConfig> = {
   },
   team: {
     textKey: 'floatingButton.viewTeam',
-    href: '/team',
+    href: '/team',  // Redirige a la nueva página de equipo
     borderColor: 'border-black',
     hoverBg: 'hover:bg-black',
     hoverText: 'hover:text-white',

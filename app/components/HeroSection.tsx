@@ -5,16 +5,18 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
+import SectionFooterButton from './SectionFooterButton';
 
 export default function HeroSection() {
   const { t, locale } = useTranslation();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isDarkBackground, setIsDarkBackground] = useState<boolean>(true);
-  const [showCowImage, setShowCowImage] = useState<boolean>(false);
-  const homeRef = useRef<HTMLHeadingElement>(null);
-  const projectsRef = useRef<HTMLHeadingElement>(null);
-  const cowImageRef = useRef<HTMLDivElement>(null);
+  const [showLogo, setShowLogo] = useState<boolean>(true);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const drawerContentRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  
 
   useEffect(() => {
     let ticking = false;
@@ -25,6 +27,23 @@ export default function HeroSection() {
         window.requestAnimationFrame(() => {
           const scrollPosition = window.scrollY;
           const windowHeight = window.innerHeight;
+          
+          // Detectar si estamos en la sección de contacto
+          const contactSection = document.querySelector('[data-section="contact"]');
+          
+          if (contactSection) {
+            const rect = contactSection.getBoundingClientRect();
+            const logoHeight = 100; // Altura aproximada del logo
+            
+            // Si el logo está sobre la sección de contacto, ocultarlo
+            if (rect.top <= logoHeight) {
+              setShowLogo(false);
+            } else {
+              setShowLogo(true);
+            }
+          } else {
+            setShowLogo(true);
+          }
           
           // Detectar si estamos sobre una sección con fondo negro (ServicesCarouselSection)
           const servicesSection = document.querySelector('[data-section="services-carousel"]');
@@ -61,44 +80,40 @@ export default function HeroSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Animar textos del drawer cuando se abre
+  // Animar drawer y textos cuando se abre
   useEffect(() => {
-    if (menuOpen) {
-      // Animar Home
-      if (homeRef.current) {
-        gsap.from(homeRef.current, {
+    if (menuOpen && drawerRef.current && drawerContentRef.current && navRef.current) {
+      // Animar overlay
+      const overlay = drawerRef.current.querySelector('.drawer-overlay');
+      if (overlay) {
+        gsap.from(overlay, {
           opacity: 0,
-          y: 30,
-          duration: 0.6,
-          ease: 'power3.out',
-          delay: 0.1,
+          duration: 0.3,
+          ease: 'power2.out',
         });
       }
 
-      // Animar Projects
-      if (projectsRef.current) {
-        gsap.from(projectsRef.current, {
-          opacity: 0,
-          y: 30,
-          duration: 0.6,
-          ease: 'power3.out',
-          delay: 0.2,
-        });
-      }
+      // Animar drawer content
+      gsap.from(drawerContentRef.current, {
+        opacity: 0,
+        x: -100,
+        duration: 0.5,
+        ease: 'power3.out',
+      });
+
+      // Animar botones de navegación con stagger
+      const buttons = navRef.current.querySelectorAll('button');
+      gsap.from(buttons, {
+        opacity: 0,
+        x: -50,
+        duration: 0.5,
+        stagger: 0.1,
+        delay: 0.2,
+        ease: 'power2.out',
+      });
     }
   }, [menuOpen]);
 
-  // Animar imagen de vaca cuando aparece
-  useEffect(() => {
-    if (showCowImage && cowImageRef.current) {
-      gsap.from(cowImageRef.current, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
-    }
-  }, [showCowImage]);
 
   return (
     <section
@@ -110,13 +125,15 @@ export default function HeroSection() {
       }}
     >
       {/* Logo centrado fijo en todo el documento - Cambia de color según el fondo */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 py-6 md:py-8">
-        <div className={`transition-all duration-700 ease-in-out ${
-          menuOpen ? 'invert' : (isDarkBackground ? '' : 'invert')
-        }`}>
-          <Image src="/socialroomblanco.svg" alt="Logo" width={250} height={250} className="md:w-[300px]" />
+      {showLogo && (
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 py-6 md:py-8 transition-opacity duration-700">
+          <div className={`transition-all duration-700 ease-in-out ${
+            menuOpen ? 'invert' : (isDarkBackground ? '' : 'invert')
+          }`}>
+            <Image src="/socialroomblanco.svg" alt="Logo" width={250} height={250} className="md:w-[300px]" />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Menu Hamburguesa - A la izquierda, cambia de color con animación suave */}
       <button 
@@ -129,68 +146,68 @@ export default function HeroSection() {
         <span className={`w-full h-0.5 transition-all duration-700 ease-in-out ${isDarkBackground ? 'bg-white' : 'bg-black'} ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
       </button>
 
-      {/* Drawer/Menu Lateral - Se abre desde la derecha */}
+      {/* Drawer/Menu Lateral - Pantalla completa, lado izquierdo, estilo Shopify */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40">
+        <div ref={drawerRef} className="fixed inset-0 z-40">
           {/* Overlay oscuro */}
           <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="drawer-overlay absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
           />
           
-          {/* Drawer desde la derecha - Ocupa 100% de altura */}
-          <div className="absolute right-0 top-0 h-full w-full bg-[#f3f3f3] shadow-2xl">
-            {/* Grid de 3 columnas - Home, Projects, Employees */}
-            <div className="grid grid-cols-3 h-full relative">
-              {/* Columna 1 - Home (50%) */}
-              <div className="flex flex-col items-center justify-center border-r border-black/10 hover:bg-black/5 transition-colors cursor-pointer group">
-                <button onClick={() => setMenuOpen(false)} className="text-center w-full h-full flex items-center justify-center">
-                  <h3 ref={homeRef} className="text-4xl md:text-6xl lg:text-7xl font-light text-black group-hover:text-black/70 transition-colors">
-                    Home
-                  </h3>
-                </button>
-              </div>
-              
-              {/* Columna 2 - Projects (33%) */}
-              <div 
-                className="flex flex-col items-center justify-center cursor-pointer group relative hover:bg-black/5 transition-colors"
-                onMouseEnter={() => setShowCowImage(true)}
-                onMouseLeave={() => setShowCowImage(false)}
+          {/* Drawer desde la izquierda - Pantalla completa */}
+          <div ref={drawerContentRef} className="absolute left-0 top-0 h-full w-full bg-white flex flex-col">
+            {/* Header con botón de cerrar */}
+            <div className="flex justify-end items-center p-8 md:p-12">
+              <button 
+                onClick={() => setMenuOpen(false)}
+                className="text-black hover:text-black/70 transition-colors will-change-transform"
               >
-                <button 
-                  onClick={() => {
-                    setMenuOpen(false);
-                    router.push(`/${locale}/projects`);
-                  }} 
-                  className="text-center w-full h-full flex items-center justify-center relative z-10"
-                >
-                  <h3 ref={projectsRef} className="text-4xl md:text-6xl lg:text-7xl font-light text-black group-hover:text-black/70 transition-colors">
-                    Projects
-                  </h3>
-                </button>
-              </div>
-
-              {/* Columna 3 - Empleados/Employees (33%) */}
-              <div className="flex flex-col items-center justify-center border-l border-black/10 hover:bg-black/5 transition-colors cursor-pointer group">
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    router.push(`/${locale}/equipment/login`);
-                  }}
-                  className="text-center w-full h-full flex items-center justify-center"
-                >
-                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-light text-black group-hover:text-black/70 transition-colors">
-                    {locale === 'es' ? 'Empleados' : 'Employees'}
-                  </h3>
-                </button>
-              </div>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             </div>
+            
+            {/* Navegación - 3 items grandes con fuente thermal */}
+            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-start px-8 md:px-12 lg:px-20 space-y-8 md:space-y-12">
+              {/* Home */}
+              <button 
+                onClick={() => setMenuOpen(false)}
+                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+              >
+                Home
+              </button>
+              
+              {/* Projects */}
+              <button 
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push(`/${locale}/projects`);
+                }}
+                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+              >
+                Projects
+              </button>
+              
+              {/* Team */}
+              <button 
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push(`/${locale}/team`);
+                }}
+                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+              >
+                Team
+              </button>
+            </nav>
           </div>
         </div>
       )}
 
       {/* Contenido Principal */}
-      <div className="relative min-h-screen flex items-center justify-start px-6 md:px-12 lg:px-18 pb-32 md:pb-40 lg:pb-48">
+      <div className="relative min-h-screen flex items-center justify-start px-6 md:px-12 lg:px-18 pb-20">
         <div className="max-w-7xl w-full">
           <h2 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.7] md:leading-[0.7] lg:leading-[0.9] font-thermal font-thin tracking-tight">
             {t('hero.title')}
@@ -204,8 +221,8 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Franja amarilla inferior (placeholder para futura sección) */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 md:h-20 lg:h-24 bg-[#233a28]"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-16 md:h-20 lg:h-24 bg-[#233a28]">
+      </div>
     </section>
   );
 }

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { getImageUrl } from '@/lib/supabase-images';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import SectionFooterButton from './SectionFooterButton';
 
 // Keys para las traducciones y filenames
 const serviceKeys = ['offline', 'online', 'estrategia', 'eventos'] as const;
@@ -221,6 +222,9 @@ export default function SocialRoomSection() {
           </div>
         </div>
       </div>
+
+      {/* Botón de footer de sección */}
+      <SectionFooterButton section="socialroom" />
 
       {/* CSS para ocultar scrollbar */}
       <style jsx>{`

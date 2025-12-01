@@ -11,8 +11,76 @@
     "description": "of ideas"
   },
   "team": {
-    "title": "This is our room",
-    "subtitle": "We make the rules"
+    "title": "OUR TEAM",
+    "subtitle": "THE CREATIVE MINDS",
+    "pageDescription": "Meet the creative minds behind our work. Each member brings unique skills and passion to every project.",
+    "roles": {
+      "communityManager": "Community Manager",
+      "projectCoordinator": "Project Coordinator",
+      "designer": "Designer",
+      "photographer": "Photographer",
+      "fullstackDeveloper": "Full Stack Developer",
+      "videoEditor": "Video Editor",
+      "coFounder": "Co-Founder"
+    },
+    "members": {
+      "jeli": {
+        "bio": "Connecting brands with audiences through content strategies and community management.",
+        "skills": ["Social Media", "Content Strategy", "Engagement", "Analytics"]
+      },
+      "dubraska": {
+        "bio": "Coordinating creative projects from idea to execution with precision and passion.",
+        "skills": ["Project Management", "Planning", "Coordination", "Leadership"]
+      },
+      "ellie": {
+        "bio": "Ensuring every project flows smoothly from concept to delivery.",
+        "skills": ["Project Management", "Organization", "Communication", "Scrum"]
+      },
+      "angela": {
+        "bio": "Transforming concepts into stunning and memorable visual compositions.",
+        "skills": ["Graphic Design", "Illustrator", "Branding", "Typography"]
+      },
+      "manuel": {
+        "bio": "Creating visual experiences that communicate and connect with audiences.",
+        "skills": ["UI Design", "Figma", "Web Design", "Creativity"]
+      },
+      "julia": {
+        "bio": "Designing intuitive interfaces that balance aesthetics and functionality.",
+        "skills": ["UI/UX Design", "Figma", "Prototyping", "Design Systems"]
+      },
+      "carlitos": {
+        "bio": "Exploring creative solutions for every design challenge.",
+        "skills": ["Graphic Design", "Creativity", "Adobe Suite", "Branding"]
+      },
+      "maria": {
+        "bio": "Bringing ideas to life through visual design and creativity.",
+        "skills": ["Graphic Design", "Illustrator", "Photoshop", "Creativity"]
+      },
+      "victor": {
+        "bio": "Capturing unique moments through the lens with artistic vision.",
+        "skills": ["Photography", "Lighting", "Retouching", "Art Direction"]
+      },
+      "fabian": {
+        "bio": "Telling visual stories through professional photography.",
+        "skills": ["Photography", "Post-production", "Lifestyle", "Commercial"]
+      },
+      "mavi": {
+        "bio": "Building digital communities and managing brand online presence.",
+        "skills": ["Social Media", "Community Building", "Content", "Engagement"]
+      },
+      "enrique": {
+        "bio": "Architect of this website and digital solutions. Building experiences from code.",
+        "skills": ["React", "Next.js", "TypeScript", "Node.js", "Full Stack"]
+      },
+      "luisFelipe": {
+        "bio": "Bringing stories to life through video editing and post-production.",
+        "skills": ["Premiere Pro", "After Effects", "Color Grading", "Motion Graphics"]
+      },
+      "manuelPadre": {
+        "bio": "Visionary leader driving innovation and creative excellence.",
+        "skills": ["Leadership", "Vision", "Strategy", "Business"]
+      }
+    }
   },
   "projects": {
     "title": "PROJECTS",
@@ -78,15 +146,16 @@
     }
   },
   "threeSlider": {
-    "line1": "We make",
-    "line2": "your ideas",
-    "line3": "reality"
+    "line1": "WE MAKE",
+    "line2": "YOUR IDEAS",
+    "line3": "HAPPEN"
   },
   "floatingButton": {
-    "viewProjects": "VIEW PROJECTS",
-    "viewOnlineServices": "VIEW ONLINE SERVICES",
+    "aboutUs": "ABOUT US",
+    "services": "SERVICES",
+    "clients": "CLIENTS",
     "viewTeam": "VIEW TEAM",
-    "viewServices": "VIEW SERVICES",
+    "theRoom": "THE ROOM",
     "contactUs": "CONTACT US"
   }
 }
