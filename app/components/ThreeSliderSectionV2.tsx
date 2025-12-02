@@ -79,17 +79,30 @@ export default function ThreeSliderSectionV2() {
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xf3f3f3);
       
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+      // Optimización: Ajustar near/far para mejor precisión de depth buffer
+      const camera = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        100,  // near más alto para mejor precisión
+        10000 // far suficiente para la escena
+      );
       camera.position.z = 700;
 
-      // WebGL Renderer - Mejor performance que CSS3DRenderer
+      // WebGL Renderer optimizado
       const renderer = new THREE.WebGLRenderer({ 
-        antialias: true,
-        alpha: true 
+        antialias: window.devicePixelRatio < 2, // Solo antialias en pantallas no-retina
+        alpha: false, // No necesitamos alpha, mejor performance
+        powerPreference: 'high-performance',
+        stencil: false, // No usamos stencil buffer
+        depth: true,
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
+      
+      // Optimizaciones de render
+      renderer.info.autoReset = false; // Control manual de stats
+      
       renderer.domElement.style.position = 'absolute';
       renderer.domElement.style.top = '0';
       containerRef.current.appendChild(renderer.domElement);
@@ -102,31 +115,35 @@ export default function ThreeSliderSectionV2() {
       // Posición lateral (izquierda/derecha)
       const lateralOffset = 300;
 
-      // Cargar texturas y crear meshes
-      const textureLoader = new THREE.TextureLoader();
+      // Geometrías compartidas (reutilizar para mejor memoria)
+      const sharedCardGeometry = new THREE.PlaneGeometry(784, 584);
+      const sharedTextGeometry = new THREE.PlaneGeometry(784, 150);
+      
+      // Track de texturas cargadas para refresh
+      let texturesLoaded = 0;
+      const totalTextures = projects.length;
       
       projects.forEach((project, index) => {
         // Crear grupo para cada proyecto
         const projectGroup = new THREE.Group();
         
-        // Crear geometría para la tarjeta (plano) - 784x584px (16px menos para evitar desbordamiento)
-        const cardGeometry = new THREE.PlaneGeometry(784, 584);
-        
         // Crear canvas para la imagen con bordes redondeados
         const imageCanvas = document.createElement('canvas');
         imageCanvas.width = 800;
         imageCanvas.height = 600;
-        const imageCtx = imageCanvas.getContext('2d');
+        const imageCtx = imageCanvas.getContext('2d', { alpha: true });
         
-        // Crear textura del canvas
+        // Crear textura del canvas con configuración optimizada
         const texture = new THREE.CanvasTexture(imageCanvas);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
         texture.colorSpace = THREE.SRGBColorSpace;
+        texture.generateMipmaps = false; // No necesitamos mipmaps para planos
         
         // Cargar imagen y aplicar bordes redondeados
-        const img = document.createElement('img');
+        const img = new Image();
         img.crossOrigin = 'anonymous';
+        img.decoding = 'async'; // Decodificación asíncrona
         img.src = project.image;
         img.onload = () => {
           if (imageCtx) {
@@ -140,64 +157,57 @@ export default function ThreeSliderSectionV2() {
             let drawWidth, drawHeight, offsetX, offsetY;
             
             if (imgRatio > canvasRatio) {
-              // Imagen más ancha - ajustar por altura
               drawHeight = imageCanvas.height;
               drawWidth = img.width * (imageCanvas.height / img.height);
               offsetX = (imageCanvas.width - drawWidth) / 2;
               offsetY = 0;
             } else {
-              // Imagen más alta - ajustar por ancho
               drawWidth = imageCanvas.width;
               drawHeight = img.height * (imageCanvas.width / img.width);
               offsetX = 0;
               offsetY = (imageCanvas.height - drawHeight) / 2;
             }
             
-            // Dibujar imagen sin clip (esto evita el desbordamiento)
+            // Dibujar imagen
             imageCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
             
-            // Aplicar bordes redondeados dibujando una máscara encima
+            // Aplicar bordes redondeados
             const radius = 32;
             imageCtx.globalCompositeOperation = 'destination-in';
             imageCtx.beginPath();
-            imageCtx.moveTo(radius, 0);
-            imageCtx.lineTo(imageCanvas.width - radius, 0);
-            imageCtx.arcTo(imageCanvas.width, 0, imageCanvas.width, radius, radius);
-            imageCtx.lineTo(imageCanvas.width, imageCanvas.height - radius);
-            imageCtx.arcTo(imageCanvas.width, imageCanvas.height, imageCanvas.width - radius, imageCanvas.height, radius);
-            imageCtx.lineTo(radius, imageCanvas.height);
-            imageCtx.arcTo(0, imageCanvas.height, 0, imageCanvas.height - radius, radius);
-            imageCtx.lineTo(0, radius);
-            imageCtx.arcTo(0, 0, radius, 0, radius);
-            imageCtx.closePath();
-            imageCtx.fillStyle = '#000000';
+            imageCtx.roundRect(0, 0, imageCanvas.width, imageCanvas.height, radius);
             imageCtx.fill();
             imageCtx.globalCompositeOperation = 'source-over';
             
             // Actualizar textura
             texture.needsUpdate = true;
+            
+            // Track de carga para refresh
+            texturesLoaded++;
+            if (texturesLoaded === totalTextures) {
+              ScrollTrigger.refresh();
+            }
           }
         };
         
-        // Material con la textura - Sin transparencia para colores vibrantes
+        // Material optimizado - FrontSide es suficiente
         const cardMaterial = new THREE.MeshBasicMaterial({ 
           map: texture,
-          side: THREE.DoubleSide,
+          side: THREE.FrontSide,
           transparent: true,
-          opacity: 1.0
         });
         
-        const cardMesh = new THREE.Mesh(cardGeometry, cardMaterial);
+        const cardMesh = new THREE.Mesh(sharedCardGeometry, cardMaterial);
+        cardMesh.frustumCulled = true; // Habilitar culling
         projectGroup.add(cardMesh);
         
-        // Crear canvas para el texto (150px de alto para el área de texto)
+        // Crear canvas para el texto
         const canvas = document.createElement('canvas');
         canvas.width = 800;
         canvas.height = 150;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
         
         if (ctx) {
-          // Fondo transparente
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           
           // Título
@@ -205,34 +215,31 @@ export default function ThreeSliderSectionV2() {
           ctx.font = '300 32px "Social Gothic", Arial, sans-serif';
           ctx.fillText(project.title, 0, 40);
           
-          // Categoría
-          ctx.fillStyle = '#000';
+          // Categoría y año
           ctx.font = '300 18px "Social Gothic", Arial, sans-serif';
           ctx.fillText(project.category, 0, 75);
-          
-          // Año
           ctx.fillText(project.year, 0, 105);
           
-          // Botón + (a la derecha)
+          // Botón +
           ctx.fillStyle = '#1a1a1a';
           ctx.font = '300 60px "Social Gothic", Arial, sans-serif';
           ctx.fillText('+', canvas.width - 80, 70);
         }
         
-        // Crear textura del canvas
+        // Textura de texto optimizada
         const textTexture = new THREE.CanvasTexture(canvas);
         textTexture.minFilter = THREE.LinearFilter;
+        textTexture.generateMipmaps = false;
         
-        // Crear plano para el texto (mismo ancho que la imagen, 150px de alto)
-        const textGeometry = new THREE.PlaneGeometry(784, 150);
         const textMaterial = new THREE.MeshBasicMaterial({ 
           map: textTexture,
           transparent: true,
-          side: THREE.DoubleSide
+          side: THREE.FrontSide
         });
         
-        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-        textMesh.position.y = -367; // Posicionar debajo de la imagen (584/2 + 150/2)
+        const textMesh = new THREE.Mesh(sharedTextGeometry, textMaterial);
+        textMesh.position.y = -367;
+        textMesh.frustumCulled = true;
         projectGroup.add(textMesh);
         
         // Posicionar el grupo en el eje Z
@@ -246,17 +253,25 @@ export default function ThreeSliderSectionV2() {
         textMeshes.push(projectGroup);
       });
 
-      // Timeline con ScrollTrigger
+      // Timeline con ScrollTrigger - Optimizado para Mac
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: triggerRef.current,
           pin: true,
-          scrub: 0.5,
+          pinSpacing: true,
+          scrub: 0.8, // Más suave para Mac
           start: 'top top',
           end: `+=${(projects.length - 1) * 800}vh`,
           invalidateOnRefresh: true,
           anticipatePin: 1,
+          fastScrollEnd: true, // Mejor manejo de scroll rápido en Mac
+          preventOverlaps: true,
         },
+      });
+
+      // Forzar refresh después de que el DOM esté listo (fix para Mac)
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
       });
 
       // Animar cámara (se mueve hacia atrás)
@@ -280,47 +295,43 @@ export default function ThreeSliderSectionV2() {
       const finalTextMeshes: THREE.Mesh[] = [];
 
       // Controles para ajustar interletrado e interlineado
-      const LETTER_SCALE_X = 0.90; // 1 = normal, <1 letras más juntas, >1 más separadas
-      const LINE_SPACING = 75;    // distancia vertical entre líneas
+      const LETTER_SCALE_X = 0.90;
+      const LINE_SPACING = 75;
 
-      // Crear un canvas por línea de texto y convertirlo en textura
-      const finalLines = finalLinesText;
+      // Geometría compartida para texto final
+      const finalTextGeometry = new THREE.PlaneGeometry(800, 150);
 
-      finalLines.forEach((line, i) => {
+      finalLinesText.forEach((line, i) => {
         const canvas = document.createElement('canvas');
         canvas.width = 1024;
         canvas.height = 200;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
 
         if (ctx) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.save();
-
-          // Color negro y estilo similar a los títulos de SocialRoom (Helvetica bold, tracking-tight)
           ctx.fillStyle = '#000000';
           ctx.font = '700 110px "Social Gothic", "Helvetica", Arial, sans-serif';
           ctx.textBaseline = 'middle';
-
-          // Posicionar en vertical y ajustar interletrado con escala en X
           ctx.translate(0, canvas.height / 2);
           ctx.scale(LETTER_SCALE_X, 1);
           ctx.fillText(line, 0, 0);
-
           ctx.restore();
         }
 
         const texture = new THREE.CanvasTexture(canvas);
         texture.minFilter = THREE.LinearFilter;
-        const geo = new THREE.PlaneGeometry(800, 150);
+        texture.generateMipmaps = false;
+        
         const mat = new THREE.MeshBasicMaterial({
           map: texture,
           transparent: true,
-          side: THREE.DoubleSide,
+          side: THREE.FrontSide,
         });
 
-        const mesh = new THREE.Mesh(geo, mat);
-        // Separar verticalmente las líneas usando LINE_SPACING
-        mesh.position.y = (finalLines.length - 1) * (LINE_SPACING / 2) - i * LINE_SPACING;
+        const mesh = new THREE.Mesh(finalTextGeometry, mat);
+        mesh.position.y = (finalLinesText.length - 1) * (LINE_SPACING / 2) - i * LINE_SPACING;
+        mesh.frustumCulled = true;
         finalTextGroup.add(mesh);
         finalTextMeshes.push(mesh);
       });
@@ -349,62 +360,82 @@ export default function ThreeSliderSectionV2() {
         }, `<+=${index * 0.15}`);
       });
 
-      // Loop de render
+      // Loop de render optimizado - solo renderizar cuando hay cambios
       let animationFrameId: number;
+      let needsRender = true;
+      
+      // Marcar que necesita render cuando GSAP actualiza
+      const markNeedsRender = () => { needsRender = true; };
+      gsap.ticker.add(markNeedsRender);
+      
       const animate = () => {
-        renderer.render(scene, camera);
         animationFrameId = requestAnimationFrame(animate);
+        
+        // Solo renderizar si hay cambios
+        if (needsRender) {
+          renderer.render(scene, camera);
+          needsRender = false;
+        }
       };
       animate();
 
-      // Resize handler
+      // Resize handler con debounce para Mac
+      let resizeTimeout: ReturnType<typeof setTimeout>;
       const handleResize = () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          ScrollTrigger.refresh();
+        }, 100);
       };
       window.addEventListener('resize', handleResize);
 
       // Cleanup
       return () => {
+        // Remover ticker de GSAP
+        gsap.ticker.remove(markNeedsRender);
+        
         if (animationFrameId) {
           cancelAnimationFrame(animationFrameId);
         }
         window.removeEventListener('resize', handleResize);
         
-        // Limpiar geometrías y materiales
+        // Limpiar geometrías compartidas
+        sharedCardGeometry.dispose();
+        sharedTextGeometry.dispose();
+        finalTextGeometry.dispose();
+        
+        // Limpiar materiales y texturas de cards
         cardMeshes.forEach(mesh => {
-          mesh.geometry.dispose();
-          if (mesh.material instanceof THREE.MeshBasicMaterial) {
-            if (mesh.material.map) mesh.material.map.dispose();
-            mesh.material.dispose();
-          }
+          const material = mesh.material as THREE.MeshBasicMaterial;
+          if (material.map) material.map.dispose();
+          material.dispose();
         });
         
+        // Limpiar grupos de proyectos
         textMeshes.forEach(group => {
-          group.children.forEach(child => {
+          group.traverse(child => {
             if (child instanceof THREE.Mesh) {
-              child.geometry.dispose();
-              if (child.material instanceof THREE.MeshBasicMaterial) {
-                if (child.material.map) child.material.map.dispose();
-                child.material.dispose();
-              }
+              const material = child.material as THREE.MeshBasicMaterial;
+              if (material.map) material.map.dispose();
+              material.dispose();
             }
           });
         });
         
         // Limpiar texto final
         finalTextMeshes.forEach(mesh => {
-          mesh.geometry.dispose();
-          if (mesh.material instanceof THREE.MeshBasicMaterial) {
-            if (mesh.material.map) mesh.material.map.dispose();
-            mesh.material.dispose();
-          }
+          const material = mesh.material as THREE.MeshBasicMaterial;
+          if (material.map) material.map.dispose();
+          material.dispose();
         });
         
         // Dispose del renderer
         renderer.dispose();
-        if (renderer.domElement && renderer.domElement.parentNode) {
+        renderer.forceContextLoss();
+        if (renderer.domElement?.parentNode) {
           renderer.domElement.parentNode.removeChild(renderer.domElement);
         }
         
@@ -422,7 +453,11 @@ export default function ThreeSliderSectionV2() {
         className="relative w-full bg-[#f3f3f3] overflow-hidden"
         style={{ height: '100vh' }}
       >
-        <div ref={containerRef} className="fixed top-0 left-0 w-full h-screen overflow-hidden" />
+        <div 
+          ref={containerRef} 
+          className="absolute top-0 left-0 w-full h-full overflow-hidden"
+          style={{ willChange: 'transform' }}
+        />
       </section>
       {/* Botón de footer de sección - fuera del pin para que aparezca al final */}
       <div className="bg-[#f3f3f3]">
