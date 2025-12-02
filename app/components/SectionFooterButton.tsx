@@ -10,7 +10,7 @@ type SectionType = 'hero' | 'socialroom' | 'threeslider' | 'team' | 'servicescar
 
 interface SectionConfig {
   textKey: string;
-  href: string;
+  href: string; // base path sin locale, por ejemplo "/services"
   borderColor: string;
   hoverBg: string;
   hoverText: string;
@@ -47,7 +47,7 @@ const sectionConfigs: Record<SectionType, SectionConfig> = {
   },
   servicescarousel: {
     textKey: 'floatingButton.theRoom',
-    href: '/services',
+    href: '/theroom',
     borderColor: 'border-white',
     hoverBg: 'hover:bg-white',
     hoverText: 'hover:text-black',
@@ -67,13 +67,18 @@ interface SectionFooterButtonProps {
 }
 
 export default function SectionFooterButton({ section, className = '' }: SectionFooterButtonProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const buttonRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const backgroundImage = getImageUrl('others', 'pieljirafa.jpeg');
 
   const config = sectionConfigs[section];
   const buttonText = t(config.textKey);
+
+  // Construir href incluyendo el locale actual, excepto para anclas (#...)
+  const hrefWithLocale = config.href.startsWith('#')
+    ? config.href
+    : `/${locale}${config.href}`;
 
   // Animación de entrada con IntersectionObserver
   useEffect(() => {
@@ -146,7 +151,7 @@ export default function SectionFooterButton({ section, className = '' }: Section
 
   return (
     <div ref={buttonRef} className={`flex justify-center w-full pt-8 ${className}`} style={{ opacity: 0 }}>
-      <Link href={config.href}>
+      <Link href={hrefWithLocale}>
         <button
           className={`relative px-4 py-6 border transition-all duration-500 ease-in-out hover:scale-105 ${config.borderColor} ${config.hoverBg}`}
           style={{

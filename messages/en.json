@@ -157,5 +157,200 @@
     "viewTeam": "VIEW TEAM",
     "theRoom": "THE ROOM",
     "contactUs": "CONTACT US"
+  },
+  "about": {
+    "title": "ABOUT",
+    "subtitle": "Creative agency crafting unique brand experiences since 2011.",
+    "scroll": "Scroll",
+    "missionLabel": "Our Mission",
+    "missionLines": [
+      "To create compelling, effective marketing solutions",
+      "that resonate with audiences and deliver measurable results.",
+      "We believe every brand has a unique story,",
+      "and our goal is to tell it in a way that engages and inspires."
+    ],
+    "aboutSectionTitle": "About SOCIAL ROOM",
+    "aboutSectionParagraphs": [
+      "We redefine the scenery of digital marketing with our innovative, results-driven approach. For 13 years, we've been a collective of passionate, creative minds and strategic thinkers, committed to transforming brands and boosting business growth all around the world.",
+      "We offer a comprehensive range of services designed to meet the diverse needs of our clients. Our expertise spans digital marketing, social media strategy, content creation, video and photography, brand development, and influencer advertising.",
+      "At SOCIAL ROOM, we start by understanding your business, your goals, and your target audience. From there, we craft customized strategies that leverage the latest tools and technologies to maximize impact. Our campaigns are data-driven, ensuring every decision is backed by insights and analytics.",
+      "We are dedicated to building long-term relationships with our clients. Your success is our success, and we work tirelessly to ensure that your brand not only meets but exceeds its potential."
+    ],
+    "whyPartnerTitle": "Why Partner With Us?",
+    "whyPartner": {
+      "innovation": {
+        "title": "Innovation",
+        "description": "We stay ahead of industry trends and continuously explore new techniques to keep your brand at the forefront."
+      },
+      "expertise": {
+        "title": "Expertise",
+        "description": "Our team comprises industry veterans and fresh talents, bringing a balanced blend of experience and creativity."
+      },
+      "results": {
+        "title": "Results-Oriented",
+        "description": "We are committed to delivering tangible results that contribute to your business growth."
+      },
+      "partnership": {
+        "title": "Partnership",
+        "description": "We view our clients as partners and prioritize open communication, transparency, and collaboration."
+      }
+    },
+    "valuesTitle": "Values",
+    "valuesSubtitle": "The principles that guide everything we create.",
+    "values": {
+      "creativity": {
+        "title": "Creativity",
+        "description": "We push boundaries and challenge conventions to create unique experiences."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We embrace new technologies and methodologies to stay ahead."
+      },
+      "excellence": {
+        "title": "Excellence",
+        "description": "We deliver nothing but the highest quality in everything we do."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "We work closely with our clients to bring their vision to life."
+      }
+    },
+    "stats": {
+      "years": "Years of Experience",
+      "projects": "Projects Delivered",
+      "clients": "Happy Clients",
+      "team": "Team Members"
+    },
+    "ctaTitle": "Ready to create\nsomething amazing?",
+    "ctaSubtitle": "Let's collaborate and bring your vision to life.",
+    "ctaButton": "Get in Touch"
+  },
+  "servicesPage": {
+    "title": "SERVICES",
+    "subtitle": "Full-service creative solutions tailored to elevate your brand and drive results.",
+    "services": {
+      "branding": {
+        "title": "Branding",
+        "description": "We believe branding is more than just a logo or tagline—it's the essence of your business. Our mission is to help you uncover and articulate your unique identity, creating a brand that resonates with your audience and stands the test of time.",
+        "features": ["Visual Identity", "Brand Messaging", "Market Research", "Brand Guidelines", "Rebranding"]
+      },
+      "visualProduction": {
+        "title": "Video & Photography",
+        "description": "Visuals speak louder than words. Our experts are dedicated to creating content and capturing moments that tell your story with clarity and professionalism. With 13 years of experience, we bring your vision to life through stunning photography and compelling videos.",
+        "features": ["Professional Photography", "Videography", "Drone Shots", "Editing & Post-Production", "Event Coverage"]
+      },
+      "socialMedia": {
+        "title": "Social Media",
+        "description": "With 13+ years of experience in the ever-evolving social media world, our experts help you connect with your audience, build your brand, and drive measurable results. We craft tailored strategies that align with your business goals.",
+        "features": ["Content Strategy", "Community Management", "Paid Advertising", "Analytics & Insights", "Multi-Platform Expertise"]
+      },
+      "design": {
+        "title": "Design",
+        "description": "From digital to print, we craft stunning visuals that capture attention and communicate effectively.",
+        "features": ["UI/UX Design", "Graphic Design", "Motion Graphics", "Packaging", "Editorial"]
+      },
+      "development": {
+        "title": "Development",
+        "description": "We build fast, responsive, and scalable digital products with exceptional user experiences.",
+        "features": ["Web Development", "E-commerce", "Web Apps", "CMS Integration", "API Development"]
+      }
+    },
+    "processTitle": "Our Process",
+    "process": {
+      "discovery": {
+        "title": "Discovery",
+        "description": "We dive deep into your brand, goals, and audience."
+      },
+      "strategy": {
+        "title": "Strategy",
+        "description": "We develop a tailored approach to achieve your objectives."
+      },
+      "creation": {
+        "title": "Creation",
+        "description": "We bring ideas to life with creativity and precision."
+      },
+      "delivery": {
+        "title": "Delivery",
+        "description": "We launch, measure, and optimize for success."
+      }
+    },
+    "whyTitle": "Why Choose Us",
+    "why": {
+      "fast": {
+        "title": "Fast Delivery",
+        "description": "We work efficiently without compromising quality."
+      },
+      "results": {
+        "title": "Results Driven",
+        "description": "Every project is designed to achieve your goals."
+      },
+      "creative": {
+        "title": "Creative Excellence",
+        "description": "We push boundaries to create unique solutions."
+      }
+    },
+    "ctaTitle": "Let's Start Your Project",
+    "ctaSubtitle": "Ready to transform your brand? We're here to help.",
+    "ctaButton": "Get a Quote",
+    "ctaButtonAlt": "View Our Work"
+  },
+  "theRoom": {
+    "title": "THE ROOM",
+    "subtitle": "Our creative studio equipped with state-of-the-art audiovisual technology to bring your vision to life.",
+    "introTitle": "Where Creativity Meets Technology",
+    "introText1": "The Room is our fully-equipped creative studio, designed to produce innovative and high-quality audiovisual content. With 13 years of experience, we've built a space where ideas transform into stunning visual pieces.",
+    "introText2": "From professional photography sessions to video production, podcasts, and live streaming, The Room has everything you need to create content that stands out and connects with your audience.",
+    "equipmentTitle": "Our Equipment",
+    "equipmentSubtitle": "Professional-grade tools and technology to deliver exceptional results for every project.",
+    "equipment": {
+      "cameras": {
+        "title": "Cameras",
+        "description": "Professional cinema and photography cameras including RED, Sony, and Canon systems for stunning 4K/8K content."
+      },
+      "lighting": {
+        "title": "Lighting",
+        "description": "Complete lighting setups with LED panels, softboxes, and professional studio lights for perfect illumination."
+      },
+      "audio": {
+        "title": "Audio",
+        "description": "High-end microphones, mixers, and recording equipment for crystal-clear sound in any production."
+      },
+      "drones": {
+        "title": "Drones",
+        "description": "Professional aerial equipment for breathtaking drone photography and videography with cinematic quality."
+      },
+      "studio": {
+        "title": "Studio Space",
+        "description": "Versatile studio with cyclorama, green screen, and multiple set configurations for any creative need."
+      },
+      "postproduction": {
+        "title": "Post-Production",
+        "description": "Powerful editing workstations with industry-standard software for color grading, VFX, and final delivery."
+      }
+    },
+    "featuresTitle": "Why Choose The Room?",
+    "features": {
+      "creative": {
+        "title": "Creative Freedom",
+        "description": "A space designed to inspire and enable unlimited creative possibilities."
+      },
+      "professional": {
+        "title": "Professional Quality",
+        "description": "Industry-standard equipment ensuring broadcast-ready results every time."
+      },
+      "versatile": {
+        "title": "Versatile Space",
+        "description": "Adaptable studio configurations for photography, video, podcasts, and more."
+      },
+      "innovative": {
+        "title": "Innovation First",
+        "description": "Constantly updated with the latest technology and creative tools."
+      }
+    },
+    "galleryTitle": "Our Creative Space",
+    "ctaTitle": "Ready to Create?",
+    "ctaSubtitle": "Book The Room for your next project and bring your creative vision to life.",
+    "ctaButton": "Contact Us",
+    "ctaButtonAlt": "View Services"
   }
 }

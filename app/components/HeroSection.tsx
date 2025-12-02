@@ -6,6 +6,7 @@ import { useTranslation } from '@/app/hooks/useTranslation';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import SectionFooterButton from './SectionFooterButton';
+import { getImageUrl } from '@/lib/supabase-images';
 
 export default function HeroSection() {
   const { t, locale } = useTranslation();
@@ -16,6 +17,9 @@ export default function HeroSection() {
   const drawerRef = useRef<HTMLDivElement>(null);
   const drawerContentRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  
+  // Obtener URL de la imagen de piel de jirafa desde Supabase
+  const pielDeJirafaUrl = getImageUrl('others', 'pieljirafa.jpeg');
   
 
   useEffect(() => {
@@ -119,6 +123,7 @@ export default function HeroSection() {
     <section
       className="relative min-h-screen bg-black text-white overflow-hidden"
       style={{
+        backgroundImage: ``,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -170,14 +175,36 @@ export default function HeroSection() {
               </button>
             </div>
             
-            {/* Navegación - 3 items grandes con fuente thermal */}
-            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-start px-8 md:px-12 lg:px-20 space-y-8 md:space-y-12">
+            {/* Navegación - items grandes con fuente thermal */}
+            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-start px-8 md:px-12 lg:px-20 space-y-6 md:space-y-10">
               {/* Home */}
               <button 
                 onClick={() => setMenuOpen(false)}
                 className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
               >
                 Home
+              </button>
+              
+              {/* About */}
+              <button 
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push(`/${locale}/about`);
+                }}
+                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+              >
+                About
+              </button>
+              
+              {/* Services */}
+              <button 
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push(`/${locale}/services`);
+                }}
+                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+              >
+                Services
               </button>
               
               {/* Projects */}
@@ -221,7 +248,22 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-16 md:h-20 lg:h-24 bg-[#233a28]">
+      <div className="absolute bottom-0 left-0 right-0 h-16 md:h-20 lg:h-24 bg-[#233a28] flex items-center justify-center">
+        <button 
+          onClick={() => {
+            // Aquí puedes agregar la navegación a About Us
+            router.push(`/${locale}/about`);
+          }}
+          className="text-white hover:text-white/80 transition-colors font-social font-medium tracking-wide h-10 px-10" 
+          style={{
+            backgroundImage: `url(${pielDeJirafaUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          About Us
+        </button>
       </div>
     </section>
   );

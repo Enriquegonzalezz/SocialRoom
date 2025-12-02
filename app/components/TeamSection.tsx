@@ -45,7 +45,7 @@ const teamMembers: TeamMemberWithSize[] = [
   },
   {
     id: '4',
-    name: 'Eli',
+    name: 'Jorge',
     role: 'CSO',
     image: '/muchachos/jorge.webp',
     color: 'bg-purple-100',
@@ -229,8 +229,8 @@ const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
       onClick={() => onImageClick(member)}
       className="cursor-pointer relative w-full aspect-square rounded-lg overflow-hidden group transition-all"
     >
-      {/* Imagen */}
-      <div className={`relative w-full h-full ${member.color}`}>
+      {/* Contenedor con overflow hidden para evitar desbordamiento en zoom */}
+      <div className={`relative w-full h-full overflow-hidden rounded-lg ${member.color}`}>
         {member.image && member.image.trim() !== '' ? (
           <Image
             src={member.image}
@@ -239,13 +239,12 @@ const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
             loading="lazy"
             placeholder="blur"
             blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23f3f3f3' width='400' height='400'/%3E%3C/svg%3E"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             quality={75}
-            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           />
         ) : null}
       </div>
-
     </div>
   );
 };
@@ -417,10 +416,31 @@ export default function TeamSection() {
           </p>
         </div>
 
-        {/* Grid de miembros - 22 personas */}
+        {/* Grid de miembros - Mobile: grid simple, Desktop: bento grid */}
+        
+        {/* Mobile Grid - Solo miembros con imagen */}
         <div
           ref={containerRef}
-          className="grid grid-cols-12 grid-rows-9 gap-2"
+          className="grid grid-cols-2 gap-3 md:hidden"
+        >
+          {teamMembers.filter(m => m.image && m.image.trim() !== '').map((member, idx) => (
+            <div 
+              key={member.id} 
+              data-card
+              className={`aspect-square ${
+                idx === 0 || idx === 3 ? 'col-span-2 row-span-1' : ''
+              }`}
+              style={{ height: idx === 0 || idx === 3 ? '200px' : 'auto' }}
+            >
+              <TeamCard member={member} onImageClick={handleImageClick} />
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Bento Grid */}
+        <div
+          className="hidden md:grid grid-cols-12 gap-2"
+          style={{ gridAutoRows: 'minmax(80px, 1fr)' }}
         >
           <div className="col-span-2 row-span-2" data-card>
             <TeamCard member={teamMembers[0]} onImageClick={handleImageClick} />
