@@ -1,6 +1,3 @@
-'use client';
-
-import { useEffect } from 'react';
 import HeroSection from '../components/HeroSection';
 import SocialRoomSection from '../components/SocialRoomSection';
 import ThreeSliderSectionV2 from '../components/ThreeSliderSectionV2';
@@ -8,6 +5,7 @@ import FeaturedWork from '../components/FeaturedWork';
 import TeamSection from '../components/TeamSection';
 import ServicesCarouselSection from '../components/ServicesCarouselSection';
 import ContactFooterSection from '../components/ContactFooterSection';
+import ScrollReset from '../components/ScrollReset';
 import { getImageUrl } from '@/lib/supabase-images';
 
 // Proyectos para FeaturedWork
@@ -40,42 +38,12 @@ const projects = [
     imageUrl: getImageUrl('lgm', 'LGM-01.jpg'),
     href: '/projects/lgm',
   },
-  // {
-  //   id: 'enfoque',
-  //   title: 'Enfoque',
-  //   category: 'focus',
-  //   imageUrl: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
-  //   href: '/projects/enfoque',
-  // },
-  // {
-  //   id: 'supper',
-  //   title: 'Supper',
-  //   category: 'premium',
-  //   imageUrl: getImageUrl('supper', 'Mesa de trabajo 97.png'),
-  //   href: '/projects/supper',
-  // },
-  // {
-  //   id: 'kitckly',
-  //   title: 'Kitckly',
-  //   category: 'food & beverage',
-  //   imageUrl: getImageUrl('kitckly', 'Mesa de trabajo 45.png'),
-  //   href: '/projects/kitckly',
-  // },
 ];
 
 export default function Home() {
-  // Resetear scroll al cargar la página
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  // Debug: mostrar URLs en consola
-  if (typeof window !== 'undefined') {
-    console.log('📸 Projects URLs:', projects.map(p => ({ id: p.id, url: p.imageUrl })));
-  }
-
   return (
     <main className="min-h-screen">
+      <ScrollReset />
       <div data-section="hero">
         <HeroSection />
       </div>
