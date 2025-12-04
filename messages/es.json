@@ -113,7 +113,11 @@
     "forgetToCallDescription": "Nosotros te llamamos",
     "readyToStart": "¿Listo para empezar?",
     "formDescription": "Haz clic en el botón y completa nuestro formulario. ¡Te contactaremos!",
-    "goToForm": "Ir al formulario"
+    "goToForm": "Ir al chat",
+    "legalText": "Sin fronteras. Sin límites. Donde quiera que tu marca quiera ir, lo haremos posible.",
+    "footerAbout": "Sobre nosotros",
+    "footerTeam": "Equipo",
+    "footerContact": "Contacto"
   },
   "socialRoom": {
     "title": "Social Room",

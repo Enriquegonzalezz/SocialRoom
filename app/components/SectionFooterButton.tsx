@@ -153,19 +153,21 @@ export default function SectionFooterButton({ section, className = '' }: Section
     <div ref={buttonRef} className={`flex justify-center w-full pt-8 ${className}`} style={{ opacity: 0 }}>
       <Link href={hrefWithLocale}>
         <button
-          className={`relative px-4 py-6 border transition-all duration-500 ease-in-out hover:scale-105 ${config.borderColor} ${config.hoverBg}`}
+          className={`relative px-10 py-3 border transition-all duration-500 ease-in-out cursor-pointer hover:scale-105 ${config.borderColor} ${config.hoverBg}`}
           style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            minWidth: '120px',
+            width: '180px',
+            minWidth: '160px',
+            maxWidth: '180px',
           }}
         >
           {/* Overlay para mejorar legibilidad del texto */}
           <div className="absolute inset-0 bg-black/30 rounded-sm" />
           <span
             ref={textRef}
-            className="relative text-sm md:text-base font-helvetica font-bold tracking-wide text-white"
+            className="relative text-base md:text-lg font-helvetica font-medium tracking-wide text-white whitespace-nowrap flex items-center justify-center z-10"
           >
             {buttonText}
           </span>

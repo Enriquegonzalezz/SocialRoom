@@ -15,7 +15,6 @@ const contactInfo = {
   // Sección About us
   aboutLinks: [
     { label: 'Services', url: '#' },
-    { label: 'Contact', url: '#' },
   ],
   
   // Sección Team
@@ -29,8 +28,8 @@ const contactInfo = {
   phone: '+58 412 0639249',
   address: 'Valencia, Miami and LA',
   
-  // Legal
-  legalText: 'No borders. No limits. Whenever your brand wants to go, we will make it happen.',
+  // Legal - ahora usa traducción dinámica
+  legalText: '',
 };
 
 // Configuración del Google Form (reemplaza con tu URL)
@@ -132,17 +131,17 @@ export default function ContactFooterSection() {
       </section>
 
       {/* Footer negro */}
-      <footer className="w-full bg-black text-white py-12 px-6 md:px-12 lg:px-20">
+      <footer className="w-full bg-black text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="max-w-[1600px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8 md:mb-12">
             
             {/* About us */}
             <div>
-              <h3 className="text-sm font-medium mb-4">About us</h3>
+              <h3 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">{t('contact.footerAbout')}</h3>
               <ul className="space-y-2">
                 {contactInfo.aboutLinks.map((link, index) => (
                   <li key={index}>
-                    <a href={link.url} className="text-sm text-white/70 hover:text-white transition-colors">
+                    <a href={link.url} className="text-xs sm:text-sm text-white/70 hover:text-white transition-colors">
                       {link.label}
                     </a>
                   </li>
@@ -152,11 +151,11 @@ export default function ContactFooterSection() {
 
             {/* Team */}
             <div>
-              <h3 className="text-sm font-medium mb-4">Team</h3>
+              <h3 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">{t('contact.footerTeam')}</h3>
               <ul className="space-y-2">
                 {contactInfo.teamLinks.map((link, index) => (
                   <li key={index}>
-                    <a href={link.url} className="text-sm text-white/70 hover:text-white transition-colors">
+                    <a href={link.url} className="text-xs sm:text-sm text-white/70 hover:text-white transition-colors">
                       {link.label}
                     </a>
                   </li>
@@ -166,8 +165,8 @@ export default function ContactFooterSection() {
 
             {/* Contact */}
             <div>
-              <h3 className="text-sm font-medium mb-4">Contact</h3>
-              <div className="space-y-2 text-sm text-white/70">
+              <h3 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">{t('contact.footerContact')}</h3>
+              <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-white/70">
                 <p>{contactInfo.email}</p>
                 <p>{contactInfo.phone}</p>
                 <p>{contactInfo.address}</p>
@@ -175,16 +174,16 @@ export default function ContactFooterSection() {
             </div>
 
             {/* Legal text */}
-            <div>
-              <p className="text-xs text-white/50 leading-relaxed">
-                {contactInfo.legalText}
+            <div className="col-span-2 sm:col-span-2 md:col-span-1 mt-4 md:mt-0">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#4ade80] leading-relaxed font-medium">
+                {t('contact.legalText')}
               </p>
             </div>
           </div>
 
           {/* Copyright */}
-          <div className="pt-4">
-            <p className="text-xs text-white/50 text-center">
+          <div className="pt-4 border-t border-white/10">
+            <p className="text-[10px] sm:text-xs text-white/50 text-center pt-4">
               © {contactInfo.year} {contactInfo.companyName}. All rights reserved.
             </p>
           </div>

@@ -254,15 +254,21 @@ export default function HeroSection() {
             // Aquí puedes agregar la navegación a About Us
             router.push(`/${locale}/about`);
           }}
-          className="text-white hover:text-white/80 transition-colors font-social font-medium tracking-wide h-10 px-10" 
+          className="relative px-10 py-3 border transition-all duration-500 ease-in-out cursor-pointer hover:scale-105 border-white hover:bg-white"
           style={{
             backgroundImage: `url(${pielDeJirafaUrl})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
+            width: '180px',
+            minWidth: '160px',
+            maxWidth: '180px',
           }}
         >
-          About Us
+          {/* Overlay para mejorar legibilidad del texto */}
+          <div className="absolute inset-0 bg-black/30 rounded-sm" />
+          <span className="relative text-base md:text-lg font-helvetica font-medium tracking-wide text-white whitespace-nowrap flex items-center justify-center z-10">
+            About Us
+          </span>
         </button>
       </div>
     </section>

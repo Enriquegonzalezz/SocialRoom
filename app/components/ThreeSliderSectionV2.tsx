@@ -274,13 +274,13 @@ export default function ThreeSliderSectionV2() {
         ScrollTrigger.refresh();
       });
 
-      // Animar cámara (se mueve hacia atrás)
+      // Animar cámara (se mueve hacia atrás) - incluye una posición extra para el texto final
       timeline.to(camera.position, {
-        z: (textMeshes.length - 1) * -distanceBetweenSlides + camera.position.z,
+        z: textMeshes.length * -distanceBetweenSlides + camera.position.z,
         ease: 'linear',
       });
 
-      // Animar entrada lateral de tarjetas
+      // Animar entrada lateral de tarjetas (todas incluyendo la última)
       textMeshes.forEach((group, index) => {
         if (index > 0) {
           timeline.from(group.position, {
@@ -336,20 +336,21 @@ export default function ThreeSliderSectionV2() {
         finalTextMeshes.push(mesh);
       });
 
-      // Posicionar el grupo cerca de la última tarjeta
+      // Posicionar el grupo una distancia después de la última tarjeta (misma distancia entre cartas)
       finalTextGroup.position.set(
-        650,         
+        250,         
         0,
-        (projects.length - 1) * -distanceBetweenSlides // misma profundidad que la última
+        projects.length * -distanceBetweenSlides // una posición más allá de la última carta
       );
 
       scene.add(finalTextGroup);
 
-      // === Animación GSAP para el texto final ===
+      // === Animación GSAP para el texto final (mismo efecto que las cartas) ===
+      // Entra desde la derecha como las cartas pares
       timeline.from(finalTextGroup.position, {
-        x: 500,          // entra desde la izquierda
-        ease: 'power3.out',
-      }, '+=0.3');
+        x: 0,          // entra desde la derecha como las cartas
+        ease: 'power2.out',
+      }, projects.length * 0.15);
 
       // Animar opacidad de cada línea con stagger
       finalTextMeshes.forEach((mesh, index) => {

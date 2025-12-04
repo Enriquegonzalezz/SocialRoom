@@ -7,8 +7,8 @@
   },
   "hero": {
     "title": "We are a",
-    "subtitle": "lab",
-    "description": "of ideas"
+    "subtitle": "lab of ideas",
+    "description": " "
   },
   "team": {
     "title": "OUR TEAM",
@@ -113,7 +113,11 @@
     "forgetToCallDescription": "No worries, we'll call you",
     "readyToStart": "Ready to start?",
     "formDescription": "Click the button and fill out our form. We'll contact you!",
-    "goToForm": "Go to form"
+    "goToForm": "Go to chat",
+    "legalText": "No borders. No limits. Whenever your brand wants to go, we will make it happen.",
+    "footerAbout": "About us",
+    "footerTeam": "Team",
+    "footerContact": "Contact"
   },
   "socialRoom": {
     "title": "Social Room",
