@@ -41,8 +41,10 @@ export default function ContactFooterSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Redirigir a Google Forms
-    window.open(GOOGLE_FORM_URL, '_blank');
+    // Extraer número de teléfono del footer para WhatsApp
+    const phoneNumber = contactInfo.phone.replace(/[^\d]/g, ''); // +58 412 0639249 -> 584120639249
+    const whatsappUrl = `https://wa.me/${phoneNumber}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   // Animación del texto de llamada al formulario con GSAP (staggered por letras)
@@ -116,7 +118,7 @@ export default function ContactFooterSection() {
                   <div className="flex justify-start pt-4">
                     <button
                       type="submit"
-                      className="px-10 py-4 bg-black text-white hover:bg-black/80 transition-colors duration-300 text-base md:text-lg font-helvetica font-medium tracking-wide"
+                      className="px-10 py-4 bg-black text-white hover:bg-black/80 transition-colors duration-300 text-base md:text-lg font-helvetica font-medium tracking-wide cursor-pointer"
                     >
                       {t('contact.goToForm')} →
                     </button>

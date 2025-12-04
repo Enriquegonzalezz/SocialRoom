@@ -182,7 +182,7 @@ export default function HeroSection() {
                 onClick={() => setMenuOpen(false)}
                 className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
               >
-                Home
+                {t('nav.home')}
               </button>
               
               {/* About */}
@@ -226,7 +226,18 @@ export default function HeroSection() {
                 }}
                 className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
               >
-                Team
+                {t('nav.team')}
+              </button>
+              
+              {/* Employees */}
+              <button 
+                onClick={() => {
+                  setMenuOpen(false);
+                  window.open('/equipment/login', '_blank');
+                }}
+                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+              >
+                {t('nav.employees')}
               </button>
             </nav>
           </div>
