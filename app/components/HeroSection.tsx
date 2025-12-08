@@ -153,17 +153,21 @@ export default function HeroSection() {
 
       {/* Drawer/Menu Lateral - Pantalla completa, lado izquierdo, estilo Shopify */}
       {menuOpen && (
-        <div ref={drawerRef} className="fixed inset-0 z-40">
+        <div ref={drawerRef} className="fixed inset-0 z-40 overflow-hidden">
           {/* Overlay oscuro */}
           <div 
             className="drawer-overlay absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
           />
           
-          {/* Drawer desde la izquierda - Pantalla completa */}
-          <div ref={drawerContentRef} className="absolute left-0 top-0 h-full w-full bg-white flex flex-col">
+          {/* Drawer desde la izquierda - Pantalla completa con altura fija */}
+          <div 
+            ref={drawerContentRef} 
+            className="absolute left-0 top-0 w-full bg-white flex flex-col overflow-hidden"
+            style={{ height: '100dvh', maxHeight: '100dvh' }}
+          >
             {/* Header con botón de cerrar */}
-            <div className="flex justify-end items-center p-8 md:p-12">
+            <div className="flex-shrink-0 flex justify-end items-center p-6 sm:p-8 md:p-12">
               <button 
                 onClick={() => setMenuOpen(false)}
                 className="text-black hover:text-black/70 transition-colors will-change-transform"
@@ -176,7 +180,7 @@ export default function HeroSection() {
             </div>
             
             {/* Navegación - items grandes con fuente thermal */}
-            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-center px-6 sm:px-8 md:px-12 lg:px-20 space-y-4 sm:space-y-5 md:space-y-8 lg:space-y-10 overflow-y-auto">
+            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-center px-6 sm:px-8 md:px-12 lg:px-20 py-4 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 overflow-y-auto min-h-0">
               {/* Home */}
               <button 
                 onClick={() => setMenuOpen(false)}
