@@ -3,7 +3,8 @@
     "home": "Inicio",
     "projects": "Proyectos",
     "team": "Equipo",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "employees": "Empleado"
   },
   "hero": {
     "title": "Somos un",
@@ -11,8 +12,76 @@
     "description": "de ideas"
   },
   "team": {
-    "title": "Este es nuestro equipo",
-    "subtitle": "Hacemos las reglas"
+    "title": "Nuestro Equipo",
+    "subtitle": "Las mentes creativas",
+    "pageDescription": "Conoce a las mentes creativas detrás de nuestro trabajo. Cada miembro aporta habilidades únicas y pasión a cada proyecto.",
+    "roles": {
+      "communityManager": "Community Manager",
+      "projectCoordinator": "Coordinadora de Proyectos",
+      "designer": "Diseñador/a",
+      "photographer": "Fotógrafo",
+      "fullstackDeveloper": "Desarrollador Full Stack",
+      "videoEditor": "Editor de Video",
+      "coFounder": "Co-Fundador"
+    },
+    "members": {
+      "jeli": {
+        "bio": "Conectando marcas con audiencias a través de estrategias de contenido y gestión de comunidades.",
+        "skills": ["Redes Sociales", "Estrategia de Contenido", "Engagement", "Analytics"]
+      },
+      "dubraska": {
+        "bio": "Coordinando proyectos creativos desde la idea hasta la ejecución con precisión y pasión.",
+        "skills": ["Gestión de Proyectos", "Planificación", "Coordinación", "Liderazgo"]
+      },
+      "ellie": {
+        "bio": "Asegurando que cada proyecto fluya sin problemas desde el concepto hasta la entrega.",
+        "skills": ["Gestión de Proyectos", "Organización", "Comunicación", "Scrum"]
+      },
+      "angela": {
+        "bio": "Transformando conceptos en composiciones visuales impactantes y memorables.",
+        "skills": ["Diseño Gráfico", "Illustrator", "Branding", "Tipografía"]
+      },
+      "manuel": {
+        "bio": "Creando experiencias visuales que comunican y conectan con las audiencias.",
+        "skills": ["UI Design", "Figma", "Diseño Web", "Creatividad"]
+      },
+      "julia": {
+        "bio": "Diseñando interfaces intuitivas que equilibran estética y funcionalidad.",
+        "skills": ["UI/UX Design", "Figma", "Prototipado", "Design Systems"]
+      },
+      "carlitos": {
+        "bio": "Explorando soluciones creativas para cada desafío de diseño.",
+        "skills": ["Diseño Gráfico", "Creatividad", "Adobe Suite", "Branding"]
+      },
+      "maria": {
+        "bio": "Dando vida a las ideas a través del diseño visual y la creatividad.",
+        "skills": ["Diseño Gráfico", "Illustrator", "Photoshop", "Creatividad"]
+      },
+      "victor": {
+        "bio": "Capturando momentos únicos a través del lente con visión artística.",
+        "skills": ["Fotografía", "Iluminación", "Retoque", "Dirección de Arte"]
+      },
+      "fabian": {
+        "bio": "Contando historias visuales a través de la fotografía profesional.",
+        "skills": ["Fotografía", "Post-producción", "Lifestyle", "Comercial"]
+      },
+      "mavi": {
+        "bio": "Construyendo comunidades digitales y gestionando la presencia online de marcas.",
+        "skills": ["Redes Sociales", "Community Building", "Contenido", "Engagement"]
+      },
+      "enrique": {
+        "bio": "Arquitecto de esta web y soluciones digitales. Construyendo experiencias desde el código.",
+        "skills": ["React", "Next.js", "TypeScript", "Node.js", "Full Stack"]
+      },
+      "luisFelipe": {
+        "bio": "Dando vida a las historias a través de la edición y post-producción de video.",
+        "skills": ["Premiere Pro", "After Effects", "Color Grading", "Motion Graphics"]
+      },
+      "manuelPadre": {
+        "bio": "Líder visionario impulsando la innovación y la excelencia creativa.",
+        "skills": ["Liderazgo", "Visión", "Estrategia", "Negocios"]
+      }
+    }
   },
   "projects": {
     "title": "PROYECTOS",
@@ -42,10 +111,251 @@
     "followUs": "Síguenos",
     "copyright": "© 2025 Cascade. Todos los derechos reservados.",
     "forgetToCall": "¿Olvidaste llamar?",
-    "forgetToCallDescription": "No olvides de llamarnos"
+    "forgetToCallDescription": "Nosotros te llamamos",
+    "readyToStart": "¿Listo para empezar?",
+    "formDescription": "Haz clic en el botón y completa nuestro formulario. ¡Te contactaremos!",
+    "goToForm": "Ir al chat",
+    "legalText": "Sin fronteras. Sin límites. Donde quiera que tu marca quiera ir, lo haremos posible.",
+    "footerAbout": "Sobre nosotros",
+    "footerTeam": "Equipo",
+    "footerContact": "Contacto"
   },
   "socialRoom": {
     "title": "Social Room",
-    "description": "Bienvenido a nuestro espacio"
+    "description": "Bienvenido a nuestro espacio",
+    "offline": {
+      "title": "OFFLINE",
+      "description": "Llevamos tu mensaje a medios tradicionales con video, fotografía, diseño y más."
+    },
+    "online": {
+      "title": "ONLINE",
+      "description": "Impulsamos tu crecimiento digital con gestión de redes, SEO, Ads y desarrollo web."
+    },
+    "estrategia": {
+      "title": "ESTRATEGIA",
+      "description": "Creamos el plan para conectar tu marca con tus metas y asegurar el éxito deseado."
+    },
+    "eventos": {
+      "title": "EVENTOS",
+      "description": "Creamos lanzamientos, pop-ups y experiencias que conectan de forma inolvidable."
+    }
+  },
+  "servicesCarousel": {
+    "studio": {
+      "title": "STUDIO",
+      "description": "Estudio fotográfico equipado para crear contenido visual de alta calidad y profesional."
+    },
+    "podcast": {
+      "title": "PODCAST",
+      "description": "Espacio con diseño acústico y tecnología avanzada para la grabación de podcasts."
+    }
+  },
+  "threeSlider": {
+    "line1": "Hacemos",
+    "line2": "tus ideas",
+    "line3": "realidad"
+  },
+  "floatingButton": {
+    "aboutUs": "SOBRE NOSOTROS",
+    "services": "SERVICIOS",
+    "clients": "CLIENTES",
+    "viewTeam": "VER EQUIPOS",
+    "theRoom": "LA SALA",
+    "contactUs": "CONTÁCTANOS"
+  },
+  "about": {
+    "title": "NOSOTROS",
+    "subtitle": "Agencia creativa creando experiencias de marca únicas desde 2011.",
+    "scroll": "Desliza",
+    "missionLabel": "Nuestra Misión",
+    "missionLines": [
+      "Crear soluciones de marketing efectivas y cautivadoras",
+      "que conecten con las audiencias y entreguen resultados medibles.",
+      "Creemos que cada marca tiene una historia única,",
+      "y nuestro objetivo es contarla de forma que inspire y conecte."
+    ],
+    "aboutSectionTitle": "Sobre SOCIAL ROOM",
+    "aboutSectionParagraphs": [
+      "Redefinimos el panorama del marketing digital con nuestro enfoque innovador y orientado a resultados. Durante 13 años, hemos sido un colectivo de mentes creativas apasionadas y pensadores estratégicos, comprometidos con transformar marcas e impulsar el crecimiento empresarial en todo el mundo.",
+      "Ofrecemos una gama completa de servicios diseñados para satisfacer las diversas necesidades de nuestros clientes. Nuestra experiencia abarca marketing digital, estrategia de redes sociales, creación de contenido, video y fotografía, desarrollo de marca y publicidad con influencers.",
+      "En SOCIAL ROOM, comenzamos entendiendo tu negocio, tus objetivos y tu audiencia. A partir de ahí, creamos estrategias personalizadas que aprovechan las últimas herramientas y tecnologías para maximizar el impacto. Nuestras campañas están basadas en datos, asegurando que cada decisión esté respaldada por insights y análisis.",
+      "Estamos dedicados a construir relaciones a largo plazo con nuestros clientes. Tu éxito es nuestro éxito, y trabajamos incansablemente para asegurar que tu marca no solo alcance, sino que supere su potencial."
+    ],
+    "whyPartnerTitle": "¿Por Qué Ser Nuestro Socio?",
+    "whyPartner": {
+      "innovation": {
+        "title": "Innovación",
+        "description": "Nos mantenemos a la vanguardia de las tendencias y exploramos continuamente nuevas técnicas para mantener tu marca al frente."
+      },
+      "expertise": {
+        "title": "Experiencia",
+        "description": "Nuestro equipo combina veteranos de la industria y talentos frescos, aportando un equilibrio perfecto de experiencia y creatividad."
+      },
+      "results": {
+        "title": "Orientados a Resultados",
+        "description": "Estamos comprometidos a entregar resultados tangibles que contribuyan al crecimiento de tu negocio."
+      },
+      "partnership": {
+        "title": "Alianza",
+        "description": "Vemos a nuestros clientes como socios y priorizamos la comunicación abierta, transparencia y colaboración."
+      }
+    },
+    "valuesTitle": "Valores",
+    "valuesSubtitle": "Los principios que guían todo lo que creamos.",
+    "values": {
+      "creativity": {
+        "title": "Creatividad",
+        "description": "Rompemos límites y desafiamos convenciones para crear experiencias únicas."
+      },
+      "innovation": {
+        "title": "Innovación",
+        "description": "Adoptamos nuevas tecnologías y metodologías para mantenernos a la vanguardia."
+      },
+      "excellence": {
+        "title": "Excelencia",
+        "description": "Entregamos solo la más alta calidad en todo lo que hacemos."
+      },
+      "collaboration": {
+        "title": "Colaboración",
+        "description": "Trabajamos de cerca con nuestros clientes para dar vida a su visión."
+      }
+    },
+    "stats": {
+      "years": "Años de Experiencia",
+      "projects": "Proyectos Entregados",
+      "clients": "Clientes Felices",
+      "team": "Miembros del Equipo"
+    },
+    "ctaTitle": "¿Listo para crear\nalgo increíble?",
+    "ctaSubtitle": "Colaboremos y demos vida a tu visión.",
+    "ctaButton": "Contáctanos"
+  },
+  "servicesPage": {
+    "title": "SERVICIOS",
+    "subtitle": "Soluciones creativas integrales diseñadas para elevar tu marca e impulsar resultados.",
+    "services": {
+      "branding": {
+        "title": "Branding",
+        "description": "Creemos que el branding es más que un logo o un eslogan: es la esencia de tu negocio. Nuestra misión es ayudarte a descubrir y articular tu identidad única, creando una marca que conecte con tu audiencia y perdure en el tiempo.",
+        "features": ["Identidad Visual", "Mensajes de Marca", "Investigación de Mercado", "Manual de Marca", "Rebranding"]
+      },
+      "visualProduction": {
+        "title": "Video y Fotografía",
+        "description": "Las imágenes hablan más que las palabras. Nuestros expertos están dedicados a crear contenido y capturar momentos que cuenten tu historia con claridad y profesionalismo. Con 13 años de experiencia, damos vida a tu visión a través de fotografía impactante y videos cautivadores.",
+        "features": ["Fotografía Profesional", "Videografía", "Tomas con Drone", "Edición y Post-Producción", "Cobertura de Eventos"]
+      },
+      "socialMedia": {
+        "title": "Redes Sociales",
+        "description": "Con más de 13 años de experiencia en el mundo de las redes sociales, nuestros expertos te ayudan a conectar con tu audiencia, construir tu marca y generar resultados medibles. Creamos estrategias personalizadas alineadas con tus objetivos de negocio.",
+        "features": ["Estrategia de Contenido", "Community Management", "Publicidad Pagada", "Analytics e Insights", "Expertise Multi-Plataforma"]
+      },
+      "design": {
+        "title": "Diseño",
+        "description": "De lo digital a lo impreso, creamos visuales impactantes que capturan atención y comunican efectivamente.",
+        "features": ["Diseño UI/UX", "Diseño Gráfico", "Motion Graphics", "Packaging", "Editorial"]
+      },
+      "development": {
+        "title": "Desarrollo",
+        "description": "Construimos productos digitales rápidos, responsivos y escalables con experiencias excepcionales.",
+        "features": ["Desarrollo Web", "E-commerce", "Aplicaciones Web", "Integración CMS", "Desarrollo API"]
+      }
+    },
+    "processTitle": "Nuestro Proceso",
+    "process": {
+      "discovery": {
+        "title": "Descubrimiento",
+        "description": "Nos sumergimos en tu marca, objetivos y audiencia."
+      },
+      "strategy": {
+        "title": "Estrategia",
+        "description": "Desarrollamos un enfoque personalizado para lograr tus objetivos."
+      },
+      "creation": {
+        "title": "Creación",
+        "description": "Damos vida a las ideas con creatividad y precisión."
+      },
+      "delivery": {
+        "title": "Entrega",
+        "description": "Lanzamos, medimos y optimizamos para el éxito."
+      }
+    },
+    "whyTitle": "¿Por Qué Elegirnos?",
+    "why": {
+      "fast": {
+        "title": "Entrega Rápida",
+        "description": "Trabajamos eficientemente sin comprometer la calidad."
+      },
+      "results": {
+        "title": "Orientados a Resultados",
+        "description": "Cada proyecto está diseñado para lograr tus objetivos."
+      },
+      "creative": {
+        "title": "Excelencia Creativa",
+        "description": "Rompemos límites para crear soluciones únicas."
+      }
+    },
+    "ctaTitle": "Comencemos Tu Proyecto",
+    "ctaSubtitle": "¿Listo para transformar tu marca? Estamos aquí para ayudar.",
+    "ctaButton": "Solicitar Cotización",
+    "ctaButtonAlt": "Ver Nuestro Trabajo"
+  },
+  "theRoom": {
+    "title": "THE ROOM",
+    "subtitle": "Nuestro estudio creativo equipado con tecnología audiovisual de última generación para dar vida a tu visión.",
+    "introTitle": "Donde la Creatividad se Une con la Tecnología",
+    "introText1": "The Room es nuestro estudio creativo completamente equipado, diseñado para producir contenido audiovisual innovador y de alta calidad. Con 13 años de experiencia, hemos construido un espacio donde las ideas se transforman en piezas visuales impactantes.",
+    "introText2": "Desde sesiones de fotografía profesional hasta producción de video, podcasts y transmisiones en vivo, The Room tiene todo lo que necesitas para crear contenido que destaque y conecte con tu audiencia.",
+    "equipmentTitle": "Nuestro Equipo",
+    "equipmentSubtitle": "Herramientas y tecnología de grado profesional para entregar resultados excepcionales en cada proyecto.",
+    "equipment": {
+      "cameras": {
+        "title": "Cámaras",
+        "description": "Cámaras profesionales de cine y fotografía incluyendo sistemas RED, Sony y Canon para contenido 4K/8K impresionante."
+      },
+      "lighting": {
+        "title": "Iluminación",
+        "description": "Configuraciones completas de iluminación con paneles LED, softboxes y luces de estudio profesionales."
+      },
+      "audio": {
+        "title": "Audio",
+        "description": "Micrófonos de alta gama, mezcladores y equipos de grabación para sonido cristalino en cualquier producción."
+      },
+      "drones": {
+        "title": "Drones",
+        "description": "Equipos aéreos profesionales para fotografía y videografía con drones de calidad cinematográfica."
+      },
+      "studio": {
+        "title": "Espacio de Estudio",
+        "description": "Estudio versátil con ciclorama, pantalla verde y múltiples configuraciones para cualquier necesidad creativa."
+      },
+      "postproduction": {
+        "title": "Post-Producción",
+        "description": "Estaciones de edición potentes con software estándar de la industria para colorización, VFX y entrega final."
+      }
+    },
+    "featuresTitle": "¿Por Qué Elegir The Room?",
+    "features": {
+      "creative": {
+        "title": "Libertad Creativa",
+        "description": "Un espacio diseñado para inspirar y permitir posibilidades creativas ilimitadas."
+      },
+      "professional": {
+        "title": "Calidad Profesional",
+        "description": "Equipos estándar de la industria que garantizan resultados listos para transmisión."
+      },
+      "versatile": {
+        "title": "Espacio Versátil",
+        "description": "Configuraciones de estudio adaptables para fotografía, video, podcasts y más."
+      },
+      "innovative": {
+        "title": "Innovación Primero",
+        "description": "Constantemente actualizado con la última tecnología y herramientas creativas."
+      }
+    },
+    "galleryTitle": "Nuestro Espacio Creativo",
+    "ctaTitle": "¿Listo para Crear?",
+    "ctaSubtitle": "Reserva The Room para tu próximo proyecto y da vida a tu visión creativa.",
+    "ctaButton": "Contáctanos",
+    "ctaButtonAlt": "Ver Servicios"
   }
 }
