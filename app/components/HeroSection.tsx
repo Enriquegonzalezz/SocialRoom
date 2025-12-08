@@ -176,11 +176,11 @@ export default function HeroSection() {
             </div>
             
             {/* Navegación - items grandes con fuente thermal */}
-            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-start px-8 md:px-12 lg:px-20 space-y-6 md:space-y-10">
+            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-center px-6 sm:px-8 md:px-12 lg:px-20 space-y-4 sm:space-y-5 md:space-y-8 lg:space-y-10 overflow-y-auto">
               {/* Home */}
               <button 
                 onClick={() => setMenuOpen(false)}
-                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
               >
                 {t('nav.home')}
               </button>
@@ -191,9 +191,9 @@ export default function HeroSection() {
                   setMenuOpen(false);
                   router.push(`/${locale}/about`);
                 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
               >
-                About
+                {t('floatingButton.aboutUs')}
               </button>
               
               {/* Services */}
@@ -202,9 +202,9 @@ export default function HeroSection() {
                   setMenuOpen(false);
                   router.push(`/${locale}/services`);
                 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
               >
-                Services
+                {t('floatingButton.services')}
               </button>
               
               {/* Projects */}
@@ -213,9 +213,9 @@ export default function HeroSection() {
                   setMenuOpen(false);
                   router.push(`/${locale}/projects`);
                 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
               >
-                Projects
+                {t('nav.projects')}
               </button>
               
               {/* Team */}
@@ -224,7 +224,7 @@ export default function HeroSection() {
                   setMenuOpen(false);
                   router.push(`/${locale}/team`);
                 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
               >
                 {t('nav.team')}
               </button>
@@ -235,7 +235,7 @@ export default function HeroSection() {
                   setMenuOpen(false);
                   window.open('/equipment/login', '_blank');
                 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
               >
                 {t('nav.employees')}
               </button>
