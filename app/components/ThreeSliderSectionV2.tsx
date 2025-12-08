@@ -1,9 +1,13 @@
 "use client";
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
+import { getImageUrl } from '@/lib/supabase-images';
+import { useTranslation } from '@/app/hooks/useTranslation';
+import SectionFooterButton from './SectionFooterButton';
+import FeaturedWork from './FeaturedWork';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -11,49 +15,80 @@ if (typeof window !== 'undefined') {
 
 const projects = [
   {
-    title: 'Auge',
+    title: 'AUGE',
     category: 'branding',
     year: '2025',
-    image: '/auge1.png',
+    image: getImageUrl('auge', 'auge-26.jpg'),
   },
   {
-    title: 'Leap',
-    category: 'design',
-    year: '2024',
-    image: '/leap1.webp',
+    title: 'LEAP4HUMANITY',
+    category: 'BRANDING & SOCIAL MEDIA',
+    year: '2025',
+    image: getImageUrl('L4h', 'Mesa de trabajo 57.png'),
   },
   {
-    title: 'Leble',
-    category: 'development',
-    year: '2024',
-    image: '/leble1.png',
+    title: 'LEBLE',
+    category: 'BRANDING & SOCIAL MEDIA',
+    year: '2025',
+    image: getImageUrl('leble', 'leble-01.jpg'),
   },
   {
     title: 'LGM',
-    category: 'strategy',
+    category: 'BRANDING & DEVELOPMENT',
     year: '2025',
-    image: '/lgm1.png',
+    image: getImageUrl('lgm', 'LGM-22.png'),
   },
-  {
-    title: 'Enfoque',
-    category: 'focus',
-    year: '2025',
-    image: '/enfoque1.png',
-  },
-  {
-    title: 'Supper',
-    category: 'premium',
-    year: '2025',
-    image: '/supper1.png',
-  },
+  // {
+  //   title: 'Enfoque',
+  //   category: 'focus',
+  //   year: '2025',
+  //   image: getImageUrl('enfoque', 'Mesa de trabajo 42.png'),
+  // },
+  // {
+  //   title: 'Supper',
+  //   category: 'premium',
+  //   year: '2025',
+  //   image: getImageUrl('supper', 'Mesa de trabajo 97.png'),
+  // },
+  // {
+  //   title: 'Kitckly',
+  //   category: 'food & beverage',
+  //   year: '2025',
+  //   image: getImageUrl('kitckly', 'Mesa de trabajo 48.png'),
+  // },
 ];
 
+// Verificar soporte WebGL
+function isWebGLSupported(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && 
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch {
+    return false;
+  }
+}
+
 export default function ThreeSliderSectionV2() {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
+  const [webGLSupported, setWebGLSupported] = useState(true);
+
+  // Memoizar las líneas traducidas para evitar re-renders innecesarios
+  const line1 = t('threeSlider.line1');
+  const line2 = t('threeSlider.line2');
+  const line3 = t('threeSlider.line3');
+  const finalLinesText = useMemo(() => [line1, line2, line3], [line1, line2, line3]);
+
+  // Verificar WebGL al montar
+  useEffect(() => {
+    setWebGLSupported(isWebGLSupported());
+  }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !triggerRef.current || typeof window === 'undefined') return;
+    if (!containerRef.current || !triggerRef.current || typeof window === 'undefined' || !webGLSupported) return;
 
     const ctx = gsap.context(() => {
       if (!containerRef.current) return;
@@ -62,16 +97,30 @@ export default function ThreeSliderSectionV2() {
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xf3f3f3);
       
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-      camera.position.z = 600;
+      // Optimización: Ajustar near/far para mejor precisión de depth buffer
+      const camera = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        100,  // near más alto para mejor precisión
+        10000 // far suficiente para la escena
+      );
+      camera.position.z = 700;
 
-      // WebGL Renderer - Mejor performance que CSS3DRenderer
+      // WebGL Renderer optimizado
       const renderer = new THREE.WebGLRenderer({ 
-        antialias: true,
-        alpha: true 
+        antialias: window.devicePixelRatio < 2, // Solo antialias en pantallas no-retina
+        alpha: false, // No necesitamos alpha, mejor performance
+        powerPreference: 'high-performance',
+        stencil: false, // No usamos stencil buffer
+        depth: true,
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      
+      // Optimizaciones de render
+      renderer.info.autoReset = false; // Control manual de stats
+      
       renderer.domElement.style.position = 'absolute';
       renderer.domElement.style.top = '0';
       containerRef.current.appendChild(renderer.domElement);
@@ -82,151 +131,184 @@ export default function ThreeSliderSectionV2() {
       // Distancia entre slides (profundidad en Z)
       const distanceBetweenSlides = 1200;
       // Posición lateral (izquierda/derecha)
-      const lateralOffset = 250;
+      const lateralOffset = 300;
 
-      // Cargar texturas y crear meshes
-      const textureLoader = new THREE.TextureLoader();
+      // Geometrías compartidas (reutilizar para mejor memoria)
+      const sharedCardGeometry = new THREE.PlaneGeometry(784, 584);
+      const sharedTextGeometry = new THREE.PlaneGeometry(784, 150);
+      
+      // Track de texturas cargadas para refresh
+      let texturesLoaded = 0;
+      const totalTextures = projects.length;
       
       projects.forEach((project, index) => {
         // Crear grupo para cada proyecto
         const projectGroup = new THREE.Group();
         
-        // Crear geometría para la tarjeta (plano) - 800x600px
-        const cardGeometry = new THREE.PlaneGeometry(800, 600);
-        
         // Crear canvas para la imagen con bordes redondeados
         const imageCanvas = document.createElement('canvas');
         imageCanvas.width = 800;
         imageCanvas.height = 600;
-        const imageCtx = imageCanvas.getContext('2d');
+        const imageCtx = imageCanvas.getContext('2d', { alpha: true });
         
-        // Crear textura del canvas
+        // Crear textura del canvas con configuración optimizada
         const texture = new THREE.CanvasTexture(imageCanvas);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.generateMipmaps = false; // No necesitamos mipmaps para planos
         
         // Cargar imagen y aplicar bordes redondeados
-        const img = document.createElement('img');
+        const img = new Image();
         img.crossOrigin = 'anonymous';
+        img.decoding = 'async'; // Decodificación asíncrona
+        
+        // Manejo de error de carga
+        img.onerror = () => {
+          console.warn(`Failed to load image: ${project.image}`);
+          texturesLoaded++;
+          if (texturesLoaded === totalTextures) {
+            ScrollTrigger.refresh();
+          }
+        };
+        
         img.src = project.image;
         img.onload = () => {
           if (imageCtx) {
             // Limpiar canvas
             imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-            imageCtx.save();
             
-            // Crear path con bordes redondeados de 32px
-            const radius = 32;
-            imageCtx.beginPath();
-            imageCtx.moveTo(radius, 0);
-            imageCtx.lineTo(imageCanvas.width - radius, 0);
-            imageCtx.arcTo(imageCanvas.width, 0, imageCanvas.width, radius, radius);
-            imageCtx.lineTo(imageCanvas.width, imageCanvas.height - radius);
-            imageCtx.arcTo(imageCanvas.width, imageCanvas.height, imageCanvas.width - radius, imageCanvas.height, radius);
-            imageCtx.lineTo(radius, imageCanvas.height);
-            imageCtx.arcTo(0, imageCanvas.height, 0, imageCanvas.height - radius, radius);
-            imageCtx.lineTo(0, radius);
-            imageCtx.arcTo(0, 0, radius, 0, radius);
-            imageCtx.closePath();
-            imageCtx.clip();
+            // Calcular dimensiones para object-fit: cover
+            const canvasRatio = imageCanvas.width / imageCanvas.height;
+            const imgRatio = img.width / img.height;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+            
+            if (imgRatio > canvasRatio) {
+              drawHeight = imageCanvas.height;
+              drawWidth = img.width * (imageCanvas.height / img.height);
+              offsetX = (imageCanvas.width - drawWidth) / 2;
+              offsetY = 0;
+            } else {
+              drawWidth = imageCanvas.width;
+              drawHeight = img.height * (imageCanvas.width / img.width);
+              offsetX = 0;
+              offsetY = (imageCanvas.height - drawHeight) / 2;
+            }
             
             // Dibujar imagen
-            imageCtx.drawImage(img, 0, 0, imageCanvas.width, imageCanvas.height);
-            imageCtx.restore();
+            imageCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+            
+            // Aplicar bordes redondeados
+            const radius = 32;
+            imageCtx.globalCompositeOperation = 'destination-in';
+            imageCtx.beginPath();
+            imageCtx.roundRect(0, 0, imageCanvas.width, imageCanvas.height, radius);
+            imageCtx.fill();
+            imageCtx.globalCompositeOperation = 'source-over';
             
             // Actualizar textura
             texture.needsUpdate = true;
+            
+            // Track de carga para refresh
+            texturesLoaded++;
+            if (texturesLoaded === totalTextures) {
+              ScrollTrigger.refresh();
+            }
           }
         };
         
-        // Material con la textura
+        // Material optimizado - FrontSide es suficiente
         const cardMaterial = new THREE.MeshBasicMaterial({ 
           map: texture,
-          side: THREE.DoubleSide,
-          transparent: true
+          side: THREE.FrontSide,
+          transparent: true,
         });
         
-        const cardMesh = new THREE.Mesh(cardGeometry, cardMaterial);
+        const cardMesh = new THREE.Mesh(sharedCardGeometry, cardMaterial);
+        cardMesh.frustumCulled = true; // Habilitar culling
         projectGroup.add(cardMesh);
         
-        // Crear canvas para el texto (150px de alto para el área de texto)
+        // Crear canvas para el texto
         const canvas = document.createElement('canvas');
         canvas.width = 800;
         canvas.height = 150;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
         
         if (ctx) {
-          // Fondo transparente
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           
           // Título
-          ctx.fillStyle = '#1a1a1a';
+          ctx.fillStyle = '#000';
           ctx.font = '300 32px "Social Gothic", Arial, sans-serif';
           ctx.fillText(project.title, 0, 40);
           
-          // Categoría
-          ctx.fillStyle = '#666666';
+          // Categoría y año
           ctx.font = '300 18px "Social Gothic", Arial, sans-serif';
           ctx.fillText(project.category, 0, 75);
-          
-          // Año
           ctx.fillText(project.year, 0, 105);
           
-          // Botón + (a la derecha)
+          // Botón +
           ctx.fillStyle = '#1a1a1a';
           ctx.font = '300 60px "Social Gothic", Arial, sans-serif';
           ctx.fillText('+', canvas.width - 80, 70);
         }
         
-        // Crear textura del canvas
+        // Textura de texto optimizada
         const textTexture = new THREE.CanvasTexture(canvas);
         textTexture.minFilter = THREE.LinearFilter;
+        textTexture.generateMipmaps = false;
         
-        // Crear plano para el texto (mismo ancho que la imagen, 150px de alto)
-        const textGeometry = new THREE.PlaneGeometry(800, 150);
         const textMaterial = new THREE.MeshBasicMaterial({ 
           map: textTexture,
           transparent: true,
-          side: THREE.DoubleSide
+          side: THREE.FrontSide
         });
         
-        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-        textMesh.position.y = -375; // Posicionar debajo de la imagen (600/2 + 150/2)
+        const textMesh = new THREE.Mesh(sharedTextGeometry, textMaterial);
+        textMesh.position.y = -367;
+        textMesh.frustumCulled = true;
         projectGroup.add(textMesh);
         
         // Posicionar el grupo en el eje Z
         projectGroup.position.z = index * -distanceBetweenSlides;
         
         // Posicionar lateralmente alternado
-        if (index > 0) {
-          projectGroup.position.x = index % 2 === 0 ? lateralOffset : -lateralOffset;
-        }
+        projectGroup.position.x = index % 2 === 0 ? lateralOffset : -lateralOffset;
         
         scene.add(projectGroup);
         cardMeshes.push(cardMesh);
         textMeshes.push(projectGroup);
       });
 
-      // Timeline con ScrollTrigger
+      // Timeline con ScrollTrigger - Optimizado para Mac
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: triggerRef.current,
           pin: true,
-          scrub: 0.5,
+          pinSpacing: true,
+          scrub: 0.8, // Más suave para Mac
           start: 'top top',
-          end: `+=${(projects.length - 1) * 150}vh`,
+          end: `+=${(projects.length - 1) * 800}vh`,
           invalidateOnRefresh: true,
           anticipatePin: 1,
+          fastScrollEnd: true, // Mejor manejo de scroll rápido en Mac
+          preventOverlaps: true,
         },
       });
 
-      // Animar cámara (se mueve hacia atrás)
+      // Forzar refresh después de que el DOM esté listo (fix para Mac)
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+
+      // Animar cámara (se mueve hacia atrás) - incluye una posición extra para el texto final
       timeline.to(camera.position, {
-        z: (textMeshes.length - 1) * -distanceBetweenSlides + camera.position.z,
+        z: textMeshes.length * -distanceBetweenSlides + camera.position.z,
         ease: 'linear',
       });
 
-      // Animar entrada lateral de tarjetas
+      // Animar entrada lateral de tarjetas (todas incluyendo la última)
       textMeshes.forEach((group, index) => {
         if (index > 0) {
           timeline.from(group.position, {
@@ -236,53 +318,153 @@ export default function ThreeSliderSectionV2() {
         }
       });
 
-      // Loop de render
+      // === Grupo de texto final ===
+      const finalTextGroup = new THREE.Group();
+      const finalTextMeshes: THREE.Mesh[] = [];
+
+      // Controles para ajustar interletrado e interlineado
+      const LETTER_SCALE_X = 0.90;
+      const LINE_SPACING = 75;
+
+      // Geometría compartida para texto final
+      const finalTextGeometry = new THREE.PlaneGeometry(800, 150);
+
+      finalLinesText.forEach((line, i) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 200;
+        const ctx = canvas.getContext('2d', { alpha: true });
+
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.save();
+          ctx.fillStyle = '#000000';
+          ctx.font = '700 110px "Social Gothic", "Helvetica", Arial, sans-serif';
+          ctx.textBaseline = 'middle';
+          ctx.translate(0, canvas.height / 2);
+          ctx.scale(LETTER_SCALE_X, 1);
+          ctx.fillText(line, 0, 0);
+          ctx.restore();
+        }
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.minFilter = THREE.LinearFilter;
+        texture.generateMipmaps = false;
+        
+        const mat = new THREE.MeshBasicMaterial({
+          map: texture,
+          transparent: true,
+          side: THREE.FrontSide,
+        });
+
+        const mesh = new THREE.Mesh(finalTextGeometry, mat);
+        mesh.position.y = (finalLinesText.length - 1) * (LINE_SPACING / 2) - i * LINE_SPACING;
+        mesh.frustumCulled = true;
+        finalTextGroup.add(mesh);
+        finalTextMeshes.push(mesh);
+      });
+
+      // Posicionar el grupo una distancia después de la última tarjeta (misma distancia entre cartas)
+      finalTextGroup.position.set(
+        250,         
+        0,
+        projects.length * -distanceBetweenSlides // una posición más allá de la última carta
+      );
+
+      scene.add(finalTextGroup);
+
+      // === Animación GSAP para el texto final (mismo efecto que las cartas) ===
+      // Entra desde la derecha como las cartas pares
+      timeline.from(finalTextGroup.position, {
+        x: 0,          // entra desde la derecha como las cartas
+        ease: 'power2.out',
+      }, projects.length * 0.15);
+
+      // Animar opacidad de cada línea con stagger
+      finalTextMeshes.forEach((mesh, index) => {
+        timeline.from(mesh.material, {
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.out',
+        }, `<+=${index * 0.15}`);
+      });
+
+      // Loop de render optimizado - solo renderizar cuando hay cambios
       let animationFrameId: number;
+      let needsRender = true;
+      
+      // Marcar que necesita render cuando GSAP actualiza
+      const markNeedsRender = () => { needsRender = true; };
+      gsap.ticker.add(markNeedsRender);
+      
       const animate = () => {
-        renderer.render(scene, camera);
         animationFrameId = requestAnimationFrame(animate);
+        
+        // Solo renderizar si hay cambios
+        if (needsRender) {
+          renderer.render(scene, camera);
+          needsRender = false;
+        }
       };
       animate();
 
-      // Resize handler
+      // Resize handler con debounce para Mac
+      let resizeTimeout: ReturnType<typeof setTimeout>;
       const handleResize = () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          ScrollTrigger.refresh();
+        }, 100);
       };
       window.addEventListener('resize', handleResize);
 
       // Cleanup
       return () => {
+        // Remover ticker de GSAP
+        gsap.ticker.remove(markNeedsRender);
+        
         if (animationFrameId) {
           cancelAnimationFrame(animationFrameId);
         }
         window.removeEventListener('resize', handleResize);
         
-        // Limpiar geometrías y materiales
+        // Limpiar geometrías compartidas
+        sharedCardGeometry.dispose();
+        sharedTextGeometry.dispose();
+        finalTextGeometry.dispose();
+        
+        // Limpiar materiales y texturas de cards
         cardMeshes.forEach(mesh => {
-          mesh.geometry.dispose();
-          if (mesh.material instanceof THREE.MeshBasicMaterial) {
-            if (mesh.material.map) mesh.material.map.dispose();
-            mesh.material.dispose();
-          }
+          const material = mesh.material as THREE.MeshBasicMaterial;
+          if (material.map) material.map.dispose();
+          material.dispose();
         });
         
+        // Limpiar grupos de proyectos
         textMeshes.forEach(group => {
-          group.children.forEach(child => {
+          group.traverse(child => {
             if (child instanceof THREE.Mesh) {
-              child.geometry.dispose();
-              if (child.material instanceof THREE.MeshBasicMaterial) {
-                if (child.material.map) child.material.map.dispose();
-                child.material.dispose();
-              }
+              const material = child.material as THREE.MeshBasicMaterial;
+              if (material.map) material.map.dispose();
+              material.dispose();
             }
           });
         });
         
+        // Limpiar texto final
+        finalTextMeshes.forEach(mesh => {
+          const material = mesh.material as THREE.MeshBasicMaterial;
+          if (material.map) material.map.dispose();
+          material.dispose();
+        });
+        
         // Dispose del renderer
         renderer.dispose();
-        if (renderer.domElement && renderer.domElement.parentNode) {
+        renderer.forceContextLoss();
+        if (renderer.domElement?.parentNode) {
           renderer.domElement.parentNode.removeChild(renderer.domElement);
         }
         
@@ -291,15 +473,45 @@ export default function ThreeSliderSectionV2() {
     }, triggerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [finalLinesText, webGLSupported]);
+
+  // Fallback para dispositivos sin WebGL - usar FeaturedWork
+  if (!webGLSupported) {
+    const fallbackProjects = projects.map((project, index) => ({
+      id: `project-${index}`,
+      title: project.title,
+      category: project.category,
+      imageUrl: project.image,
+      href: '/projects',
+    }));
+
+    return (
+      <>
+        <FeaturedWork projects={fallbackProjects} />
+        <div className="bg-[#f3f3f3]">
+          <SectionFooterButton section="threeslider" />
+        </div>
+      </>
+    );
+  }
 
   return (
-    <section 
-      ref={triggerRef} 
-      className="relative w-full bg-[#f3f3f3] overflow-hidden"
-      style={{ height: '100vh' }}
-    >
-      <div ref={containerRef} className="fixed top-0 left-0 w-full h-screen overflow-hidden" />
-    </section>
+    <>
+      <section 
+        ref={triggerRef} 
+        className="relative w-full bg-[#f3f3f3] overflow-hidden"
+        style={{ height: '100vh' }}
+      >
+        <div 
+          ref={containerRef} 
+          className="absolute top-0 left-0 w-full h-full overflow-hidden"
+          style={{ willChange: 'transform' }}
+        />
+      </section>
+      {/* Botón de footer de sección - fuera del pin para que aparezca al final */}
+      <div className="bg-[#f3f3f3]">
+        <SectionFooterButton section="threeslider" />
+      </div>
+    </>
   );
 }

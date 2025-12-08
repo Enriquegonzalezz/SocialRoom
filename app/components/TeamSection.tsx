@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import Image from 'next/image';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import SectionFooterButton from './SectionFooterButton';
 
 interface TeamMember {
   id: string;
@@ -21,55 +22,55 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '1',
     name: 'Fabian',
-    role: 'photographer',
+    role: 'Photographer',
     image: '/muchachos/fabian.webp',
-    color: 'bg-yellow-100',
+    color: 'bg-amber-100',
     size: 'medium',
   },
   {
     id: '2',
-    name: 'Julia',
-    role: 'Lead Developer',
-    image: '/muchachos/Julia.webp',
+    name: 'Manuel',
+    role: 'CEO',
+    image: '/muchachos/MANUEL PADRE.png',
     color: 'bg-blue-100',
     size: 'small',
   },
   {
     id: '3',
     name: 'Dubraska',
-    role: 'Design Lead',
+    role: 'Project Coordinator',
     image: '/muchachos/Dubraska.webp',
-    color: 'bg-green-100',
+    color: 'bg-emerald-100',
     size: 'small',
   },
   {
     id: '4',
-    name: 'Ellie',
-    role: 'Strategy',
-    image: '/muchachos/Ellie.webp',
+    name: 'Jorge',
+    role: 'CSO',
+    image: '/muchachos/jorge.webp',
     color: 'bg-purple-100',
     size: 'medium',
   },
   {
     id: '5',
     name: 'Enrique',
-    role: 'Brand Manager',
+    role: 'Full Stack Developer',
     image: '/muchachos/Enrique.webp',
-    color: 'bg-pink-100',
+    color: 'bg-green-100',
     size: 'small',
   },
   {
     id: '6',
     name: 'Erika',
-    role: 'Motion Designer',
+    role: 'Designer',
     image: '/muchachos/Erika.webp',
     color: 'bg-red-100',
     size: 'large',
   },
   {
     id: '7',
-    name: 'carlitos',
-    role: 'UX Specialist',
+    name: 'Carlitos',
+    role: 'Designer',
     image: '/muchachos/Carlitos.webp',
     color: 'bg-indigo-100',
     size: 'small',
@@ -77,23 +78,23 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '8',
     name: 'Jeli',
-    role: 'Content Creator',
+    role: 'Community Manager',
     image: '/muchachos/Jeli.webp',
     color: 'bg-cyan-100',
     size: 'small',
   },
   {
     id: '9',
-    name: '',
-    role: 'Product Manager',
-    image: '/muchachos/',
-    color: 'bg-orange-100',
+    name: 'Luis Felipe',
+    role: 'Video Editor',
+    image: '',
+    color: 'bg-red-100',
     size: 'small',
   },
   {
     id: '10',
     name: 'Manuel',
-    role: 'Backend Engineer',
+    role: 'Designer',
     image: '/muchachos/Manuel.webp',
     color: 'bg-teal-100',
     size: 'medium',
@@ -101,7 +102,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '11',
     name: 'Maria',
-    role: 'Frontend Developer',
+    role: 'Designer',
     image: '/muchachos/Maria.webp',
     color: 'bg-rose-100',
     size: 'small',
@@ -109,7 +110,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '12',
     name: 'Mavi',
-    role: 'QA Engineer',
+    role: 'Community Manager',
     image: '/muchachos/Mavi.webp',
     color: 'bg-amber-100',
     size: 'small',
@@ -117,7 +118,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '13',
     name: 'Victor',
-    role: 'UX/UI Designer',
+    role: 'Photographer',
     image: '/muchachos/Victor.webp',
     color: 'bg-violet-100',
     size: 'small',
@@ -125,71 +126,71 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '14',
     name: 'Mariangel',
-    role: 'UX/UI Designer',
+    role: 'Designer',
     image: '/muchachos/mariangel.webp',
-    color: 'bg-violet-100',
+    color: 'bg-fuchsia-100',
     size: 'small',
   },
   {
     id: '15',
     name: 'Angela',
-    role: 'Graphic Designer',
+    role: 'Designer',
     image: '/muchachos/angela.webp',
-    color: 'bg-gray-100',
+    color: 'bg-slate-100',
     size: 'small',
   },
-   {
+  {
     id: '16',
-    name: 'Jorge',
-    role: 'Product Manager',
-    image: '/muchachos/Jorge.webp',
+    name: 'Eli',
+    role: 'Project-Coordinator',
+    image: '/muchachos/ellie.webp',
     color: 'bg-orange-100',
     size: 'small',
   },
   {
     id: '17',
-    name: 'Member 17',
-    role: 'Role',
+    name: '',
+    role: '',
     image: '',
     color: 'bg-gray-100',
     size: 'small',
   },
   {
     id: '18',
-    name: 'Member 18',
-    role: 'Role',
+    name: '',
+    role: '',
     image: '',
     color: 'bg-gray-100',
     size: 'small',
   },
   {
     id: '19',
-    name: 'Manuel',
-    role: 'Co-Founder',
-    image: '/muchachos/',
+    name: '',
+    role: '',
+    image: '',
     color: 'bg-gray-100',
     size: 'small',
   },
   {
     id: '20',
-    name: 'Manuel',
-    role: 'Co-founder',
-    image: '/muchachos/MANUEL PADRE.png',
-    color: 'bg-gray-100',
+    name: 'Juli',
+    role: 'Designer',
+    image: '/muchachos/Julia.webp',
+    color: 'bg-neutral-100',
     size: 'small',
   },
   {
     id: '21',
-    name: 'Member 21',
-    role: 'Role',
+    name: '',
+    role: '',
     image: '',
     color: 'bg-gray-100',
     size: 'small',
   },
   {
     id: '22',
-    name: 'Member 22',
-    role: 'Role',
+    name: '',
+    role: '',
     image: '',
     color: 'bg-gray-100',
     size: 'small',
@@ -228,8 +229,8 @@ const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
       onClick={() => onImageClick(member)}
       className="cursor-pointer relative w-full aspect-square rounded-lg overflow-hidden group transition-all"
     >
-      {/* Imagen */}
-      <div className={`relative w-full h-full ${member.color}`}>
+      {/* Contenedor con overflow hidden para evitar desbordamiento en zoom */}
+      <div className={`relative w-full h-full overflow-hidden rounded-lg ${member.color}`}>
         {member.image && member.image.trim() !== '' ? (
           <Image
             src={member.image}
@@ -238,13 +239,12 @@ const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
             loading="lazy"
             placeholder="blur"
             blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23f3f3f3' width='400' height='400'/%3E%3C/svg%3E"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             quality={75}
-            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           />
         ) : null}
       </div>
-
     </div>
   );
 };
@@ -405,21 +405,61 @@ export default function TeamSection() {
 
   return (
     <section className="min-h-screen bg-[#f3f3f3] py-20 px-6 md:px-12 lg:px-16">
-      <div className="max-w-screen">
+      <div className="w-4/5 mx-auto">
         {/* Título */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-black mb-4">
+        <div className=" mb-16">
+          <h2 className="text-4xl md:text-6xl font-bold text-black mb-4 font-social">
             {t('team.title')}
           </h2>
-          <p className="text-2xl md:text-3xl text-black/80">
+          <p className="text-2xl md:text-3xl text-black/80 font-social">
             {t('team.subtitle')}
           </p>
         </div>
 
-        {/* Grid de miembros - 22 personas */}
+        {/* Grid de miembros - Mobile: grid simple, Desktop: bento grid */}
+        
+        {/* Mobile Grid - Solo miembros con imagen, Jorge y Manuel (cofounders) primero */}
         <div
           ref={containerRef}
-          className="grid grid-cols-12 grid-rows-12 gap-2"
+          className="grid grid-cols-2 gap-3 md:hidden"
+        >
+          {(() => {
+            // Filtrar miembros con imagen
+            const membersWithImage = teamMembers.filter(m => m.image && m.image.trim() !== '');
+            
+            // Encontrar a Jorge (CSO) y Manuel CEO (id: 2)
+            const jorge = membersWithImage.find(m => m.name === 'Jorge' && m.role === 'CSO');
+            const manuelCEO = membersWithImage.find(m => m.name === 'Manuel' && m.role === 'CEO');
+            
+            // Resto de miembros sin Jorge y Manuel CEO
+            const others = membersWithImage.filter(m => 
+              !(m.name === 'Jorge' && m.role === 'CSO') && 
+              !(m.name === 'Manuel' && m.role === 'CEO')
+            );
+            
+            // Reordenar: Jorge primero, Manuel CEO segundo, luego el resto
+            const mobileOrder = [
+              ...(jorge ? [jorge] : []),
+              ...(manuelCEO ? [manuelCEO] : []),
+              ...others
+            ];
+            
+            return mobileOrder.map((member, idx) => (
+              <div 
+                key={member.id} 
+                data-card
+                className="aspect-square"
+              >
+                <TeamCard member={member} onImageClick={handleImageClick} />
+              </div>
+            ));
+          })()}
+        </div>
+
+        {/* Desktop Bento Grid */}
+        <div
+          className="hidden md:grid grid-cols-12 gap-2"
+          style={{ gridAutoRows: 'minmax(80px, 1fr)' }}
         >
           <div className="col-span-2 row-span-2" data-card>
             <TeamCard member={teamMembers[0]} onImageClick={handleImageClick} />
@@ -489,6 +529,9 @@ export default function TeamSection() {
           </div>
         </div>
       </div>
+
+      {/* Botón de footer de sección */}
+      <SectionFooterButton section="team" />
 
       {/* Modal */}
       <TeamModal
