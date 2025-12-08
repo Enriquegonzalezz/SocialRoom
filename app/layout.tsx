@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { OrganizationJsonLd, WebsiteJsonLd, LocalBusinessJsonLd } from "./components/JsonLd";
+import SmoothScroll from "./components/SmoothScroll";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
     default: 'Social Room - Agencia de Marketing Creativo',
-    template: '%s | Social Room',
+    template: '%s ',
   },
   description: 'Agencia de marketing creativo especializada en branding, diseño web, producción audiovisual y experiencias digitales. Transformamos ideas en resultados.',
   keywords: [
@@ -126,7 +127,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

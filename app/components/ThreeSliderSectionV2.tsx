@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
 import { getImageUrl } from '@/lib/supabase-images';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import SectionFooterButton from './SectionFooterButton';
+import FeaturedWork from './FeaturedWork';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -57,20 +58,37 @@ const projects = [
   // },
 ];
 
+// Verificar soporte WebGL
+function isWebGLSupported(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && 
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch {
+    return false;
+  }
+}
+
 export default function ThreeSliderSectionV2() {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
+  const [webGLSupported, setWebGLSupported] = useState(true);
 
-  // Obtener las líneas traducidas
-  const finalLinesText = [
-    t('threeSlider.line1'),
-    t('threeSlider.line2'),
-    t('threeSlider.line3'),
-  ];
+  // Memoizar las líneas traducidas para evitar re-renders innecesarios
+  const line1 = t('threeSlider.line1');
+  const line2 = t('threeSlider.line2');
+  const line3 = t('threeSlider.line3');
+  const finalLinesText = useMemo(() => [line1, line2, line3], [line1, line2, line3]);
+
+  // Verificar WebGL al montar
+  useEffect(() => {
+    setWebGLSupported(isWebGLSupported());
+  }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !triggerRef.current || typeof window === 'undefined') return;
+    if (!containerRef.current || !triggerRef.current || typeof window === 'undefined' || !webGLSupported) return;
 
     const ctx = gsap.context(() => {
       if (!containerRef.current) return;
@@ -144,6 +162,16 @@ export default function ThreeSliderSectionV2() {
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.decoding = 'async'; // Decodificación asíncrona
+        
+        // Manejo de error de carga
+        img.onerror = () => {
+          console.warn(`Failed to load image: ${project.image}`);
+          texturesLoaded++;
+          if (texturesLoaded === totalTextures) {
+            ScrollTrigger.refresh();
+          }
+        };
+        
         img.src = project.image;
         img.onload = () => {
           if (imageCtx) {
@@ -445,7 +473,27 @@ export default function ThreeSliderSectionV2() {
     }, triggerRef);
 
     return () => ctx.revert();
-  }, [finalLinesText]);
+  }, [finalLinesText, webGLSupported]);
+
+  // Fallback para dispositivos sin WebGL - usar FeaturedWork
+  if (!webGLSupported) {
+    const fallbackProjects = projects.map((project, index) => ({
+      id: `project-${index}`,
+      title: project.title,
+      category: project.category,
+      imageUrl: project.image,
+      href: '/projects',
+    }));
+
+    return (
+      <>
+        <FeaturedWork projects={fallbackProjects} />
+        <div className="bg-[#f3f3f3]">
+          <SectionFooterButton section="threeslider" />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

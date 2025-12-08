@@ -418,23 +418,42 @@ export default function TeamSection() {
 
         {/* Grid de miembros - Mobile: grid simple, Desktop: bento grid */}
         
-        {/* Mobile Grid - Solo miembros con imagen */}
+        {/* Mobile Grid - Solo miembros con imagen, Jorge y Manuel (cofounders) primero */}
         <div
           ref={containerRef}
           className="grid grid-cols-2 gap-3 md:hidden"
         >
-          {teamMembers.filter(m => m.image && m.image.trim() !== '').map((member, idx) => (
-            <div 
-              key={member.id} 
-              data-card
-              className={`aspect-square ${
-                idx === 0 || idx === 3 ? 'col-span-2 row-span-1' : ''
-              }`}
-              style={{ height: idx === 0 || idx === 3 ? '200px' : 'auto' }}
-            >
-              <TeamCard member={member} onImageClick={handleImageClick} />
-            </div>
-          ))}
+          {(() => {
+            // Filtrar miembros con imagen
+            const membersWithImage = teamMembers.filter(m => m.image && m.image.trim() !== '');
+            
+            // Encontrar a Jorge (CSO) y Manuel CEO (id: 2)
+            const jorge = membersWithImage.find(m => m.name === 'Jorge' && m.role === 'CSO');
+            const manuelCEO = membersWithImage.find(m => m.name === 'Manuel' && m.role === 'CEO');
+            
+            // Resto de miembros sin Jorge y Manuel CEO
+            const others = membersWithImage.filter(m => 
+              !(m.name === 'Jorge' && m.role === 'CSO') && 
+              !(m.name === 'Manuel' && m.role === 'CEO')
+            );
+            
+            // Reordenar: Jorge primero, Manuel CEO segundo, luego el resto
+            const mobileOrder = [
+              ...(jorge ? [jorge] : []),
+              ...(manuelCEO ? [manuelCEO] : []),
+              ...others
+            ];
+            
+            return mobileOrder.map((member, idx) => (
+              <div 
+                key={member.id} 
+                data-card
+                className="aspect-square"
+              >
+                <TeamCard member={member} onImageClick={handleImageClick} />
+              </div>
+            ));
+          })()}
         </div>
 
         {/* Desktop Bento Grid */}
