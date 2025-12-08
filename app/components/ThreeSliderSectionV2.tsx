@@ -341,7 +341,8 @@ export default function ThreeSliderSectionV2() {
           ctx.fillStyle = '#000000';
           ctx.font = '700 110px "Social Gothic", "Helvetica", Arial, sans-serif';
           ctx.textBaseline = 'middle';
-          ctx.translate(0, canvas.height / 2);
+          ctx.textAlign = 'center';
+          ctx.translate(canvas.width / 2, canvas.height / 2);
           ctx.scale(LETTER_SCALE_X, 1);
           ctx.fillText(line, 0, 0);
           ctx.restore();
@@ -364,9 +365,9 @@ export default function ThreeSliderSectionV2() {
         finalTextMeshes.push(mesh);
       });
 
-      // Posicionar el grupo una distancia después de la última tarjeta (misma distancia entre cartas)
+      // Posicionar el grupo una distancia después de la última tarjeta (centrado)
       finalTextGroup.position.set(
-        250,         
+        0,           // Centrado horizontalmente
         0,
         projects.length * -distanceBetweenSlides // una posición más allá de la última carta
       );

@@ -278,7 +278,7 @@ export default function HeroSection() {
           {/* Overlay para mejorar legibilidad del texto */}
           <div className="absolute inset-0 bg-black/30 rounded-sm" />
           <span className="relative text-base md:text-lg font-helvetica font-medium tracking-wide text-white whitespace-nowrap flex items-center justify-center z-10">
-            About Us
+            {t('hero.aboutUs')}
           </span>
         </button>
       </div>

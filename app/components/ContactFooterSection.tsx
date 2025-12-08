@@ -105,7 +105,7 @@ export default function ContactFooterSection() {
                     <h3
                       ref={ctaRef}
                       className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black font-helvetica tracking-tight leading-tight cursor-pointer transition-transform duration-500 hover:scale-[1.01]"
-                      style={{ perspective: '1000px' }}
+                      style={{ perspective: '1000px', wordBreak: 'keep-all', overflowWrap: 'normal' }}
                     >
                       {t('contact.readyToStart')}
                     </h3>

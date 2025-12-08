@@ -9,11 +9,12 @@
   "hero": {
     "title": "Somos un",
     "subtitle": "laboratorio",
-    "description": "de ideas"
+    "description": "de ideas",
+    "aboutUs": "Nosotros"
   },
   "team": {
-    "title": "Nuestro Equipo",
-    "subtitle": "Las mentes creativas",
+    "title": "NUESTRO EQUIPO",
+    "subtitle": "LAS MENTES CREATIVAS",
     "pageDescription": "Conoce a las mentes creativas detrás de nuestro trabajo. Cada miembro aporta habilidades únicas y pasión a cada proyecto.",
     "roles": {
       "communityManager": "Community Manager",
@@ -151,9 +152,9 @@
     }
   },
   "threeSlider": {
-    "line1": "Hacemos",
-    "line2": "tus ideas",
-    "line3": "realidad"
+    "line1": "HACEMOS",
+    "line2": "TU IDEAS",
+    "line3": "REALIDAD"
   },
   "floatingButton": {
     "aboutUs": "SOBRE NOSOTROS",
