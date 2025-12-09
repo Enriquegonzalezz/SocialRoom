@@ -33,50 +33,46 @@ export default function HeroSection() {
 
   useEffect(() => {
     let ticking = false;
+    // Cache de elementos DOM - solo buscar una vez
+    let contactSection: Element | null = null;
+    let servicesSection: Element | null = null;
+    let elementsFound = false;
+
+    const findElements = () => {
+      if (!elementsFound) {
+        contactSection = document.querySelector('[data-section="contact"]');
+        servicesSection = document.querySelector('[data-section="services-carousel"]');
+        elementsFound = true;
+      }
+    };
 
     const handleScroll = () => {
-      // Throttle optimizado - solo ejecuta cuando el navegador está listo
       if (!ticking) {
-        window.requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Buscar elementos solo si no se han encontrado
+          findElements();
+          
           const scrollPosition = window.scrollY;
           const windowHeight = window.innerHeight;
+          const logoHeight = 100;
           
           // Detectar si estamos en la sección de contacto
-          const contactSection = document.querySelector('[data-section="contact"]');
-          
           if (contactSection) {
             const rect = contactSection.getBoundingClientRect();
-            const logoHeight = 100; // Altura aproximada del logo
-            
-            // Si el logo está sobre la sección de contacto, ocultarlo
-            if (rect.top <= logoHeight) {
-              setShowLogo(false);
-            } else {
-              setShowLogo(true);
-            }
+            setShowLogo(rect.top > logoHeight);
           } else {
             setShowLogo(true);
           }
           
-          // Detectar si estamos sobre una sección con fondo negro (ServicesCarouselSection)
-          const servicesSection = document.querySelector('[data-section="services-carousel"]');
-          
+          // Detectar si estamos sobre una sección con fondo negro
           if (servicesSection) {
             const rect = servicesSection.getBoundingClientRect();
-            const logoHeight = 100; // Altura aproximada del logo
-            
-            // Si el logo está sobre la sección negra, cambiar a blanco (no invertir)
             if (rect.top <= logoHeight && rect.bottom >= logoHeight) {
-              setIsDarkBackground(true); // Logo blanco sobre fondo negro
-            } else if (scrollPosition < windowHeight * 0.8) {
-              // HeroSection (fondo negro)
               setIsDarkBackground(true);
             } else {
-              // Otras secciones (fondo claro)
-              setIsDarkBackground(false);
+              setIsDarkBackground(scrollPosition < windowHeight * 0.8);
             }
           } else {
-            // Fallback si no encuentra la sección
             setIsDarkBackground(scrollPosition < windowHeight * 0.8);
           }
           

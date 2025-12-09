@@ -325,18 +325,21 @@ export default function ThreeSliderSectionV2() {
         textMeshes.push(projectGroup);
       });
 
-      // Timeline con ScrollTrigger - Optimizado para Mac
+      // Detectar si es móvil para ajustar configuración
+      const isMobile = window.innerWidth < 768;
+      
+      // Timeline con ScrollTrigger - Optimizado para móvil y Mac
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: triggerRef.current,
           pin: true,
           pinSpacing: true,
-          scrub: 0.8, // Más suave para Mac
+          scrub: isMobile ? 0.3 : 0.8, // Más rápido en móvil para mejor respuesta
           start: 'top top',
           end: `+=${(projects.length - 1) * 800}vh`,
           invalidateOnRefresh: true,
           anticipatePin: 1,
-          fastScrollEnd: true, // Mejor manejo de scroll rápido en Mac
+          fastScrollEnd: true,
           preventOverlaps: true,
         },
       });
@@ -556,7 +559,7 @@ export default function ThreeSliderSectionV2() {
       <section 
         ref={triggerRef} 
         className="relative w-full bg-[#f3f3f3] overflow-hidden"
-        style={{ height: '100vh' }}
+        style={{ height: '100vh', touchAction: 'pan-y' }}
       >
         {/* Loading indicator mientras cargan las imágenes */}
         {!imagesLoaded && (
@@ -568,7 +571,7 @@ export default function ThreeSliderSectionV2() {
         <div 
           ref={containerRef} 
           className="absolute top-0 left-0 w-full h-full overflow-hidden"
-          style={{ willChange: 'transform' }}
+          style={{ willChange: 'transform', touchAction: 'pan-y' }}
         />
       </section>
       {/* Botón de footer de sección - fuera del pin para que aparezca al final */}

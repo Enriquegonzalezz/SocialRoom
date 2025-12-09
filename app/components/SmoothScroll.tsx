@@ -14,6 +14,16 @@ interface SmoothScrollProps {
   children: React.ReactNode;
 }
 
+// Detectar si es dispositivo táctil/móvil
+const isTouchDevice = () => {
+  if (typeof window === 'undefined') return false;
+  return (
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    window.matchMedia('(pointer: coarse)').matches
+  );
+};
+
 export default function SmoothScroll({ children }: SmoothScrollProps) {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -21,16 +31,27 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     // Solo inicializar en cliente
     if (typeof window === 'undefined') return;
 
-    // Crear instancia de Lenis con configuración optimizada
+    // En móviles/táctiles, no usar Lenis - el scroll nativo es mejor
+    if (isTouchDevice()) {
+      // Solo registrar ScrollTrigger sin Lenis
+      ScrollTrigger.defaults({
+        scroller: document.documentElement,
+      });
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+      return;
+    }
+
+    // Solo en desktop: crear instancia de Lenis
     const lenis = new Lenis({
-      duration: 1.1,           // Duración del smooth scroll
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing exponencial suave
-      orientation: 'vertical', // Solo scroll vertical
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
       gestureOrientation: 'vertical',
-      smoothWheel: true,       // Smooth en rueda del mouse
-      touchMultiplier: 2,      // Multiplicador para touch (móviles)
-      infinite: false,         // No scroll infinito
-      autoResize: true,        // Auto resize en cambios de viewport
+      smoothWheel: true,
+      infinite: false,
+      autoResize: true,
     });
 
     lenisRef.current = lenis;
@@ -39,9 +60,10 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     lenis.on('scroll', ScrollTrigger.update);
 
     // Sincronizar el ticker de GSAP con Lenis
-    gsap.ticker.add((time) => {
+    const rafCallback = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(rafCallback);
 
     // Desactivar el lag smoothing de GSAP para mejor sincronización
     gsap.ticker.lagSmoothing(0);
@@ -59,9 +81,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     // Cleanup
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(rafCallback);
       lenisRef.current = null;
     };
   }, []);
