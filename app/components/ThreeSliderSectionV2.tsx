@@ -4,7 +4,7 @@ import { useRef, useEffect, useMemo, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
-import { getImageUrl } from '@/lib/supabase-images';
+import { getImageUrl, getOptimizedImageUrl } from '@/lib/supabase-images';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import SectionFooterButton from './SectionFooterButton';
 import FeaturedWork from './FeaturedWork';
@@ -18,25 +18,25 @@ const projects = [
     title: 'AUGE',
     category: 'branding',
     year: '2025',
-    image: getImageUrl('auge', 'auge-26.jpg'),
+    image: getOptimizedImageUrl('auge', 'auge-26.jpg'),
   },
   {
     title: 'LEAP4HUMANITY',
     category: 'BRANDING & SOCIAL MEDIA',
     year: '2025',
-    image: getImageUrl('L4h', 'Mesa de trabajo 57.png'),
+    image: getOptimizedImageUrl('L4h', 'Mesa de trabajo 57.png'),
   },
   {
     title: 'LEBLE',
     category: 'BRANDING & SOCIAL MEDIA',
     year: '2025',
-    image: getImageUrl('leble', 'leble-01.jpg'),
+    image: getOptimizedImageUrl('leble', 'leble-01.jpg'),
   },
   {
     title: 'LGM',
     category: 'BRANDING & DEVELOPMENT',
     year: '2025',
-    image: getImageUrl('lgm', 'LGM-22.png'),
+    image: getOptimizedImageUrl('lgm', 'LGM-22.png'),
   },
   // {
   //   title: 'Enfoque',
