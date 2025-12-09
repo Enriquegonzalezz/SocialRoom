@@ -14,12 +14,21 @@ export default function HeroSection() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isDarkBackground, setIsDarkBackground] = useState<boolean>(true);
   const [showLogo, setShowLogo] = useState<boolean>(true);
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const drawerRef = useRef<HTMLDivElement>(null);
   const drawerContentRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   
   // Obtener URL de la imagen de piel de jirafa desde Supabase
   const pielDeJirafaUrl = getImageUrl('others', 'pieljirafa.jpeg');
+  
+  // Precargar imagen de fondo
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = '/muchachos/fotovaca[1].webp';
+    img.onload = () => setImageLoaded(true);
+    img.onerror = () => setImageLoaded(true);
+  }, []);
   
 
   useEffect(() => {
@@ -119,6 +128,13 @@ export default function HeroSection() {
   }, [menuOpen]);
 
 
+  // Mostrar pantalla de carga mientras la imagen no está lista
+  if (!imageLoaded) {
+    return (
+      <section className="relative min-h-screen bg-black text-white overflow-hidden" />
+    );
+  }
+
   return (
     <section
       className="relative min-h-screen bg-black text-white overflow-hidden"
@@ -151,99 +167,98 @@ export default function HeroSection() {
         <span className={`w-full h-0.5 transition-all duration-700 ease-in-out ${isDarkBackground ? 'bg-white' : 'bg-black'} ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
       </button>
 
-      {/* Drawer/Menu Lateral - Pantalla completa, lado izquierdo, estilo Shopify */}
+      {/* Drawer/Menu Lateral - Minimalista */}
       {menuOpen && (
         <div ref={drawerRef} className="fixed inset-0 z-40 overflow-hidden">
           {/* Overlay oscuro */}
           <div 
-            className="drawer-overlay absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="drawer-overlay absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
           />
           
-          {/* Drawer desde la izquierda - Pantalla completa con altura fija */}
+          {/* Drawer - Más compacto y minimalista */}
           <div 
             ref={drawerContentRef} 
-            className="absolute left-0 top-0 w-full bg-white flex flex-col overflow-hidden"
+            className="absolute left-0 top-0 w-full sm:w-[400px] md:w-[450px] bg-white flex flex-col"
             style={{ height: '100dvh', maxHeight: '100dvh' }}
           >
             {/* Header con botón de cerrar */}
-            <div className="flex-shrink-0 flex justify-end items-center p-6 sm:p-8 md:p-12">
+            <div className="flex-shrink-0 flex justify-end items-center p-4 sm:p-6">
               <button 
                 onClick={() => setMenuOpen(false)}
-                className="text-black hover:text-black/70 transition-colors will-change-transform"
+                className="text-black hover:text-black/50 transition-colors p-2"
               >
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </button>
             </div>
             
-            {/* Navegación - items grandes con fuente thermal */}
-            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-center px-6 sm:px-8 md:px-12 lg:px-20 py-4 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 overflow-y-auto min-h-0">
-              {/* Home */}
+            {/* Navegación - Minimalista */}
+            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-center px-8 sm:px-10 md:px-12 space-y-4 sm:space-y-5 md:space-y-6">
               <button 
                 onClick={() => setMenuOpen(false)}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl font-light text-black hover:text-black/50 transition-colors font-thermal tracking-wide"
               >
                 {t('nav.home')}
               </button>
               
-              {/* About */}
               <button 
                 onClick={() => {
                   setMenuOpen(false);
                   router.push(`/${locale}/about`);
                 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl font-light text-black hover:text-black/50 transition-colors font-thermal tracking-wide"
               >
                 {t('floatingButton.aboutUs')}
               </button>
               
-              {/* Services */}
               <button 
                 onClick={() => {
                   setMenuOpen(false);
                   router.push(`/${locale}/services`);
                 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl font-light text-black hover:text-black/50 transition-colors font-thermal tracking-wide"
               >
                 {t('floatingButton.services')}
               </button>
               
-              {/* Projects */}
               <button 
                 onClick={() => {
                   setMenuOpen(false);
                   router.push(`/${locale}/projects`);
                 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl font-light text-black hover:text-black/50 transition-colors font-thermal tracking-wide"
               >
                 {t('nav.projects')}
               </button>
               
-              {/* Team */}
               <button 
                 onClick={() => {
                   setMenuOpen(false);
                   router.push(`/${locale}/team`);
                 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl font-light text-black hover:text-black/50 transition-colors font-thermal tracking-wide"
               >
                 {t('nav.team')}
               </button>
               
-              {/* Employees */}
               <button 
                 onClick={() => {
                   setMenuOpen(false);
                   window.open('/equipment/login', '_blank');
                 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-black hover:text-black/70 transition-colors font-thermal will-change-transform leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl font-light text-black hover:text-black/50 transition-colors font-thermal tracking-wide"
               >
                 {t('nav.employees')}
               </button>
             </nav>
+            
+            {/* Footer del menú */}
+            <div className="flex-shrink-0 px-8 sm:px-10 md:px-12 py-6 border-t border-gray-100">
+              <p className="text-xs text-gray-400 font-light tracking-wider uppercase">Social Room</p>
+            </div>
           </div>
         </div>
       )}

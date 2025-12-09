@@ -1,11 +1,25 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { getImageUrl } from '@/lib/supabase-images';
+
+// Hook para detectar si es móvil
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  return isMobile;
+}
 
 // Datos de proyectos
 const projectsData: Record<string, {
@@ -131,9 +145,19 @@ export default function ProjectDetailPage() {
   const { locale } = useTranslation();
   const slug = params.slug as string;
   const project = projectsData[slug];
+  const isMobile = useIsMobile();
 
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  
+  // Función para volver - en móvil va al home, en desktop a proyectos
+  const handleBack = () => {
+    if (isMobile) {
+      router.push(`/${locale}`);
+    } else {
+      router.push(`/${locale}/projects`);
+    }
+  };
 
   useEffect(() => {
     if (!project) return;
@@ -175,10 +199,10 @@ export default function ProjectDetailPage() {
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Proyecto no encontrado</h1>
           <button
-            onClick={() => router.push(`/${locale}/projects`)}
+            onClick={handleBack}
             className="px-6 py-3 bg-black text-white hover:bg-black/80 transition-colors"
           >
-            Volver a proyectos
+            {isMobile ? 'Volver al inicio' : 'Volver a proyectos'}
           </button>
         </div>
       </div>
@@ -267,7 +291,7 @@ export default function ProjectDetailPage() {
       {/* Back Button */}
       <section className="px-6 md:px-12 lg:px-16 pb-20">
         <button
-          onClick={() => router.push(`/${locale}/projects`)}
+          onClick={handleBack}
           className="group flex items-center gap-4 text-black hover:gap-6 transition-all duration-300"
         >
           <svg 
@@ -285,7 +309,7 @@ export default function ProjectDetailPage() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="text-2xl font-helvetica">Volver a proyectos</span>
+          <span className="text-2xl font-helvetica">{isMobile ? 'Volver al inicio' : 'Volver a proyectos'}</span>
         </button>
       </section>
     </main>
