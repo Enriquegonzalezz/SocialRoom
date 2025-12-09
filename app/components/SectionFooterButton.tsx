@@ -20,7 +20,7 @@ const sectionConfigs: Record<SectionType, SectionConfig> = {
   hero: {
     textKey: 'floatingButton.aboutUs',
     href: '/about',
-    borderColor: 'border-black',
+    borderColor: '',
     hoverBg: 'hover:bg-black',
     hoverText: 'hover:text-white',
   },
@@ -70,7 +70,7 @@ export default function SectionFooterButton({ section, className = '' }: Section
   const { t, locale } = useTranslation();
   const buttonRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
-  const backgroundImage = getImageUrl('others', 'pieljirafa.jpeg');
+  const backgroundImage = encodeURI('/muchachos/SOCIAL ROOM BOTON.webp');
 
   const config = sectionConfigs[section];
   const buttonText = t(config.textKey);
@@ -153,21 +153,22 @@ export default function SectionFooterButton({ section, className = '' }: Section
     <div ref={buttonRef} className={`flex justify-center w-full pt-8 ${className}`} style={{ opacity: 0 }}>
       <Link href={hrefWithLocale}>
         <button
-          className={`relative px-10 py-3 border transition-all duration-500 ease-in-out cursor-pointer hover:scale-105 ${config.borderColor} ${config.hoverBg}`}
+          className={`relative px-10 py-3 transition-all duration-500 ease-in-out cursor-pointer hover:scale-105 ${config.borderColor}`}
           style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             width: '180px',
             minWidth: '160px',
             maxWidth: '180px',
+            zIndex: 10,
           }}
         >
-          {/* Overlay para mejorar legibilidad del texto */}
-          <div className="absolute inset-0 bg-black/30 rounded-sm" />
-          <span
+                    <span
             ref={textRef}
             className="relative text-base md:text-lg font-helvetica font-medium tracking-wide text-white whitespace-nowrap flex items-center justify-center z-10"
+            style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}
           >
             {buttonText}
           </span>

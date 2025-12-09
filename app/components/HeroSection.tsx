@@ -19,8 +19,8 @@ export default function HeroSection() {
   const drawerContentRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   
-  // Obtener URL de la imagen de piel de jirafa desde Supabase
-  const pielDeJirafaUrl = getImageUrl('others', 'pieljirafa.jpeg');
+  // Obtener URL de la imagen del botón (codificada para espacios)
+  const botonSocialRoomUrl = encodeURI('/muchachos/SOCIAL ROOM BOTON.webp');
   
   // Precargar imagen de fondo
   useEffect(() => {
@@ -280,19 +280,20 @@ export default function HeroSection() {
             // Aquí puedes agregar la navegación a About Us
             router.push(`/${locale}/about`);
           }}
-          className="relative px-10 py-3 border transition-all duration-500 ease-in-out cursor-pointer hover:scale-105 border-white hover:bg-white"
+          className="relative px-10 py-3 transition-all duration-500 ease-in-out cursor-pointer hover:scale-105"
           style={{
-            backgroundImage: `url(${pielDeJirafaUrl})`,
+            backgroundImage: `url(${botonSocialRoomUrl})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             width: '180px',
             minWidth: '160px',
             maxWidth: '180px',
+            zIndex: 10,
           }}
         >
-          {/* Overlay para mejorar legibilidad del texto */}
-          <div className="absolute inset-0 bg-black/30 rounded-sm" />
-          <span className="relative text-base md:text-lg font-helvetica font-medium tracking-wide text-white whitespace-nowrap flex items-center justify-center z-10">
+          <span className="relative text-base md:text-lg font-helvetica font-medium tracking-wide text-white whitespace-nowrap flex items-center justify-center z-10"
+            style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
             {t('hero.aboutUs')}
           </span>
         </button>
