@@ -59,11 +59,7 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [
-      { url: '/favicon-dark.ico', sizes: '16x16 32x32 48x48' },
-      { url: '/favicon-light.ico', sizes: '16x16 32x32 48x48', media: '(prefers-color-scheme: light)' },
-      { url: '/favicon-dark.ico', sizes: '16x16 32x32 48x48', media: '(prefers-color-scheme: dark)' }
-    ],
+    icon: '/favicon-dark.ico',
     shortcut: '/favicon-dark.ico',
     apple: [
       { url: '/favicon-dark.ico', sizes: '180x180' }
@@ -123,6 +119,11 @@ export default function RootLayout({
         <OrganizationJsonLd />
         <WebsiteJsonLd />
         <LocalBusinessJsonLd />
+        
+        {/* Tu favicon personalizado */}
+        <link rel="icon" href="/favicon-dark.ico" />
+        <link rel="shortcut icon" href="/favicon-dark.ico" />
+        <link rel="apple-touch-icon" href="/favicon-dark.ico" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
