@@ -3,13 +3,35 @@ import { supabase } from './supabase';
 // Nombre del bucket
 const BUCKET_NAME = 'Socialroombucket';
 
+// Opciones de transformación para optimizar imágenes
+interface ImageTransformOptions {
+  width?: number;
+  height?: number;
+  quality?: number;
+}
+
 /**
  * Obtiene la URL pública de una imagen en Supabase Storage
  * @param folder - Carpeta dentro del bucket (ej: 'auge', 'enfoque')
  * @param filename - Nombre del archivo (ej: 'auge1.png')
+ * @param options - Opciones de transformación (width, height, quality)
  * @returns URL pública de la imagen
  */
-export function getImageUrl(folder: string, filename: string): string {
+export function getImageUrl(folder: string, filename: string, options?: ImageTransformOptions): string {
+  // Si hay opciones de transformación, usar la API de transformación
+  if (options && (options.width || options.height || options.quality)) {
+    const { data } = supabase.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(`${folder}/${filename}`, {
+        transform: {
+          width: options.width,
+          height: options.height,
+          quality: options.quality || 80,
+        }
+      });
+    return data.publicUrl;
+  }
+
   const { data } = supabase.storage
     .from(BUCKET_NAME)
     .getPublicUrl(`${folder}/${filename}`);
@@ -22,6 +44,18 @@ export function getImageUrl(folder: string, filename: string): string {
   }
 
   return url;
+}
+
+/**
+ * Obtiene la URL optimizada de una imagen para el slider 3D
+ * Usa dimensiones optimizadas y formato webp
+ */
+export function getOptimizedImageUrl(folder: string, filename: string): string {
+  return getImageUrl(folder, filename, {
+    width: 800,
+    height: 600,
+    quality: 85,
+  });
 }
 
 /**

@@ -75,6 +75,8 @@ export default function ThreeSliderSectionV2() {
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
   const [webGLSupported, setWebGLSupported] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const preloadedImages = useRef<Map<string, HTMLImageElement>>(new Map());
 
   // Memoizar las líneas traducidas para evitar re-renders innecesarios
   const line1 = t('threeSlider.line1');
@@ -82,13 +84,46 @@ export default function ThreeSliderSectionV2() {
   const line3 = t('threeSlider.line3');
   const finalLinesText = useMemo(() => [line1, line2, line3], [line1, line2, line3]);
 
-  // Verificar WebGL al montar
+  // Verificar WebGL y precargar imágenes al montar
   useEffect(() => {
     setWebGLSupported(isWebGLSupported());
+    
+    // Precargar todas las imágenes inmediatamente
+    let loadedCount = 0;
+    const totalImages = projects.length;
+    
+    projects.forEach((project) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.decoding = 'async';
+      
+      // Usar fetchpriority para las primeras 2 imágenes
+      if (loadedCount < 2) {
+        img.fetchPriority = 'high';
+      }
+      
+      img.onload = () => {
+        preloadedImages.current.set(project.image, img);
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+      
+      img.onerror = () => {
+        console.warn(`Failed to preload: ${project.image}`);
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+      
+      img.src = project.image;
+    });
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !triggerRef.current || typeof window === 'undefined' || !webGLSupported) return;
+    if (!containerRef.current || !triggerRef.current || typeof window === 'undefined' || !webGLSupported || !imagesLoaded) return;
 
     const ctx = gsap.context(() => {
       if (!containerRef.current) return;
@@ -158,22 +193,10 @@ export default function ThreeSliderSectionV2() {
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.generateMipmaps = false; // No necesitamos mipmaps para planos
         
-        // Cargar imagen y aplicar bordes redondeados
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.decoding = 'async'; // Decodificación asíncrona
+        // Usar imagen precargada o cargar si no existe
+        const preloadedImg = preloadedImages.current.get(project.image);
         
-        // Manejo de error de carga
-        img.onerror = () => {
-          console.warn(`Failed to load image: ${project.image}`);
-          texturesLoaded++;
-          if (texturesLoaded === totalTextures) {
-            ScrollTrigger.refresh();
-          }
-        };
-        
-        img.src = project.image;
-        img.onload = () => {
+        const processImage = (img: HTMLImageElement) => {
           if (imageCtx) {
             // Limpiar canvas
             imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
@@ -217,6 +240,27 @@ export default function ThreeSliderSectionV2() {
             }
           }
         };
+        
+        if (preloadedImg && preloadedImg.complete) {
+          // Usar imagen ya precargada
+          processImage(preloadedImg);
+        } else {
+          // Fallback: cargar imagen si no está precargada
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.decoding = 'async';
+          
+          img.onerror = () => {
+            console.warn(`Failed to load image: ${project.image}`);
+            texturesLoaded++;
+            if (texturesLoaded === totalTextures) {
+              ScrollTrigger.refresh();
+            }
+          };
+          
+          img.onload = () => processImage(img);
+          img.src = project.image;
+        }
         
         // Material optimizado - FrontSide es suficiente
         const cardMaterial = new THREE.MeshBasicMaterial({ 
@@ -474,7 +518,7 @@ export default function ThreeSliderSectionV2() {
     }, triggerRef);
 
     return () => ctx.revert();
-  }, [finalLinesText, webGLSupported]);
+  }, [finalLinesText, webGLSupported, imagesLoaded]);
 
   // Fallback para dispositivos sin WebGL - usar FeaturedWork
   if (!webGLSupported) {
@@ -498,11 +542,29 @@ export default function ThreeSliderSectionV2() {
 
   return (
     <>
+      {/* Preload hints para las imágenes */}
+      {projects.slice(0, 2).map((project, index) => (
+        <link 
+          key={index}
+          rel="preload" 
+          href={project.image} 
+          as="image"
+          crossOrigin="anonymous"
+        />
+      ))}
+      
       <section 
         ref={triggerRef} 
         className="relative w-full bg-[#f3f3f3] overflow-hidden"
         style={{ height: '100vh' }}
       >
+        {/* Loading indicator mientras cargan las imágenes */}
+        {!imagesLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+          </div>
+        )}
+        
         <div 
           ref={containerRef} 
           className="absolute top-0 left-0 w-full h-full overflow-hidden"

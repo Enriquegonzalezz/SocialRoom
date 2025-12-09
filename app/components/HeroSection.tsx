@@ -123,7 +123,7 @@ export default function HeroSection() {
     <section
       className="relative min-h-screen bg-black text-white overflow-hidden"
       style={{
-        backgroundImage: ``,
+        backgroundImage: `url('/muchachos/fotovaca[1].webp')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -251,7 +251,7 @@ export default function HeroSection() {
       {/* Contenido Principal */}
       <div className="relative min-h-screen flex items-center justify-start px-6 md:px-12 lg:px-18 pb-20">
         <div className="max-w-7xl w-full">
-          <h2 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.7] md:leading-[0.7] lg:leading-[0.9] font-thermal font-thin tracking-tight">
+          <h2 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.9] md:leading-[0.9] lg:leading-[0.9] font-thermal font-thin tracking-tight">
             {t('hero.title')}
             <br />
             {t('hero.subtitle')}
