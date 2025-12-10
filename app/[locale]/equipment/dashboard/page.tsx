@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import BarcodeScanner from '@/app/components/BarcodeScanner';
@@ -28,6 +28,12 @@ interface EquipmentItem {
   checked_out_at?: string | null;
 }
 
+interface ScannedItem {
+  barcode: string;
+  name: string;
+  category: string;
+}
+
 export default function EquipmentDashboard() {
   const router = useRouter();
   const { locale } = useTranslation();
@@ -37,9 +43,13 @@ export default function EquipmentDashboard() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState('');
-  const [scannedBarcode, setScannedBarcode] = useState<string | null>(null);
-  const [modalUserName, setModalUserName] = useState('');
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  
+  // Estados para escaneo múltiple
+  const [scannedItems, setScannedItems] = useState<ScannedItem[]>([]);
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [personName, setPersonName] = useState('');
+  const [scanMessage, setScanMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Verificar autenticación
@@ -53,12 +63,18 @@ export default function EquipmentDashboard() {
 
     const resolvedUser = user || 'Usuario';
     setUserName(resolvedUser);
-    setModalUserName(resolvedUser);
 
     // Cargar datos iniciales
     fetchLogs();
     fetchItems();
   }, [locale, router]);
+
+  // Focus en el input de nombre cuando se abre el modal
+  useEffect(() => {
+    if (showNameModal && nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+  }, [showNameModal]);
 
   const fetchLogs = async () => {
     try {
@@ -84,49 +100,104 @@ export default function EquipmentDashboard() {
     }
   };
 
-  const handleScan = (barcode: string) => {
-    // Solo guardar el código escaneado y abrir la modal de confirmación
-    setScannedBarcode(barcode);
-    setMessage('');
-    setIsConfirmModalOpen(true);
+  // Manejar escaneo - agregar a la lista
+  const handleScan = async (barcode: string) => {
+    // Verificar si ya está en la lista
+    if (scannedItems.some(item => item.barcode === barcode)) {
+      setScanMessage({ type: 'info', text: 'Este equipo ya está en la lista' });
+      return;
+    }
+
+    // Buscar el equipo en la lista de items
+    const equipment = items.find(item => item.barcode === barcode);
+    
+    if (!equipment) {
+      setScanMessage({ type: 'error', text: 'Equipo no encontrado' });
+      return;
+    }
+
+    // Validar estado según acción
+    if (action === 'checkout' && equipment.status === 'checked_out') {
+      setScanMessage({ type: 'error', text: `"${equipment.name}" ya está retirado por ${equipment.checked_out_by || 'alguien'}` });
+      return;
+    }
+
+    if (action === 'return' && equipment.status === 'available') {
+      setScanMessage({ type: 'error', text: `"${equipment.name}" ya está disponible` });
+      return;
+    }
+
+    // Agregar a la lista
+    setScannedItems(prev => [...prev, {
+      barcode: equipment.barcode,
+      name: equipment.name,
+      category: equipment.category
+    }]);
+    setScanMessage({ type: 'success', text: `✓ ${equipment.name} agregado a la lista` });
   };
 
-  const handleConfirmScan = async () => {
-    if (!scannedBarcode) return;
+  // Remover item de la lista
+  const handleRemoveItem = (barcode: string) => {
+    setScannedItems(prev => prev.filter(item => item.barcode !== barcode));
+    setScanMessage(null);
+  };
 
-    const finalUserName = modalUserName.trim() || userName || 'Usuario';
+  // Mostrar modal para pedir nombre
+  const handleShowNameModal = () => {
+    if (scannedItems.length === 0) return;
+    setScanMessage(null);
+    setShowNameModal(true);
+  };
+
+  // Confirmar todos los equipos
+  const handleConfirmAll = async () => {
+    if (scannedItems.length === 0 || !personName.trim()) {
+      setScanMessage({ type: 'error', text: 'Por favor ingresa un nombre' });
+      return;
+    }
 
     setLoading(true);
     setMessage('');
 
     try {
-      const response = await fetch('/api/equipment/scan', {
+      const response = await fetch('/api/equipment/batch-scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          barcode: scannedBarcode,
+          barcodes: scannedItems.map(item => item.barcode),
           action,
-          userName: finalUserName
+          userName: personName.trim()
         })
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setMessage(`✅ ${data.message}`);
-        fetchLogs(); // Actualizar historial
-        fetchItems(); // Actualizar lista de equipos
+        const actionText = action === 'checkout' ? 'retirado(s)' : 'devuelto(s)';
+        setMessage(`✅ ${data.results.success.length} equipo(s) ${actionText} por ${personName.trim()}`);
+        setScannedItems([]);
+        setShowNameModal(false);
+        setPersonName('');
+        setScanMessage(null);
+        fetchLogs();
+        fetchItems();
       } else {
-        setMessage(`❌ ${data.message || 'Error al procesar el escaneo'}`);
+        setScanMessage({ type: 'error', text: data.message || 'Error al procesar' });
       }
     } catch (err) {
-      console.error('Error al procesar el escaneo:', err);
-      setMessage('❌ Error al procesar el escaneo');
+      console.error('Error al procesar:', err);
+      setScanMessage({ type: 'error', text: 'Error de conexión' });
     } finally {
       setLoading(false);
-      setIsConfirmModalOpen(false);
-      setScannedBarcode(null);
     }
+  };
+
+  // Cancelar y limpiar lista
+  const handleClearList = () => {
+    setScannedItems([]);
+    setScanMessage(null);
+    setShowNameModal(false);
+    setPersonName('');
   };
 
   const handleLogout = () => {
@@ -199,12 +270,12 @@ export default function EquipmentDashboard() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Escáner */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-black mb-4">Escanear Equipo</h2>
+          <h2 className="text-2xl font-bold text-black mb-4">Escanear Equipos</h2>
 
           {/* Selector de Acción */}
           <div className="flex gap-4 mb-6">
             <button
-              onClick={() => setAction('checkout')}
+              onClick={() => { setAction('checkout'); handleClearList(); }}
               className={`flex-1 py-3 rounded-lg font-medium transition-colors ${
                 action === 'checkout'
                   ? 'bg-black text-white'
@@ -214,7 +285,7 @@ export default function EquipmentDashboard() {
               📤 Retirar
             </button>
             <button
-              onClick={() => setAction('return')}
+              onClick={() => { setAction('return'); handleClearList(); }}
               className={`flex-1 py-3 rounded-lg font-medium transition-colors ${
                 action === 'return'
                   ? 'bg-black text-white'
@@ -228,11 +299,76 @@ export default function EquipmentDashboard() {
           {/* Escáner */}
           <BarcodeScanner
             onScan={handleScan}
-            onError={(error) => setMessage(`❌ ${error}`)}
-            isActive={!loading}
+            onError={(error) => setScanMessage({ type: 'error', text: error })}
+            isActive={!loading && !showNameModal}
           />
 
-          {/* Mensaje */}
+          {/* Mensaje de escaneo */}
+          {scanMessage && (
+            <div className={`mt-4 p-3 rounded-lg text-sm font-medium ${
+              scanMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
+              scanMessage.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' :
+              'bg-blue-50 text-blue-700 border border-blue-200'
+            }`}>
+              {scanMessage.text}
+            </div>
+          )}
+
+          {/* Lista de equipos escaneados */}
+          {scannedItems.length > 0 && (
+            <div className="mt-4 border-t pt-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-bold text-black">
+                  📋 Lista ({scannedItems.length} equipo{scannedItems.length > 1 ? 's' : ''})
+                </h3>
+                <button
+                  onClick={handleClearList}
+                  className="text-xs text-red-500 hover:text-red-700"
+                >
+                  Limpiar lista
+                </button>
+              </div>
+              
+              <div className="space-y-2 max-h-48 overflow-y-auto mb-4">
+                {scannedItems.map((item, index) => (
+                  <div 
+                    key={item.barcode}
+                    className="flex items-center justify-between p-2 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs font-bold">
+                        {index + 1}
+                      </span>
+                      <div>
+                        <p className="font-medium text-black text-sm">{item.name}</p>
+                        <p className="text-xs text-black/50">{item.category}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleRemoveItem(item.barcode)}
+                      className="text-red-400 hover:text-red-600 p-1"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Botón ¿Eso es todo? */}
+              <button
+                onClick={handleShowNameModal}
+                className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all ${
+                  action === 'checkout' 
+                    ? 'bg-black hover:bg-black/80' 
+                    : 'bg-blue-600 hover:bg-blue-700'
+                }`}
+              >
+                ¿Eso es todo?
+              </button>
+            </div>
+          )}
+
+          {/* Mensaje de confirmación */}
           {message && (
             <div className={`mt-4 p-4 rounded-lg text-center font-medium ${
               message.includes('✅') 
@@ -366,50 +502,65 @@ export default function EquipmentDashboard() {
         </div>
       </div>
 
-      {/* Modal de Confirmación de Escaneo */}
-      {isConfirmModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      {/* Modal para ingresar nombre */}
+      {showNameModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
             <h3 className="text-xl font-bold text-black mb-2">
-              Confirmar {action === 'checkout' ? 'retiro' : 'devolución'}
+              {action === 'checkout' ? '¿Quién retira los equipos?' : '¿Quién devuelve los equipos?'}
             </h3>
+            
             <p className="text-sm text-black/60 mb-4">
-              Código escaneado:
-              <span className="font-mono text-black block mt-1">
-                {scannedBarcode}
-              </span>
+              {scannedItems.length} equipo{scannedItems.length > 1 ? 's' : ''} seleccionado{scannedItems.length > 1 ? 's' : ''}:
             </p>
 
-            <label className="block text-sm font-medium text-black mb-1">
-              Nombre de quien {action === 'checkout' ? 'retira' : 'gestiona'} el equipo
+            {/* Lista resumida */}
+            <div className="bg-gray-50 rounded-lg p-3 mb-4 max-h-32 overflow-y-auto">
+              {scannedItems.map((item, i) => (
+                <div key={item.barcode} className="text-sm text-black/70">
+                  {i + 1}. {item.name}
+                </div>
+              ))}
+            </div>
+
+            <label className="block text-sm font-medium text-black mb-2">
+              Nombre de la persona
             </label>
             <input
+              ref={nameInputRef}
               type="text"
-              className="w-full border border-black/10 rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-black/80"
-              value={modalUserName}
-              onChange={(e) => setModalUserName(e.target.value)}
-              placeholder="Ej: Juan Pérez"
+              className="w-full border-2 border-black/10 rounded-lg px-4 py-3 text-lg mb-4 focus:outline-none focus:border-black"
+              value={personName}
+              onChange={(e) => setPersonName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && personName.trim()) {
+                  handleConfirmAll();
+                }
+              }}
+              placeholder="Escribe el nombre..."
+              disabled={loading}
             />
 
-            <div className="flex justify-end gap-3 mt-2">
+            <div className="flex flex-col gap-2">
               <button
                 type="button"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-black/70 bg-gray-100 hover:bg-gray-200 transition-colors"
-                onClick={() => {
-                  setIsConfirmModalOpen(false);
-                  setScannedBarcode(null);
-                }}
-                disabled={loading}
+                className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all ${
+                  action === 'checkout' 
+                    ? 'bg-black hover:bg-black/80' 
+                    : 'bg-blue-600 hover:bg-blue-700'
+                } disabled:opacity-60 disabled:cursor-not-allowed`}
+                onClick={handleConfirmAll}
+                disabled={loading || !personName.trim()}
               >
-                Cancelar
+                {loading ? 'Procesando...' : `Confirmar ${action === 'checkout' ? 'retiro' : 'devolución'}`}
               </button>
               <button
                 type="button"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-black hover:bg-black/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                onClick={handleConfirmScan}
+                className="w-full py-3 rounded-xl font-medium text-black/70 bg-gray-100 hover:bg-gray-200 transition-colors"
+                onClick={() => setShowNameModal(false)}
                 disabled={loading}
               >
-                {loading ? 'Procesando...' : 'Confirmar'}
+                ← Volver
               </button>
             </div>
           </div>
