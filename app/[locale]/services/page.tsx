@@ -313,7 +313,7 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-black/5" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black font-helvetica">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#dcdcdc] font-helvetica">
               {t('servicesPage.whyTitle')}
             </h2>
             <div className="w-16 sm:w-24 h-1 bg-[#233a28] mt-4 md:mt-0" />
