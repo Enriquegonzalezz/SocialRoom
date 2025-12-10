@@ -108,7 +108,7 @@ const teamMembers: TeamMember[] = [
     name: 'Fabian',
     roleKey: 'photographer',
     memberKey: 'fabian',
-    image: '/muchachos/fabian.webp',
+    image: '/muchachos/Fabian.webp',
     color: 'from-amber-500/20 to-orange-500/20',
     accent: '#f59e0b',
   },
