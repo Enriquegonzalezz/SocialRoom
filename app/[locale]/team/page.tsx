@@ -71,7 +71,7 @@ const teamMembers: TeamMember[] = [
     id: '6',
     name: 'Juli',
     roleKey: 'designer',
-    memberKey: 'juli',
+    memberKey: 'julia',
     image: '/muchachos/Julia.webp',
     color: 'from-blue-500/20 to-cyan-500/20',
     accent: '#3b82f6',
