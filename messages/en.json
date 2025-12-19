@@ -1,10 +1,10 @@
 {
   "nav": {
     "home": "Home",
-    "projects": "Projects",
+    "projects": "Past Projects",
     "team": "Team",
     "contact": "Contact",
-    "employees": "Employees"
+    "employees": "Log in"
   },
   "hero": {
     "title": "We are a",
@@ -117,8 +117,8 @@
     "formDescription": "Click the button and fill out our form. We'll contact you!",
     "goToForm": "Go to chat",
     "legalText": "No borders. No limits. Whenever your brand wants to go, we will make it happen.",
-    "footerAbout": "About us",
-    "footerTeam": "Team",
+    "footerAbout": "",
+    "footerTeam": "",
     "footerContact": "Contact"
   },
   "socialRoom": {
@@ -143,7 +143,7 @@
   },
   "servicesCarousel": {
     "studio": {
-      "title": "STUDIO",
+      "title": "PHOTO STUDIO",
       "description": "Photo studio equipped to create high-quality, professional visual content."
     },
     "podcast": {

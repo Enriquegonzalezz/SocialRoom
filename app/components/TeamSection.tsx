@@ -206,20 +206,26 @@ const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
-    gsap.to(cardRef.current, {
-      scale: 1.00,
-      duration: 0.3,
-      ease: 'power2.out',
-    });
-  };
+  // ✅ NO hacer nada en móvil
+  if (window.innerWidth < 768) return;
+  
+  gsap.to(cardRef.current, {
+    scale: 1.05, // ✅ CAMBIADO de 1.00 a 1.05
+    duration: 0.3,
+    ease: 'power2.out',
+  });
+};
 
-  const handleMouseLeave = () => {
-    gsap.to(cardRef.current, {
-      scale: 1,
-      duration: 0.3,
-      ease: 'power2.out',
-    });
-  };
+const handleMouseLeave = () => {
+  // ✅ NO hacer nada en móvil
+  if (window.innerWidth < 768) return;
+  
+  gsap.to(cardRef.current, {
+    scale: 1,
+    duration: 0.3,
+    ease: 'power2.out',
+  });
+};
 
   return (
     <div
@@ -418,37 +424,64 @@ export default function TeamSection() {
 
         {/* Grid de miembros - Mobile: grid simple, Desktop: bento grid */}
         
-        {/* Mobile Grid - Solo miembros con imagen, Jorge y Manuel (cofounders) primero */}
+        {/* Mobile Grid - Grid creativo de 3 columnas */}
         <div
           ref={containerRef}
-          className="grid grid-cols-2 gap-3 md:hidden"
+          className="grid grid-cols-3 gap-2 md:hidden"
+          
         >
           {(() => {
             // Filtrar miembros con imagen
             const membersWithImage = teamMembers.filter(m => m.image && m.image.trim() !== '');
             
-            // Encontrar a Jorge (CSO) y Manuel CEO (id: 2)
+            // Encontrar a los cofundadores importantes
             const jorge = membersWithImage.find(m => m.name === 'Jorge' && m.role === 'CSO');
             const manuelCEO = membersWithImage.find(m => m.name === 'Manuel' && m.role === 'CEO');
+            const erika = membersWithImage.find(m => m.name === 'Erika'); // Large size
             
-            // Resto de miembros sin Jorge y Manuel CEO
+            // Resto de miembros
             const others = membersWithImage.filter(m => 
               !(m.name === 'Jorge' && m.role === 'CSO') && 
-              !(m.name === 'Manuel' && m.role === 'CEO')
+              !(m.name === 'Manuel' && m.role === 'CEO') &&
+              m.name !== 'Erika' &&
+              m.name !== 'Fabian'
             );
             
-            // Reordenar: Jorge primero, Manuel CEO segundo, luego el resto
-            const mobileOrder = [
-              ...(jorge ? [jorge] : []),
-              ...(manuelCEO ? [manuelCEO] : []),
-              ...others
-            ];
             
-            return mobileOrder.map((member, idx) => (
+            // Grid creativo de 3 columnas con diferentes spans
+            const mobileGridLayout = [
+              // Fila 1: Manuel como miembro destacado + otros miembros
+              manuelCEO ? { ...manuelCEO, className: 'col-span-2' } : null,
+              others[11] ? { ...others[11], className: 'col-start-3' } : null, // último miembro en columna 3
+              
+              // Fila 2: Jorge destacado + otro miembro
+              others[0] ? { ...others[0], className: 'col-start-1 row-start-2' } : null, // primer miembro en columna 1
+              jorge ? { ...jorge, className: 'col-span-2 col-start-2 row-start-2' } : null,
+              
+              // Fila 3: Tres miembros
+              others[1] ? { ...others[1], className: 'row-start-3' } : null,
+              others[2] ? { ...others[2], className: 'col-start-2 row-start-3' } : null,
+              others[3] ? { ...others[3], className: 'col-start-3 row-start-3' } : null,
+              
+              // Fila 4: Tres miembros desordenados
+              others[4] ? { ...others[4], className: 'col-start-2 row-start-4' } : null,
+              others[5] ? { ...others[5], className: 'col-start-3 row-start-4' } : null,
+              others[6] ? { ...others[6], className: 'col-start-1 row-start-5' } : null,
+              
+              // Fila 5: Alternando columnas
+              others[7] ? { ...others[7], className: 'col-start-2 row-start-5' } : null,
+              others[8] ? { ...others[8], className: 'col-start-3 row-start-6' } : null,
+              others[9] ? { ...others[9], className: 'col-start-1 row-start-6' } : null,
+              
+              // Fila 6-7: Más desorden
+              others[10] ? { ...others[10], className: 'col-start-2 row-start-7' } : null,
+            ].filter((member): member is TeamMemberWithSize & { className: string } => member !== null); // Filtrar nulos con type guard
+            
+            return mobileGridLayout.map((member, idx) => (
               <div 
                 key={member.id} 
                 data-card
-                className="aspect-square"
+                className={`${member.className} aspect-square`}
               >
                 <TeamCard member={member} onImageClick={handleImageClick} />
               </div>

@@ -1,10 +1,10 @@
 {
   "nav": {
     "home": "Inicio",
-    "projects": "Proyectos",
+    "projects": "Proyectos pasados",
     "team": "Equipo",
     "contact": "Contacto",
-    "employees": "Empleado"
+    "employees": "Iniciar sesión"
   },
   "hero": {
     "title": "Somos un",
@@ -143,7 +143,7 @@
   },
   "servicesCarousel": {
     "studio": {
-      "title": "STUDIO",
+      "title": "ESTUDIO",
       "description": "Estudio fotográfico equipado para crear contenido visual de alta calidad y profesional."
     },
     "podcast": {

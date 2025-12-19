@@ -14,17 +14,17 @@ const contactInfo = {
   
   // Sección About us
   aboutLinks: [
-    { label: 'Services', url: '#' },
+    { label: 'Services', url: '/services' },
+    { label: 'About Us', url: '/about' },
   ],
   
   // Sección Team
   teamLinks: [
-    
-    { label: 'Careers', url: '#' },
+    { label: 'Team', url: '/team' },
   ],
   
   // Información de contacto
-  email: 'socsocialroommarketingagency@gmail.com',
+  email: 'socialroommarketingagency@gmail.com',
   phone: '+58 412 0639249',
   address: 'Valencia, Miami and LA',
   
@@ -47,29 +47,34 @@ export default function ContactFooterSection() {
     window.open(whatsappUrl, '_blank');
   };
 
-  // Animación del texto de llamada al formulario con GSAP (staggered por letras)
-  useEffect(() => {
-    if (ctaRef.current) {
-      const text = ctaRef.current.textContent || '';
-      ctaRef.current.innerHTML = text
-        .split('')
-        .map((char) => {
-          const displayChar = char === ' ' ? '&nbsp;' : char;
-          return `<span style="display:inline-block;">${displayChar}</span>`;
-        })
-        .join('');
+ useEffect(() => {
+  // ✅ DETECTAR MÓVIL PRIMERO
+  const isMobile = window.innerWidth < 768;
+  
+  if (isMobile || !ctaRef.current) {
+    return; // ✅ Salir ANTES de manipular el DOM
+  }
+  
+  // Solo desktop: animación de letras
+  const text = ctaRef.current.textContent || '';
+  ctaRef.current.innerHTML = text
+    .split('')
+    .map((char) => {
+      const displayChar = char === ' ' ? '&nbsp;' : char;
+      return `<span style="display:inline-block;">${displayChar}</span>`;
+    })
+    .join('');
 
-      const spans = ctaRef.current.querySelectorAll('span');
-      gsap.from(spans, {
-        opacity: 0,
-        y: 50,
-        rotateX: -90,
-        duration: 0.8,
-        stagger: 0.03,
-        ease: 'back.out(1.7)',
-      });
-    }
-  }, []);
+  const spans = ctaRef.current.querySelectorAll('span');
+  gsap.from(spans, {
+    opacity: 0,
+    y: 50,
+    rotateX: -90,
+    duration: 0.8,
+    stagger: 0.03,
+    ease: 'back.out(1.7)',
+  });
+}, []);
 
   return (
     <>
@@ -139,7 +144,6 @@ export default function ContactFooterSection() {
             
             {/* About us */}
             <div>
-              <h3 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">{t('contact.footerAbout')}</h3>
               <ul className="space-y-2">
                 {contactInfo.aboutLinks.map((link, index) => (
                   <li key={index}>
@@ -153,7 +157,6 @@ export default function ContactFooterSection() {
 
             {/* Team */}
             <div>
-              <h3 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">{t('contact.footerTeam')}</h3>
               <ul className="space-y-2">
                 {contactInfo.teamLinks.map((link, index) => (
                   <li key={index}>
@@ -169,7 +172,14 @@ export default function ContactFooterSection() {
             <div>
               <h3 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">{t('contact.footerContact')}</h3>
               <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-white/70">
-                <p>{contactInfo.email}</p>
+                <a 
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${contactInfo.email}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  {contactInfo.email}
+                </a>
                 <p>{contactInfo.phone}</p>
                 <p>{contactInfo.address}</p>
               </div>
@@ -177,7 +187,7 @@ export default function ContactFooterSection() {
 
             {/* Legal text */}
             <div className="col-span-2 sm:col-span-2 md:col-span-1 mt-4 md:mt-0">
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#4ade80] leading-relaxed font-medium">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#d4ddd4] leading-relaxed font-medium">
                 {t('contact.legalText')}
               </p>
             </div>

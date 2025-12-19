@@ -73,7 +73,7 @@ export default function LanguageSwitcher() {
       <button
         onClick={() => handleLanguageChange('en')}
         className={`transition-all duration-300 hover:scale-110 ${
-          currentLocale === 'en' ? 'opacity-100 scale-105' : 'opacity-50 hover:opacity-80'
+          currentLocale === 'en' ? 'opacity-100 scale-105' : 'opacity-100 hover:opacity-80'
         }`}
         aria-label="English"
       >
@@ -87,7 +87,7 @@ export default function LanguageSwitcher() {
       <button
         onClick={() => handleLanguageChange('es')}
         className={`transition-all duration-300 hover:scale-110 ${
-          currentLocale === 'es' ? 'opacity-100 scale-105' : 'opacity-50 hover:opacity-80'
+          currentLocale === 'es' ? 'opacity-100 scale-105' : 'opacity-100 hover:opacity-80'
         }`}
         aria-label="Español"
       >

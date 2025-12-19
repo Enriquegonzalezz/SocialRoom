@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { useRouter } from 'next/navigation';
 import { getImageUrl } from '@/lib/supabase-images';
 import SectionFooterButton from './SectionFooterButton';
 
@@ -9,7 +10,8 @@ const serviceKeys = ['studio', 'podcast'] as const;
 const serviceFilenames = ['STUDIO.jpg', 'PODCAST2.jpg'];
 
 export default function ServicesCarouselSection() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const router = useRouter();
 
   // Generar servicios desde las traducciones
   const services = serviceKeys.map((key, index) => ({
@@ -17,6 +19,10 @@ export default function ServicesCarouselSection() {
     description: t(`servicesCarousel.${key}.description`),
     filename: serviceFilenames[index],
   }));
+
+  const handleServiceClick = () => {
+    router.push(`/${locale}/theroom`);
+  };
 
   return (
     <section data-section="services-carousel" className="w-full bg-black py-20 relative">
@@ -28,7 +34,8 @@ export default function ServicesCarouselSection() {
           {services.map((service, index) => (
             <div
               key={index}
-              className="group"
+              className="group cursor-pointer"
+              onClick={handleServiceClick}
             >
               {/* Card */}
               <div className="relative h-[500px] overflow-hidden transition-transform duration-500 hover:scale-[1.02]">

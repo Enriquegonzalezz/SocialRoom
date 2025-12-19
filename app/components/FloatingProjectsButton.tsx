@@ -112,43 +112,67 @@ export default function FloatingProjectsButton() {
   }, []);
 
   useEffect(() => {
-    let ticking = false;
+    // Detectar si es móvil
+    const isMobile = window.innerWidth < 768;
+    
+    // En móvil, este botón está oculto (hidden lg:block), no necesitamos el listener
+    if (isMobile) {
+      return;
+    }
+    
+    // Solo en DESKTOP: usar scroll listener
     let lastSection: SectionType = 'hero';
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let lastScrollTime = 0;
+    const THROTTLE_MS = 150;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const centerY = window.innerHeight / 2;
-          let activeSection: SectionType = lastSection;
+    const updateSection = () => {
+      const centerY = window.innerHeight / 2;
+      let activeSection: SectionType = lastSection;
 
-          // Buscar la sección activa usando elementos cacheados
-          for (const { selector, type } of SECTION_SELECTORS) {
-            const element = sectionElementsRef.current.get(selector);
-            if (element) {
-              const rect = element.getBoundingClientRect();
-              if (rect.top <= centerY && rect.bottom >= centerY) {
-                activeSection = type;
-                break;
-              }
-            }
+      // Buscar la sección activa usando elementos cacheados
+      for (const { selector, type } of SECTION_SELECTORS) {
+        const element = sectionElementsRef.current.get(selector);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= centerY && rect.bottom >= centerY) {
+            activeSection = type;
+            break;
           }
+        }
+      }
 
-          // Solo actualizar si cambió la sección
-          if (activeSection !== lastSection) {
-            lastSection = activeSection;
-            setCurrentSection(activeSection);
-          }
-
-          ticking = false;
-        });
-        ticking = true;
+      // Solo actualizar si cambió la sección
+      if (activeSection !== lastSection) {
+        lastSection = activeSection;
+        setCurrentSection(activeSection);
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    const handleScroll = () => {
+      const now = Date.now();
+      
+      // Throttle: solo ejecutar cada THROTTLE_MS
+      if (now - lastScrollTime < THROTTLE_MS) {
+        // Cancelar timeout anterior y programar uno nuevo
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateSection, THROTTLE_MS);
+        return;
+      }
+      
+      lastScrollTime = now;
+      updateSection();
+    };
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Llamar al inicio con delay para no bloquear carga inicial
+    setTimeout(updateSection, 100);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+    };
   }, []);
 
   // Animación GSAP cuando el botón aparece por primera vez

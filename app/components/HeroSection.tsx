@@ -22,8 +22,16 @@ export default function HeroSection() {
   // Obtener URL de la imagen del botón (codificada para espacios)
   const botonSocialRoomUrl = encodeURI('/muchachos/SOCIAL ROOM BOTON.webp');
   
-  // Precargar imagen de fondo
+  // Precargar imagen de fondo (optimizado para móvil)
   useEffect(() => {
+    // En móvil, mostrar inmediatamente sin esperar precarga
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      setImageLoaded(true);
+      return;
+    }
+    
+    // Solo en desktop: precargar imagen
     const img = new window.Image();
     img.src = '/muchachos/fotovaca[1].webp';
     img.onload = () => setImageLoaded(true);
@@ -31,67 +39,110 @@ export default function HeroSection() {
   }, []);
   
 
-  useEffect(() => {
-    let ticking = false;
-    // Cache de elementos DOM - solo buscar una vez
-    let contactSection: Element | null = null;
-    let servicesSection: Element | null = null;
-    let elementsFound = false;
+ useEffect(() => {
+  // Detectar si es móvil
+  const isMobile = window.innerWidth < 768;
+  
+  // ✅ En móvil: SOLO IntersectionObserver, SIN scroll listener
+  if (isMobile) {
+    setShowLogo(true);
+    setIsDarkBackground(true);
+    
+    const contactSection = document.querySelector('[data-section="contact"]');
+    
+    if (contactSection) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            setShowLogo(!entry.isIntersecting);
+          });
+        },
+        { threshold: 0.1, rootMargin: '-100px 0px 0px 0px' }
+      );
+      
+      observer.observe(contactSection);
+      return () => observer.disconnect();
+    }
+    
+    return; // ✅ CRÍTICO: Salir ANTES de crear el scroll listener
+  }
+  
+  // Solo en DESKTOP: usar scroll listener
+  let contactSection: Element | null = null;
+  let servicesSection: Element | null = null;
+  let elementsFound = false;
+  let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+  let lastScrollTime = 0;
+  const THROTTLE_MS = 100;
 
-    const findElements = () => {
-      if (!elementsFound) {
-        contactSection = document.querySelector('[data-section="contact"]');
-        servicesSection = document.querySelector('[data-section="services-carousel"]');
-        elementsFound = true;
+  const findElements = () => {
+    if (!elementsFound) {
+      contactSection = document.querySelector('[data-section="contact"]');
+      servicesSection = document.querySelector('[data-section="servicescarousel"]');
+      elementsFound = true;
+    }
+  };
+
+  const updateLogoState = () => {
+    findElements();
+    
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const logoHeight = 100;
+    
+    if (contactSection) {
+      const rect = contactSection.getBoundingClientRect();
+      setShowLogo(rect.top > logoHeight);
+    } else {
+      setShowLogo(true);
+    }
+    
+    if (servicesSection) {
+      const rect = servicesSection.getBoundingClientRect();
+      if (rect.top <= logoHeight && rect.bottom >= logoHeight) {
+        setIsDarkBackground(true);
+      } else {
+        setIsDarkBackground(scrollPosition < windowHeight * 0.8);
       }
-    };
+    } else {
+      setIsDarkBackground(scrollPosition < windowHeight * 0.8);
+    }
+  };
 
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          // Buscar elementos solo si no se han encontrado
-          findElements();
-          
-          const scrollPosition = window.scrollY;
-          const windowHeight = window.innerHeight;
-          const logoHeight = 100;
-          
-          // Detectar si estamos en la sección de contacto
-          if (contactSection) {
-            const rect = contactSection.getBoundingClientRect();
-            setShowLogo(rect.top > logoHeight);
-          } else {
-            setShowLogo(true);
-          }
-          
-          // Detectar si estamos sobre una sección con fondo negro
-          if (servicesSection) {
-            const rect = servicesSection.getBoundingClientRect();
-            if (rect.top <= logoHeight && rect.bottom >= logoHeight) {
-              setIsDarkBackground(true);
-            } else {
-              setIsDarkBackground(scrollPosition < windowHeight * 0.8);
-            }
-          } else {
-            setIsDarkBackground(scrollPosition < windowHeight * 0.8);
-          }
-          
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+  const handleScroll = () => {
+    const now = Date.now();
+    
+    if (now - lastScrollTime < THROTTLE_MS) {
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateLogoState, THROTTLE_MS);
+      return;
+    }
+    
+    lastScrollTime = now;
+    updateLogoState();
+  };
 
-    // Passive listener para mejor rendimiento
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Llamar al inicio
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  setTimeout(updateLogoState, 100);
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+  };
+}, []);
 
-  // Animar drawer y textos cuando se abre
+  // Animar drawer y textos cuando se abre (optimizado para móvil)
   useEffect(() => {
     if (menuOpen && drawerRef.current && drawerContentRef.current && navRef.current) {
+      // Detectar móvil
+      const isMobile = window.innerWidth < 768;
+      
+      if (isMobile) {
+        // En móvil: sin animaciones GSAP para evitar lag
+        return;
+      }
+      
+      // Solo en desktop: animaciones GSAP
       // Animar overlay
       const overlay = drawerRef.current.querySelector('.drawer-overlay');
       if (overlay) {
@@ -135,7 +186,7 @@ export default function HeroSection() {
     <section
       className="relative min-h-screen bg-black text-white overflow-hidden"
       style={{
-        backgroundImage: `url('/muchachos/fotovaca[1].webp')`,
+        backgroundImage: `url('/pieldevaca.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

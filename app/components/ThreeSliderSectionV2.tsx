@@ -329,6 +329,8 @@ export default function ThreeSliderSectionV2() {
       const isMobile = window.innerWidth < 768;
       
       // Timeline con ScrollTrigger - Optimizado para móvil y Mac
+      const scrollPerSlide = 800;
+const finalExtraScroll = 0; // antes era como “muy largo”, bajalo
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: triggerRef.current,
@@ -336,7 +338,7 @@ export default function ThreeSliderSectionV2() {
           pinSpacing: true,
           scrub: isMobile ? 0.3 : 0.8, // Más rápido en móvil para mejor respuesta
           start: 'top top',
-          end: `+=${(projects.length - 1) * 800}vh`,
+          end: `+=${(projects.length - 1) * scrollPerSlide + finalExtraScroll}vh`,
           invalidateOnRefresh: true,
           anticipatePin: 1,
           fastScrollEnd: true,
@@ -350,10 +352,10 @@ export default function ThreeSliderSectionV2() {
       });
 
       // Animar cámara (se mueve hacia atrás) - incluye una posición extra para el texto final
-      timeline.to(camera.position, {
-        z: textMeshes.length * -distanceBetweenSlides + camera.position.z,
-        ease: 'linear',
-      });
+    timeline.to(camera.position, {
+  z: textMeshes.length * -distanceBetweenSlides + camera.position.z,
+  ease: 'linear',
+});
 
       // Animar entrada lateral de tarjetas (todas incluyendo la última)
       textMeshes.forEach((group, index) => {
@@ -416,7 +418,7 @@ export default function ThreeSliderSectionV2() {
       finalTextGroup.position.set(
         0,           // Centrado horizontalmente
         0,
-        projects.length * -distanceBetweenSlides // una posición más allá de la última carta
+        projects.length * - distanceBetweenSlides // una posición más allá de la última carta
       );
 
       scene.add(finalTextGroup);

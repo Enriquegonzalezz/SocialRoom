@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from 'react';
+ import Link from 'next/link';
 import { getImageUrl } from '@/lib/supabase-images';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import SectionFooterButton from './SectionFooterButton';
@@ -63,7 +64,7 @@ const ServiceCard = ({ service, longestTitle }: { service: ServiceData; longestT
   }, []);
 
   return (
-    <div className="group relative overflow-hidden transition-transform duration-500 hover:scale-[1.02]">
+    <div className="group relative overflow-hidden transition-transform duration-500 hover:scale-[1.02] cursor-pointer">
       <div 
         className="relative w-full aspect-3/4 overflow-hidden bg-cover bg-center"
         style={{ backgroundImage: `url(${getImageUrl('others', service.filename)})` }}
@@ -102,7 +103,7 @@ const ServiceCard = ({ service, longestTitle }: { service: ServiceData; longestT
 };
 
 export default function SocialRoomSection() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -135,13 +136,16 @@ export default function SocialRoomSection() {
     return () => window.removeEventListener('resize', checkLayout);
   }, []);
 
-  const checkScrollButtons = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  };
+ const checkScrollButtons = () => {
+  // ✅ Solo ejecutar si NO es móvil
+  if (window.innerWidth < 768) return;
+  
+  if (scrollContainerRef.current) {
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  }
+};
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
@@ -191,31 +195,36 @@ export default function SocialRoomSection() {
           )}
 
           {/* Contenedor principal - Grid o Carrusel */}
-          <div
-            ref={scrollContainerRef}
-            onScroll={checkScrollButtons}
-            className={useCarouselForLast 
-              ? "flex gap-6 md:gap-8 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-4 md:px-8 lg:px-12"
-              : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
-            }
-            style={useCarouselForLast ? {
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-            } : undefined}
-          >
+              <div
+              ref={scrollContainerRef}
+              onScroll={useCarouselForLast ? checkScrollButtons : undefined} // ✅ Solo si usa carrusel
+              className={useCarouselForLast 
+                ? "flex gap-6 md:gap-8 overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4 md:px-8 lg:px-12"
+                : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
+              }
+              style={useCarouselForLast ? {
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'auto', // ✅ NUEVO: Deshabilitar momentum scroll en carrusel
+              } : undefined}
+            >
             {/* Todos los servicios */}
             {useCarouselForLast ? (
               // Modo carrusel - mostrar todos
               services.map((service, index) => (
                 <div key={index} className="shrink-0 w-[85vw] md:w-[45vw] snap-start">
-                  <ServiceCard service={service} longestTitle={longestTitle} />
+                  <Link href={`/${locale}/services`} className="block">
+                    <ServiceCard service={service} longestTitle={longestTitle} />
+                  </Link>
                 </div>
               ))
             ) : (
               // Modo grid - mostrar todos
               services.map((service, index) => (
                 <div key={index}>
-                  <ServiceCard service={service} longestTitle={longestTitle} />
+                  <Link href={`/${locale}/services`} className="block">
+                    <ServiceCard service={service} longestTitle={longestTitle} />
+                  </Link>
                 </div>
               ))
             )}

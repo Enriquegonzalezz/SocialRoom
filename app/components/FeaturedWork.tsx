@@ -71,58 +71,90 @@ function WorkItem({ project, locale }: { project: Project; locale: string }) {
   const categoryRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
-  // Scroll reveal animation con GSAP ScrollTrigger
+  
   useEffect(() => {
-    if (itemRef.current && mediaContainerRef.current && categoryRef.current && titleRef.current) {
-      const ctx = gsap.context(() => {
-        // Animar el media container
-        gsap.from(mediaContainerRef.current, {
-          y: 60,
-          opacity: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: itemRef.current,
-            start: 'top 85%',
-            end: 'top 60%',
-            toggleActions: 'play none none none',
-          },
-        });
-
-        // Animar la categoría
-        gsap.from(categoryRef.current, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: itemRef.current,
-            start: 'top 85%',
-            end: 'top 60%',
-            toggleActions: 'play none none none',
-          },
-        });
-
-        // Animar el título
-        gsap.from(titleRef.current, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.3,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: itemRef.current,
-            start: 'top 85%',
-            end: 'top 60%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }, itemRef);
-
-      return () => ctx.revert();
+  const isMobile = window.innerWidth < 768;
+  
+  // ✅ En móvil: SOLO IntersectionObserver simple
+  if (isMobile) {
+    if (itemRef.current) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (mediaContainerRef.current) {
+                mediaContainerRef.current.style.opacity = '1';
+                mediaContainerRef.current.style.transform = 'translateY(0)';
+              }
+              if (categoryRef.current) {
+                categoryRef.current.style.opacity = '1';
+                categoryRef.current.style.transform = 'translateY(0)';
+              }
+              if (titleRef.current) {
+                titleRef.current.style.opacity = '1';
+                titleRef.current.style.transform = 'translateY(0)';
+              }
+              observer.disconnect();
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      
+      observer.observe(itemRef.current);
+      return () => observer.disconnect();
     }
-  }, []);
+    return;
+  }
+  
+  // Desktop: GSAP completo
+  if (itemRef.current && mediaContainerRef.current && categoryRef.current && titleRef.current) {
+    const ctx = gsap.context(() => {
+      gsap.from(mediaContainerRef.current, {
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: itemRef.current,
+          start: 'top 85%',
+          end: 'top 60%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      gsap.from(categoryRef.current, {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: itemRef.current,
+          start: 'top 85%',
+          end: 'top 60%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      gsap.from(titleRef.current, {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.3,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: itemRef.current,
+          start: 'top 85%',
+          end: 'top 60%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }, itemRef);
+
+    return () => ctx.revert();
+  }
+}, []);
 
   // Lazy loading con IntersectionObserver
   useEffect(() => {
@@ -178,8 +210,11 @@ function WorkItem({ project, locale }: { project: Project; locale: string }) {
     }
   }, [isVisible, project.videoUrl, project.imageUrl, mediaLoaded]);
 
-  // GSAP animations on hover
+  // GSAP animations on hover (solo desktop para evitar lag en móvil)
   const handleMouseEnter = () => {
+    // No animar en móvil
+    if (window.innerWidth < 768) return;
+    
     if (mediaContainerRef.current) {
       gsap.to(mediaContainerRef.current, {
         scale: 1.05,
@@ -210,6 +245,9 @@ function WorkItem({ project, locale }: { project: Project; locale: string }) {
   };
 
   const handleMouseLeave = () => {
+    // No animar en móvil
+    if (window.innerWidth < 768) return;
+    
     if (mediaContainerRef.current) {
       gsap.to(mediaContainerRef.current, {
         scale: 1,
