@@ -55,18 +55,25 @@ export default function ContactFooterSection() {
     return; // ✅ Salir ANTES de manipular el DOM
   }
   
-  // Solo desktop: animación de letras
+  // Solo desktop: animación de letras agrupadas por palabras
   const text = ctaRef.current.textContent || '';
-  ctaRef.current.innerHTML = text
-    .split('')
-    .map((char) => {
-      const displayChar = char === ' ' ? '&nbsp;' : char;
-      return `<span style="display:inline-block;">${displayChar}</span>`;
+  const tokens = text.split(/(\s+)/);
+  ctaRef.current.innerHTML = tokens
+    .map((token) => {
+      if (!token) return '';
+      if (/^\s+$/.test(token)) return ' ';
+
+      const lettersHtml = token
+        .split('')
+        .map((letter) => `<span data-letter style="display:inline-block;">${letter}</span>`)
+        .join('');
+
+      return `<span data-word style="display:inline-block; white-space:nowrap;">${lettersHtml}</span>`;
     })
     .join('');
 
-  const spans = ctaRef.current.querySelectorAll('span');
-  gsap.from(spans, {
+  const letters = ctaRef.current.querySelectorAll('[data-letter]');
+  gsap.from(letters, {
     opacity: 0,
     y: 50,
     rotateX: -90,
