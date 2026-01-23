@@ -1,10 +1,13 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { useTranslation } from '@/app/hooks/useTranslation';
-import SectionFooterButton from './SectionFooterButton';
+
+gsap.registerPlugin(ScrollTrigger);
+
 
 interface TeamMember {
   id: string;
@@ -16,6 +19,7 @@ interface TeamMember {
 
 interface TeamMemberWithSize extends TeamMember {
   size: 'small' | 'medium' | 'large'; // Para Bento Grid
+  objectPosition?: string; // Para controlar el posicionamiento de la imagen
 }
 
 const teamMembers: TeamMemberWithSize[] = [
@@ -26,6 +30,7 @@ const teamMembers: TeamMemberWithSize[] = [
     image: '/muchachos/Fabian.webp',
     color: 'bg-amber-100',
     size: 'medium',
+    objectPosition: 'left center',
   },
   {
     id: '2',
@@ -34,14 +39,16 @@ const teamMembers: TeamMemberWithSize[] = [
     image: '/muchachos/MANUEL PADRE.png',
     color: 'bg-blue-100',
     size: 'small',
+    objectPosition: 'right center',
   },
   {
     id: '3',
-    name: 'Dubraska',
-    role: 'Project Coordinator',
-    image: '/muchachos/Dubraska.webp',
+    name: 'Eduardo',
+    role: 'Logistics',
+    image: '/muchachos/Eduardo.webp',
     color: 'bg-emerald-100',
     size: 'small',
+  
   },
   {
     id: '4',
@@ -50,20 +57,22 @@ const teamMembers: TeamMemberWithSize[] = [
     image: '/muchachos/Jorge.webp',
     color: 'bg-purple-100',
     size: 'medium',
+  
   },
   {
     id: '5',
     name: 'Enrique',
     role: 'Full Stack Developer',
-    image: '/muchachos/Enrique.webp',
+    image: '/muchachos/enrique.webp',
     color: 'bg-green-100',
     size: 'small',
+    
   },
   {
     id: '6',
     name: 'Erika',
-    role: 'Designer',
-    image: '/muchachos/Erika.webp',
+    role: 'Project Manager',
+    image: '/muchachos/erika.webp',
     color: 'bg-red-100',
     size: 'large',
   },
@@ -71,7 +80,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '7',
     name: 'Carlitos',
     role: 'Designer',
-    image: '/muchachos/Carlitos.webp',
+    image: '/muchachos/carlitos.webp',
     color: 'bg-indigo-100',
     size: 'small',
   },
@@ -85,9 +94,9 @@ const teamMembers: TeamMemberWithSize[] = [
   },
   {
     id: '9',
-    name: 'Luis Felipe',
-    role: 'Video Editor',
-    image: '',
+    name: 'Eli',
+    role: 'Project-Coordinator',
+    image: '/muchachos/Ellie.webp',
     color: 'bg-red-100',
     size: 'small',
   },
@@ -103,7 +112,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '11',
     name: 'Maria',
     role: 'Designer',
-    image: '/muchachos/Maria.webp',
+    image: '/muchachos/maria.webp',
     color: 'bg-rose-100',
     size: 'small',
   },
@@ -141,58 +150,50 @@ const teamMembers: TeamMemberWithSize[] = [
   },
   {
     id: '16',
-    name: 'Eli',
-    role: 'Project-Coordinator',
-    image: '/muchachos/Ellie.webp',
+    name: 'Antonio',
+    role: 'Designer',
+    image: '/muchachos/antonio.webp',
     color: 'bg-orange-100',
     size: 'small',
   },
   {
     id: '17',
-    name: '',
-    role: '',
-    image: '',
+    name: 'Dani',
+    role: 'Community Manager',
+    image: '/muchachos/dani.webp',
     color: 'bg-gray-100',
     size: 'small',
   },
   {
     id: '18',
-    name: '',
-    role: '',
-    image: '',
-    color: 'bg-gray-100',
-    size: 'small',
-  },
-  {
-    id: '19',
-    name: '',
-    role: '',
-    image: '',
-    color: 'bg-gray-100',
-    size: 'small',
-  },
-  {
-    id: '20',
-    name: 'Juli',
+    name: 'Julia',
     role: 'Designer',
-    image: '/muchachos/Julia.webp',
+    image: '/muchachos/julia.webp',
     color: 'bg-neutral-100',
     size: 'small',
   },
   {
-    id: '21',
-    name: '',
-    role: '',
-    image: '',
-    color: 'bg-gray-100',
+    id: '19',
+    name: 'Luis Felipe',
+    role: 'Editor',
+    image: '/muchachos/luisfelipe.webp',
+    color: 'bg-zinc-100',
     size: 'small',
   },
   {
-    id: '22',
-    name: '',
-    role: '',
-    image: '',
-    color: 'bg-gray-100',
+    id: '20',
+    name: 'Nicola',
+    role: 'Designer',
+    image: '/muchachos/nicola.webp',
+    color: 'bg-stone-100',
+    size: 'small',
+  },
+  {
+    id: '21',
+    name: 'Wilder',
+    role: 'Designer UI/UX',
+    image: '/muchachos/wilder.webp',
+    color: 'bg-lime-100',
     size: 'small',
   },
 ];
@@ -204,39 +205,38 @@ interface TeamCardProps {
 
 const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
-  // ✅ NO hacer nada en móvil
-  if (window.innerWidth < 768) return;
-  
-  gsap.to(cardRef.current, {
-    scale: 1.05, // ✅ CAMBIADO de 1.00 a 1.05
-    duration: 0.3,
-    ease: 'power2.out',
-  });
-};
+    if (cardRef.current && innerRef.current) {
+      gsap.to([cardRef.current, innerRef.current], {
+        borderRadius: '50%',
+        duration: 0.3,
+        ease: 'power2.inOut',
+      });
+    }
+  };
 
-const handleMouseLeave = () => {
-  // ✅ NO hacer nada en móvil
-  if (window.innerWidth < 768) return;
-  
-  gsap.to(cardRef.current, {
-    scale: 1,
-    duration: 0.3,
-    ease: 'power2.out',
-  });
-};
+  const handleMouseLeave = () => {
+    if (cardRef.current && innerRef.current) {
+      gsap.to([cardRef.current, innerRef.current], {
+        borderRadius: '0%',
+        duration: 0.3,
+        ease: 'power2.inOut',
+      });
+    }
+  };
 
   return (
     <div
       ref={cardRef}
+      onClick={() => onImageClick(member)}
+      className="cursor-pointer relative w-full h-full aspect-square overflow-hidden hover:border-5 hover:border-[#BDBBB0]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={() => onImageClick(member)}
-      className="cursor-pointer relative w-full aspect-square rounded-lg overflow-hidden group transition-all"
     >
-      {/* Contenedor con overflow hidden para evitar desbordamiento en zoom */}
-      <div className={`relative w-full h-full overflow-hidden rounded-lg ${member.color}`}>
+      {/* Contenedor con overflow hidden para evitar desbordamiento */}
+      <div ref={innerRef} className={`relative w-full h-full overflow-hidden ${member.color}`}>
         {member.image && member.image.trim() !== '' ? (
           <Image
             src={member.image}
@@ -247,7 +247,8 @@ const handleMouseLeave = () => {
             blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23f3f3f3' width='400' height='400'/%3E%3C/svg%3E"
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             quality={75}
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="object-cover"
+           
           />
         ) : null}
       </div>
@@ -387,7 +388,10 @@ export default function TeamSection() {
   const { t } = useTranslation();
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollTextRef = useRef<HTMLDivElement>(null);
 
   const handleImageClick = (member: TeamMember) => {
     setSelectedMember(member);
@@ -399,172 +403,298 @@ export default function TeamSection() {
     setTimeout(() => setSelectedMember(null), 300);
   };
 
-  // Los cards aparecen sin animación
-  useEffect(() => {
-    if (containerRef.current) {
-      const cards = containerRef.current.querySelectorAll('[data-card]');
-      cards.forEach((card) => {
-        (card as HTMLElement).style.opacity = '1';
+  // Animación de scroll horizontal del SVG (solo desktop)
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      let mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        if (scrollTextRef.current) {
+          // Establecer opacidad inicial a 0 para evitar FOUC
+          gsap.set(scrollTextRef.current, { opacity: 1 });
+
+          // Animación de desplazamiento
+          gsap.to(scrollTextRef.current, {
+            x: "-150%",
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: scrollContainerRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          });
+        }
       });
-    }
+    }, scrollContainerRef);
+
+    return () => ctx.revert();
   }, []);
 
+  // Detectar el índice activo del carrusel en móvil
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const handleScroll = () => {
+      const scrollLeft = carousel.scrollLeft;
+      const cardWidth = carousel.offsetWidth;
+      const index = Math.round(scrollLeft / cardWidth);
+      setActiveIndex(index);
+    };
+
+    carousel.addEventListener('scroll', handleScroll);
+    return () => carousel.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Filtrar miembros con imagen para el carrusel móvil
+  const membersWithImage = teamMembers.filter(m => m.image && m.image.trim() !== '');
+
   return (
-    <section className="min-h-screen bg-[#f3f3f3] py-20 px-6 md:px-12 lg:px-16">
-      <div className="w-4/5 mx-auto">
+    <section 
+      ref={scrollContainerRef}
+      className="relative bg-[#f3f3f3] py-10 md:px-12 lg:px-16 overflow-hidden"
+    >
+      {/* --- MÓVIL: PNG ESTÁTICO --- */}
+      <div 
+        className="absolute top-0 left-0 right-0 md:hidden pointer-events-none z-0"
+        style={{
+          backgroundImage: "url('/Our team.png')",
+          backgroundSize: 'contain',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'no-repeat',
+          height: '40vh'
+        }}
+      />
+
+      {/* --- DESKTOP: SVG ANIMADO --- */}
+      <div 
+        className="hidden md:block absolute top-20 left-[40%] pointer-events-none z-0 -mt-20"
+        ref={scrollTextRef}
+      >
+        <img 
+          src="/Nuestro equipo (Stroke).png" 
+          alt="Nuestro equipo" 
+          className="w-auto max-w-none h-[35vh] will-change-transform"
+          onLoad={() => ScrollTrigger.refresh()}
+        />
+      </div>
+
+      <div className="w-full relative z-10">
         {/* Título */}
-        <div className=" mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-black mb-4 font-social">
+        <div className=" mb-12 ml-8">
+          <h2 className="text-4xl md:text-6xl font-bold text-black font-helvetica">
             {t('team.title')}
           </h2>
-          <p className="text-2xl md:text-3xl text-black/80 font-social">
-            {t('team.subtitle')}
-          </p>
         </div>
 
-        {/* Grid de miembros - Mobile: grid simple, Desktop: bento grid */}
+        {/* Grid de miembros - Mobile: carrusel, Desktop: bento grid */}
         
-        {/* Mobile Grid - Grid creativo de 3 columnas */}
-        <div
-          ref={containerRef}
-          className="grid grid-cols-3 gap-2 md:hidden"
-          
-        >
-          {(() => {
-            // Filtrar miembros con imagen
-            const membersWithImage = teamMembers.filter(m => m.image && m.image.trim() !== '');
-            
-            // Encontrar a los cofundadores importantes
-            const jorge = membersWithImage.find(m => m.name === 'Jorge' && m.role === 'CSO');
-            const manuelCEO = membersWithImage.find(m => m.name === 'Manuel' && m.role === 'CEO');
-            const erika = membersWithImage.find(m => m.name === 'Erika'); // Large size
-            
-            // Resto de miembros
-            const others = membersWithImage.filter(m => 
-              !(m.name === 'Jorge' && m.role === 'CSO') && 
-              !(m.name === 'Manuel' && m.role === 'CEO') &&
-              m.name !== 'Erika' &&
-              m.name !== 'Fabian'
-            );
-            
-            
-            // Grid creativo de 3 columnas con diferentes spans
-            const mobileGridLayout = [
-              // Fila 1: Manuel como miembro destacado + otros miembros
-              manuelCEO ? { ...manuelCEO, className: 'col-span-2' } : null,
-              others[11] ? { ...others[11], className: 'col-start-3' } : null, // último miembro en columna 3
-              
-              // Fila 2: Jorge destacado + otro miembro
-              others[0] ? { ...others[0], className: 'col-start-1 row-start-2' } : null, // primer miembro en columna 1
-              jorge ? { ...jorge, className: 'col-span-2 col-start-2 row-start-2' } : null,
-              
-              // Fila 3: Tres miembros
-              others[1] ? { ...others[1], className: 'row-start-3' } : null,
-              others[2] ? { ...others[2], className: 'col-start-2 row-start-3' } : null,
-              others[3] ? { ...others[3], className: 'col-start-3 row-start-3' } : null,
-              
-              // Fila 4: Tres miembros desordenados
-              others[4] ? { ...others[4], className: 'col-start-2 row-start-4' } : null,
-              others[5] ? { ...others[5], className: 'col-start-3 row-start-4' } : null,
-              others[6] ? { ...others[6], className: 'col-start-1 row-start-5' } : null,
-              
-              // Fila 5: Alternando columnas
-              others[7] ? { ...others[7], className: 'col-start-2 row-start-5' } : null,
-              others[8] ? { ...others[8], className: 'col-start-3 row-start-6' } : null,
-              others[9] ? { ...others[9], className: 'col-start-1 row-start-6' } : null,
-              
-              // Fila 6-7: Más desorden
-              others[10] ? { ...others[10], className: 'col-start-2 row-start-7' } : null,
-            ].filter((member): member is TeamMemberWithSize & { className: string } => member !== null); // Filtrar nulos con type guard
-            
-            return mobileGridLayout.map((member, idx) => (
-              <div 
-                key={member.id} 
+        {/* Mobile Carousel - Scroll horizontal con snap */}
+        <div className="md:hidden -mx-6 overflow-visible">
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto overflow-y-visible snap-x snap-mandatory scrollbar-hide px-6"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            {membersWithImage.map((member) => (
+              <div
+                key={member.id}
                 data-card
-                className={`${member.className} aspect-square`}
+                className="shrink-0 w-full snap-center px-8"
               >
-                <TeamCard member={member} onImageClick={handleImageClick} />
+                <div className="w-full">
+                  <TeamCard member={member} onImageClick={handleImageClick} />
+                </div>
               </div>
-            ));
-          })()}
+            ))}
+          </div>
+          
+          {/* Indicadores de puntos estilo Instagram */}
+          <div className="flex justify-center items-center gap-1.5 mt-6">
+            {(() => {
+              const totalSlides = membersWithImage.length;
+              const maxDots = 5;
+              
+              // Si hay menos de 5 slides, mostrar todos
+              if (totalSlides <= maxDots) {
+                return membersWithImage.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      const carousel = carouselRef.current;
+                      if (carousel) {
+                        const cardWidth = carousel.offsetWidth;
+                        carousel.scrollTo({
+                          left: cardWidth * index,
+                          behavior: 'smooth',
+                        });
+                      }
+                    }}
+                    className={`transition-all duration-300 ${
+                      index === activeIndex
+                         ? 'w-2 h-2 bg-[#202020]'
+                        : 'w-2 h-2 bg-gray-400'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ));
+              }
+              
+              // Lógica para mostrar solo 5 puntos con escala
+              const dots = [];
+              const halfMax = Math.floor(maxDots / 2); // 2
+              
+              let startIndex = Math.max(0, activeIndex - halfMax);
+              let endIndex = Math.min(totalSlides - 1, activeIndex + halfMax);
+              
+              // Ajustar si estamos cerca del inicio o final
+              if (activeIndex < halfMax) {
+                endIndex = Math.min(totalSlides - 1, maxDots - 1);
+                startIndex = 0;
+              } else if (activeIndex > totalSlides - halfMax - 1) {
+                startIndex = Math.max(0, totalSlides - maxDots);
+                endIndex = totalSlides - 1;
+              }
+              
+              for (let i = startIndex; i <= endIndex; i++) {
+                const distanceFromActive = Math.abs(i - activeIndex);
+                
+                // Calcular escala basada en la distancia del punto activo
+                let scale = 1;
+                let opacity = 1;
+                
+                if (distanceFromActive === 0) {
+                  scale = 1; // Punto activo - tamaño completo
+                  opacity = 1;
+                } else if (distanceFromActive === 1) {
+                  scale = 0.75; // Puntos adyacentes
+                  opacity = 0.6;
+                } else if (distanceFromActive === 2) {
+                  scale = 0.5; // Puntos en los extremos
+                  opacity = 0.4;
+                }
+                
+                dots.push(
+                  <button
+                    key={i}
+                    onClick={() => {
+                      const carousel = carouselRef.current;
+                      if (carousel) {
+                        const cardWidth = carousel.offsetWidth;
+                        carousel.scrollTo({
+                          left: cardWidth * i,
+                          behavior: 'smooth',
+                        });
+                      }
+                    }}
+                    style={{
+                      transform: `scale(${scale})`,
+                      opacity: opacity,
+                    }}
+                    className={` transition-all duration-300 ${
+                      i === activeIndex
+                        ? 'w-2 h-2 bg-[#202020]'
+                        : 'w-2 h-2 bg-gray-400'
+                    }`}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                );
+              }
+              
+              return dots;
+            })()}
+          </div>
         </div>
 
-        {/* Desktop Bento Grid */}
-        <div
-          className="hidden md:grid grid-cols-12 gap-2"
-          style={{ gridAutoRows: 'minmax(80px, 1fr)' }}
-        >
-          <div className="col-span-2 row-span-2" data-card>
+        {/* Desktop Grid - Solo para pantallas lg (1024px+) */}
+        <div className="hidden lg:grid grid-cols-12 grid-rows-7 gap-4">
+          <div className="col-start-2 row-start-2" data-card>
             <TeamCard member={teamMembers[0]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-3 row-span-4 col-start-3 row-start-2" data-card>
-            <TeamCard member={teamMembers[1]} onImageClick={handleImageClick} />
-          </div>
-          <div className="col-start-2 row-start-5" data-card>
+          <div className="col-start-3 row-start-1" data-card>
             <TeamCard member={teamMembers[2]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-3 row-span-4 col-start-9 row-start-4" data-card>
-            <TeamCard member={teamMembers[3]} onImageClick={handleImageClick} />
-          </div>
-          <div className="col-span-2 row-span-2 col-start-11 row-start-2" data-card>
+          <div className="col-start-4 row-start-1" data-card>
             <TeamCard member={teamMembers[4]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-11 row-start-8" data-card>
+          <div className="col-start-5 row-start-1" data-card>
             <TeamCard member={teamMembers[5]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-9 row-start-8" data-card>
+          <div className="col-span-3 row-span-3 col-start-3 row-start-2" data-card>
+            <TeamCard member={teamMembers[1]} onImageClick={handleImageClick} />
+          </div>
+          <div className="col-span-2 row-span-2 col-start-1 row-start-3" data-card>
             <TeamCard member={teamMembers[6]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-3 row-start-6" data-card>
+          <div className="col-span-2 row-span-2 col-start-1 row-start-5" data-card>
             <TeamCard member={teamMembers[7]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-1 row-start-7" data-card>
+          <div className="col-span-2 row-span-2 col-start-3 row-start-5" data-card>
             <TeamCard member={teamMembers[8]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-5 row-start-7" data-card>
+          <div className="col-start-5 row-start-5" data-card>
             <TeamCard member={teamMembers[9]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-9 row-start-3" data-card>
+          <div className="col-start-5 row-start-6" data-card>
             <TeamCard member={teamMembers[10]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-7 row-start-5" data-card>
+          <div className="col-start-3 row-start-7" data-card>
             <TeamCard member={teamMembers[11]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-2 row-start-3" data-card>
+          <div className="col-start-4 row-start-7" data-card>
             <TeamCard member={teamMembers[12]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-5 row-start-8" data-card>
+          <div className="col-span-2 row-span-2 col-start-6 row-start-6" data-card>
             <TeamCard member={teamMembers[13]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-6 row-start-2" data-card>
+          <div className="col-span-2 row-span-2 col-start-6 row-start-4" data-card>
             <TeamCard member={teamMembers[14]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-9 row-start-1" data-card>
+          <div className="col-span-2 row-span-2 col-start-6 row-start-2" data-card>
             <TeamCard member={teamMembers[15]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-11 row-start-1" data-card>
+          <div className="col-span-2 row-span-2 col-start-8 row-start-2" data-card>
             <TeamCard member={teamMembers[16]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-12 row-start-6" data-card>
+          <div className="col-start-10 row-start-2" data-card>
             <TeamCard member={teamMembers[17]} onImageClick={handleImageClick} />
           </div>
-          <div className="row-span-2 col-start-8 row-start-7" data-card>
+          <div className="col-start-11 row-start-2" data-card>
             <TeamCard member={teamMembers[18]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-span-2 row-span-2 col-start-1 row-start-1" data-card>
+          <div className="col-start-10 row-start-3" data-card>
             <TeamCard member={teamMembers[19]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-7 row-start-8" data-card>
+          <div className="col-span-2 row-span-2 col-start-11 row-start-3" data-card>
             <TeamCard member={teamMembers[20]} onImageClick={handleImageClick} />
           </div>
-          <div className="col-start-4 row-start-1" data-card>
+          {/* <div className="col-span-2 row-span-2 col-start-11 row-start-5" data-card>
             <TeamCard member={teamMembers[21]} onImageClick={handleImageClick} />
+          </div> */}
+          <div className="col-span-3 row-span-3 col-start-8 row-start-4" data-card>
+            <TeamCard member={teamMembers[3]} onImageClick={handleImageClick} />
           </div>
+          {/* <div className="col-start-8 row-start-7" data-card>
+            <TeamCard member={teamMembers[22]} onImageClick={handleImageClick} />
+          </div>
+          <div className="col-start-9 row-start-7" data-card>
+            <TeamCard member={teamMembers[23]} onImageClick={handleImageClick} />
+          </div>
+          <div className="col-start-10 row-start-7" data-card>
+            <TeamCard member={teamMembers[24]} onImageClick={handleImageClick} />
+          </div>
+          <div className="col-start-11 row-start-7" data-card>
+            <TeamCard member={teamMembers[25]} onImageClick={handleImageClick} /> 
+          </div> */}
         </div>
       </div>
 
-      {/* Botón de footer de sección */}
-      <SectionFooterButton section="team" />
+ 
 
       {/* Modal */}
       <TeamModal

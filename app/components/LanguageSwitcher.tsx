@@ -3,46 +3,6 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
-// Bandera de Reino Unido (circular)
-const UKFlag = () => (
-  <svg viewBox="0 0 60 60" className="w-6 h-6 md:w-7 md:h-7 rounded-full">
-    <clipPath id="ukCircle">
-      <circle cx="30" cy="30" r="30" />
-    </clipPath>
-    <g clipPath="url(#ukCircle)">
-      {/* Fondo azul */}
-      <rect width="60" height="60" fill="#012169" />
-      {/* Cruz diagonal blanca */}
-      <path d="M0,0 L60,60 M60,0 L0,60" stroke="#fff" strokeWidth="12" />
-      {/* Cruz diagonal roja */}
-      <path d="M0,0 L60,60 M60,0 L0,60" stroke="#C8102E" strokeWidth="4" />
-      {/* Cruz blanca horizontal/vertical */}
-      <path d="M30,0 V60 M0,30 H60" stroke="#fff" strokeWidth="20" />
-      {/* Cruz roja horizontal/vertical */}
-      <path d="M30,0 V60 M0,30 H60" stroke="#C8102E" strokeWidth="12" />
-    </g>
-    <circle cx="30" cy="30" r="29" fill="none" stroke="#fff" strokeWidth="2" opacity="0.3" />
-  </svg>
-);
-
-// Bandera de España (circular)
-const SpainFlag = () => (
-  <svg viewBox="0 0 60 60" className="w-6 h-6 md:w-7 md:h-7 rounded-full">
-    <clipPath id="spainCircle">
-      <circle cx="30" cy="30" r="30" />
-    </clipPath>
-    <g clipPath="url(#spainCircle)">
-      {/* Franja roja superior */}
-      <rect width="60" height="15" fill="#AA151B" />
-      {/* Franja amarilla central */}
-      <rect y="15" width="60" height="30" fill="#F1BF00" />
-      {/* Franja roja inferior */}
-      <rect y="45" width="60" height="15" fill="#AA151B" />
-    </g>
-    <circle cx="30" cy="30" r="29" fill="none" stroke="#fff" strokeWidth="2" opacity="0.3" />
-  </svg>
-);
-
 export default function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
@@ -68,31 +28,22 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-2 md:gap-3">
-      {/* Bandera UK */}
-      <button
-        onClick={() => handleLanguageChange('en')}
-        className={`transition-all duration-300 hover:scale-110 ${
-          currentLocale === 'en' ? 'opacity-100 scale-105' : 'opacity-100 hover:opacity-80'
-        }`}
-        aria-label="English"
+    <div className="flex items-center gap-2">
+      {/* Icono de globo */}
+      <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" strokeWidth="1.5"/>
+        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" strokeWidth="1.5"/>
+      </svg>
+      
+      {/* Dropdown de idiomas */}
+      <select 
+        value={currentLocale}
+        onChange={(e) => handleLanguageChange(e.target.value)}
+        className="text-sm font-light text-black bg-transparent border-none outline-none cursor-pointer uppercase"
       >
-        <UKFlag />
-      </button>
-
-      {/* Separador */}
-      <span className="text-white/40 text-lg font-light">|</span>
-
-      {/* Bandera España */}
-      <button
-        onClick={() => handleLanguageChange('es')}
-        className={`transition-all duration-300 hover:scale-110 ${
-          currentLocale === 'es' ? 'opacity-100 scale-105' : 'opacity-100 hover:opacity-80'
-        }`}
-        aria-label="Español"
-      >
-        <SpainFlag />
-      </button>
+        <option value="es" className="bg-black text-white">ES</option>
+        <option value="en" className="bg-black text-white">EN</option>
+      </select>
     </div>
   );
 }

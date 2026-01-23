@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { getImageUrl } from '@/lib/supabase-images';
+import ContactFooterSection from '@/app/components/ContactFooterSection';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -177,14 +178,14 @@ export default function TheRoomPage() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-20 bg-[#f3f3f3]">
+      {/* <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-20 bg-[#f3f3f3]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 sm:mb-10 md:mb-16 font-helvetica">
             {t('theRoom.galleryTitle')}
           </h2>
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-            {/* Gallery images */}
+            
             <div className="relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden group">
               <Image
                 src="/muchachos/Victor.webp"
@@ -235,10 +236,10 @@ export default function TheRoomPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#233a28]">
+      {/* <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#233a28]">
         <div ref={ctaRef} className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 md:mb-8 font-helvetica">
             {t('theRoom.ctaTitle')}
@@ -261,7 +262,8 @@ export default function TheRoomPage() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
+      <ContactFooterSection />
     </main>
   );
 }

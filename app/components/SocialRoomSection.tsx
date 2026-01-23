@@ -1,10 +1,16 @@
 "use client";
 
-import { useRef, useState, useEffect } from 'react';
- import Link from 'next/link';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
+import Link from 'next/link';
 import { getImageUrl } from '@/lib/supabase-images';
 import { useTranslation } from '@/app/hooks/useTranslation';
-import SectionFooterButton from './SectionFooterButton';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import ArrowIcon from '@/public/ArrowOutwardOutlined.svg';
+import Image from 'next/image';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Keys para las traducciones y filenames
 const serviceKeys = ['offline', 'online', 'estrategia', 'eventos'] as const;
@@ -66,7 +72,7 @@ const ServiceCard = ({ service, longestTitle }: { service: ServiceData; longestT
   return (
     <div className="group relative overflow-hidden transition-transform duration-500 hover:scale-[1.02] cursor-pointer">
       <div 
-        className="relative w-full aspect-3/4 overflow-hidden bg-cover bg-center"
+        className="relative w-full aspect-4/5 overflow-hidden bg-cover bg-center"
         style={{ backgroundImage: `url(${getImageUrl('others', service.filename)})` }}
       >
         {/* Overlay oscuro sutil */}
@@ -104,10 +110,10 @@ const ServiceCard = ({ service, longestTitle }: { service: ServiceData; longestT
 
 export default function SocialRoomSection() {
   const { t, locale } = useTranslation();
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [useCarouselForLast, setUseCarouselForLast] = useState(false);
+  const scrollTextRef = useRef<HTMLDivElement>(null);
 
   // Generar servicios desde las traducciones
   const services: ServiceData[] = serviceKeys.map((key, index) => ({
@@ -116,131 +122,309 @@ export default function SocialRoomSection() {
     filename: serviceFilenames[index],
   }));
 
-  // Encontrar la palabra más larga para calcular el font-size uniforme
+  // Encontrar la palabra más larga para calcular el font-size uniforme (solo para desktop)
   const longestTitle = services.reduce((longest, service) => 
     service.title.length > longest.length ? service.title : longest
   , '');
 
-  // Detectar si necesitamos carrusel solo si el contenido se desborda
-  useEffect(() => {
-    const checkLayout = () => {
-      if (scrollContainerRef.current) {
-        const { scrollWidth, clientWidth } = scrollContainerRef.current;
-        // Si el contenido se desborda, usar carrusel
-        setUseCarouselForLast(scrollWidth > clientWidth + 10);
-      }
-    };
+  // Animación de scroll horizontal del SVG (solo desktop)
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      let mm = gsap.matchMedia();
 
-    checkLayout();
-    window.addEventListener('resize', checkLayout);
-    return () => window.removeEventListener('resize', checkLayout);
+      mm.add("(min-width: 768px)", () => {
+        if (scrollTextRef.current) {
+          // Establecer opacidad inicial a 0 para evitar FOUC
+          gsap.set(scrollTextRef.current, { opacity: 1 });
+
+          // Animación de desplazamiento
+          gsap.to(scrollTextRef.current, {
+            x: "-150%",
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: scrollContainerRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          });
+        }
+      });
+    }, scrollContainerRef);
+
+    return () => ctx.revert();
   }, []);
 
- const checkScrollButtons = () => {
-  // ✅ Solo ejecutar si NO es móvil
-  if (window.innerWidth < 768) return;
-  
-  if (scrollContainerRef.current) {
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-  }
-};
+  // Detectar el índice activo del carrusel en móvil
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
-      const newScrollLeft = direction === 'left' 
-        ? scrollContainerRef.current.scrollLeft - scrollAmount
-        : scrollContainerRef.current.scrollLeft + scrollAmount;
-      
-      scrollContainerRef.current.scrollTo({
-        left: newScrollLeft,
-        behavior: 'smooth'
-      });
-      
-      setTimeout(checkScrollButtons, 300);
-    }
-  };
+    const handleScroll = () => {
+      const scrollLeft = carousel.scrollLeft;
+      const cardWidth = carousel.offsetWidth;
+      const index = Math.round(scrollLeft / cardWidth);
+      setActiveIndex(index);
+    };
+
+    carousel.addEventListener('scroll', handleScroll);
+    return () => carousel.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <section className="w-full bg-[#f3f3f3] pt-20 pb-0 px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20">
-      {/* Contenedor principal */}
-      <div className="max-w-[1600px] mx-auto">
-        {/* Grid/Carrusel combinado */}
-        <div className="relative">
-          {/* Botones de carrusel - solo visible si se usa carrusel */}
-          {useCarouselForLast && canScrollLeft && (
-            <button
-              onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-black p-3 rounded-full transition-all duration-300"
-              aria-label="Scroll left"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-          )}
+   <section 
+      ref={scrollContainerRef}
+      className="relative w-full bg-[#f3f3f3] pt-20 pb-10 overflow-hidden"
+    >
+      {/* --- MÓVIL: PNG ESTÁTICO --- */}
+      <div 
+        className="absolute top-0 left-0 right-0 md:hidden pointer-events-none z-0"
+        style={{
+          backgroundImage: 'url(/Soluciones.png)',
+          backgroundSize: 'contain',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'no-repeat',
+          height: '40vh'
+        }}
+      />
 
-          {useCarouselForLast && canScrollRight && (
-            <button
-              onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-black p-3 rounded-full transition-all duration-300"
-              aria-label="Scroll right"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          )}
+      {/* --- DESKTOP: SVG ANIMADO --- */}
+      <div 
+        className="hidden md:block absolute top-10 left-[70%] pointer-events-none z-0 -mt-20"
+        ref={scrollTextRef}
+      >
+        <img 
+          src="/Soluciones (Stroke).png" 
+          alt="Soluciones" 
+          className="w-auto max-w-none h-[35vh] will-change-transform"
+          onLoad={() => ScrollTrigger.refresh()}
+        />
+      </div>
 
-          {/* Contenedor principal - Grid o Carrusel */}
+      {/* --- CONTENIDO PRINCIPAL --- */}
+      <div className="max-w-[1300px] mx-auto relative z-10">
+        <h2 className="text-[32px] md:text-5xl font-bold text-black mb-8 md:mb-12 font-helvetica px-5 ">
+          {t('socialRoom.scaleProject')}
+        </h2>
+
+        {/* Mobile Carousel */}
+        <div className="md:hidden">
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+          >
+            {services.map((service, index) => (
               <div
-              ref={scrollContainerRef}
-              onScroll={useCarouselForLast ? checkScrollButtons : undefined} // ✅ Solo si usa carrusel
-              className={useCarouselForLast 
-                ? "flex gap-6 md:gap-8 overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4 md:px-8 lg:px-12"
-                : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
+                key={index}
+                className="shrink-0 w-full snap-start px-5"
+              >
+                <Link href={`/${locale}/services`} className="block">
+                  <div className="flex flex-col bg-transparent overflow-hidden h-full">
+                    {/* Imagen estática en móvil (sin video) */}
+                    <div 
+                      className="relative w-full bg-cover bg-center aspect-4/5 overflow-hidden"
+                      style={{ backgroundImage: `url(${getImageUrl('others', service.filename)})` }}
+                    >
+                      <div className="absolute inset-0 bg-black/10" />
+                    </div>  
+                    
+                    {/* Contenido con altura fija para alinear botones */}
+                    <div className="py-6 bg-transparent flex flex-col" style={{ minHeight: '240px' }}>
+                      <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6 flex-grow">
+                        {service.description}
+                      </p>
+                      <button className="flex items-center gap-2 text-black group mt-auto">
+                        <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
+                         <Image 
+                          src={ArrowIcon} 
+                          alt="Arrow" 
+                          width={20} 
+                          height={20}
+                          className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 invert group-hover:invert-0"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+          
+          {/* Indicadores estilo Instagram */}
+          <div className="flex justify-center items-center gap-1.5 mt-2">
+            {(() => {
+              const totalSlides = services.length;
+              const maxDots = 5;
+              
+              if (totalSlides <= maxDots) {
+                return services.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      const carousel = carouselRef.current;
+                      if (carousel) {
+                        const cardWidth = carousel.offsetWidth;
+                        carousel.scrollTo({
+                          left: cardWidth * index,
+                          behavior: 'smooth',
+                        });
+                      }
+                    }}
+                    className={`transition-all duration-300 ${
+                      index === activeIndex
+                        ? 'w-2 h-2 bg-[#202020]'
+                        : 'w-2 h-2 bg-gray-400'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ));
               }
-              style={useCarouselForLast ? {
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'auto', // ✅ NUEVO: Deshabilitar momentum scroll en carrusel
-              } : undefined}
-            >
-            {/* Todos los servicios */}
-            {useCarouselForLast ? (
-              // Modo carrusel - mostrar todos
-              services.map((service, index) => (
-                <div key={index} className="shrink-0 w-[85vw] md:w-[45vw] snap-start">
-                  <Link href={`/${locale}/services`} className="block">
-                    <ServiceCard service={service} longestTitle={longestTitle} />
-                  </Link>
-                </div>
-              ))
-            ) : (
-              // Modo grid - mostrar todos
-              services.map((service, index) => (
-                <div key={index}>
-                  <Link href={`/${locale}/services`} className="block">
-                    <ServiceCard service={service} longestTitle={longestTitle} />
-                  </Link>
-                </div>
-              ))
-            )}
+              
+              const dots = [];
+              const halfMax = Math.floor(maxDots / 2);
+              
+              let startIndex = Math.max(0, activeIndex - halfMax);
+              let endIndex = Math.min(totalSlides - 1, activeIndex + halfMax);
+              
+              if (activeIndex < halfMax) {
+                endIndex = Math.min(totalSlides - 1, maxDots - 1);
+                startIndex = 0;
+              } else if (activeIndex > totalSlides - halfMax - 1) {
+                startIndex = Math.max(0, totalSlides - maxDots);
+                endIndex = totalSlides - 1;
+              }
+              
+              for (let i = startIndex; i <= endIndex; i++) {
+                const distanceFromActive = Math.abs(i - activeIndex);
+                let scale = 1;
+                let opacity = 1;
+                
+                if (distanceFromActive === 0) {
+                  scale = 1;
+                  opacity = 1;
+                } else if (distanceFromActive === 1) {
+                  scale = 0.75;
+                  opacity = 0.6;
+                } else if (distanceFromActive === 2) {
+                  scale = 0.5;
+                  opacity = 0.4;
+                }
+                
+                dots.push(
+                  <button
+                    key={i}
+                    onClick={() => {
+                      const carousel = carouselRef.current;
+                      if (carousel) {
+                        const cardWidth = carousel.offsetWidth;
+                        carousel.scrollTo({
+                          left: cardWidth * i,
+                          behavior: 'smooth',
+                        });
+                      }
+                    }}
+                    style={{
+                      transform: `scale(${scale})`,
+                      opacity: opacity,
+                    }}
+                    className={`transition-all duration-300 ${
+                      i === activeIndex
+                        ? 'w-4 h-4 bg-[#202020]'
+                        : 'w-3 h-3 bg-gray-400'
+                    }`}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                );
+              }
+              
+              return dots;
+            })()}
+          </div>
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden md:block px-5">
+          <div className="grid grid-cols-2 gap-6 xl:grid-cols-4">
+            {services.map((service, index) => (
+              <div key={index} className="group/card">
+                <Link href={`/${locale}/services`} className="block">
+                  <div className="flex flex-col bg-transparent overflow-hidden h-full transition-transform duration-300 group-hover/card:scale-105">
+                    {/* Imagen con hover para GIF/Video */}
+                    <div 
+                      className="relative w-full bg-cover bg-center aspect-[4/5] overflow-hidden"
+                      style={{ backgroundImage: `url(${getImageUrl('others', service.filename)})` }}
+                    >
+                      <div className="absolute inset-0 bg-black/10" />
+                      
+                      {/* Video para Offline - aparece en hover */}
+                      {serviceKeys[index] === 'offline' && (
+                        <video
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
+                          src="/Offline. VIDEO mp4.mp4"
+                          muted
+                          loop
+                          playsInline
+                          autoPlay
+                        />
+                      )}
+                      
+                      {/* Video para Online - aparece en hover */}
+                      {serviceKeys[index] === 'online' && (
+                        <video
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
+                          src="/Online negro mp4.mp4"
+                          muted
+                          loop
+                          playsInline
+                          autoPlay
+                        />
+                      )}
+                      
+                      {/* Video para Eventos - aparece en hover */}
+                      {serviceKeys[index] === 'eventos' && (
+                        <video
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
+                          src="/Eventos-video.mp4"
+                          muted
+                          loop
+                          playsInline
+                          autoPlay
+                        />
+                      )}
+                    </div>  
+                    
+                    {/* Contenido con altura fija para alinear botones */}
+                    <div className="py-6 bg-transparent flex flex-col" style={{ minHeight: '240px' }}>
+                      <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6 flex-grow">
+                        {service.description}
+                      </p>
+                      <button className="flex items-center gap-2 text-black group mt-auto">
+                        <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
+                         <Image 
+                          src={ArrowIcon} 
+                          alt="Arrow" 
+                          width={20} 
+                          height={20}
+                          className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 invert group-hover:invert-0"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Botón de footer de sección */}
-      <SectionFooterButton section="socialroom" />
-
-      {/* CSS para ocultar scrollbar */}
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+     
     </section>
   );
 }

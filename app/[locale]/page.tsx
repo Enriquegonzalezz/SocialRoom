@@ -1,11 +1,12 @@
 import HeroSection from '../components/HeroSection';
 import SocialRoomSection from '../components/SocialRoomSection';
-import ThreeSliderSectionV2 from '../components/ThreeSliderSectionV2';
+import PastClients from '../components/PastClients';
 import FeaturedWork from '../components/FeaturedWork';
 import TeamSection from '../components/TeamSection';
 import ServicesCarouselSection from '../components/ServicesCarouselSection';
 import ContactFooterSection from '../components/ContactFooterSection';
-import ScrollReset from '../components/ScrollReset';
+
+import InfiniteBrands from '../components/Infinitebrands';
 import { getImageUrl } from '@/lib/supabase-images';
 
 // Proyectos para FeaturedWork
@@ -43,7 +44,6 @@ const projects = [
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <ScrollReset />
       <div data-section="hero">
         <HeroSection />
       </div>
@@ -51,14 +51,14 @@ export default function Home() {
         <SocialRoomSection />
       </div>
       
-      {/* ThreeSliderSectionV2 solo en desktop (lg y superior) */}
-      <div data-section="threeslider" className="hidden lg:block">
-        <ThreeSliderSectionV2 />
+      {/* PastClients - Carrusel de proyectos */}
+      <div data-section="threeslider">
+        <PastClients />
       </div>
       
-      {/* FeaturedWork solo en móvil y tablet (menor a lg) */}
-      <div className="block lg:hidden">
-        <FeaturedWork projects={projects} />
+      
+      <div data-section="brands">
+        <InfiniteBrands />
       </div>
       
       <div data-section="team">

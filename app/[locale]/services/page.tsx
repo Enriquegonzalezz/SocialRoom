@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { getImageUrl } from '@/lib/supabase-images';
+import ContactFooterSection from '@/app/components/ContactFooterSection';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -351,7 +352,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#233a28]">
+      {/* <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#233a28]">
         <div ref={ctaRef} className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8 font-helvetica">
             {t('servicesPage.ctaTitle')}
@@ -374,7 +375,8 @@ export default function ServicesPage() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
+      <ContactFooterSection />
     </main>
   );
 }

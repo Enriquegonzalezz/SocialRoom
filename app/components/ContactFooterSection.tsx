@@ -1,12 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { gsap } from 'gsap';
-import SectionFooterButton from './SectionFooterButton';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
+import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
+import Image from 'next/image';
+import { supabase, Lead } from '@/lib/supabase';
+import ThankYouModal from './ThankYouModal';
+
 
 // Variables configurables para información de contacto
 const contactInfo = {
+  Descriptionfooter: 'For a more direct contact, message us on WhatsApp and ask us anything!',
   companyName: 'Social Room',
   companySubtitle: 'Marketing Agency',
   location: 'Valencia, Miami and LA',
@@ -32,19 +39,129 @@ const contactInfo = {
   legalText: '',
 };
 
-// Configuración del Google Form (reemplaza con tu URL)
-const GOOGLE_FORM_URL = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL || 'https://forms.gle/YOUR_FORM_ID';
-
 export default function ContactFooterSection() {
   const { t } = useTranslation();
   const ctaRef = useRef<HTMLHeadingElement>(null);
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    country: '',
+    industry: '',
+    email: '',
+    phoneCode: '+1',
+    phoneNumber: '',
+    privacyAccepted: false
+  });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateName = (value: string): boolean => {
+    const nameRegex = /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]*$/;
+    return nameRegex.test(value);
+  };
+
+  const validateEmail = (value: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
+
+  const validatePhoneNumber = (value: string): boolean => {
+    const phoneRegex = /^[0-9\s\-\+\(\)]*$/;
+    return phoneRegex.test(value);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    
+    let newValue = value;
+    let fieldError = '';
+
+    if (name === 'name') {
+      if (value && !validateName(value)) {
+        fieldError = 'Only letters, spaces, and accents are allowed';
+        newValue = value.replace(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ\s]/g, '');
+      }
+    } else if (name === 'email') {
+      if (value && !validateEmail(value) && value.includes('@')) {
+        fieldError = 'Please enter a valid email address';
+      }
+    } else if (name === 'phoneNumber') {
+      if (value && !validatePhoneNumber(value)) {
+        fieldError = 'Only numbers, spaces, hyphens, and parentheses are allowed';
+        newValue = value.replace(/[^0-9\s\-\+\(\)]/g, '');
+      }
+    }
+
+    setFieldErrors(prev => ({
+      ...prev,
+      [name]: fieldError
+    }));
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : newValue
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Extraer número de teléfono del footer para WhatsApp
-    const phoneNumber = contactInfo.phone.replace(/[^\d]/g, ''); // +58 412 0639249 -> 584120639249
-    const whatsappUrl = `https://wa.me/${phoneNumber}`;
-    window.open(whatsappUrl, '_blank');
+    setError(null);
+    
+    if (!formData.name || !formData.country || !formData.industry || 
+        !formData.email || !formData.phoneNumber) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    if (!formData.privacyAccepted) {
+      setError('Please accept the Privacy Policy');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const leadData: Lead = {
+        name: formData.name,
+        country: formData.country,
+        industry: formData.industry,
+        email: formData.email,
+        phone_code: formData.phoneCode,
+        phone_number: formData.phoneNumber,
+        privacy_accepted: formData.privacyAccepted
+      };
+      
+      const { error: insertError } = await supabase
+        .from('leads')
+        .insert([leadData]);
+      
+      if (insertError) {
+        console.error('Error inserting lead:', insertError);
+        setError('There was an error submitting your information. Please try again.');
+        return;
+      }
+      
+      setFormData({
+        name: '',
+        country: '',
+        industry: '',
+        email: '',
+        phoneCode: '+1',
+        phoneNumber: '',
+        privacyAccepted: false
+      });
+      
+      setShowModal(true);
+    } catch (err) {
+      console.error('Error:', err);
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
  useEffect(() => {
@@ -85,56 +202,198 @@ export default function ContactFooterSection() {
 
   return (
     <>
+      <ThankYouModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      
       {/* Sección de contacto */}
-      <section className="w-full bg-[#f3f3f3] py-12 md:py-20 px-6 md:px-12 lg:px-20 min-h-[70vh] ">
-        <div className="max-w-[1600px] mx-auto w-full">
+      <section className="w-full bg-[#202020]  md:px-12 lg:px-20 h-fit ">
+        <div className="max-w-[1200px] mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
             
             {/* Columna izquierda - Título y info */}
-            <div>
-              <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light mb-8 md:mb-12 leading-tight text-black font-thermal">
+            <div className='flex flex-col items-center lg:items-start last:mx-auto px-4'>
+              <h2 className="text-5xl sm:text-5xl md:text-7xl lg:text-7xl font-light mb-6 mt-10 md:mb-10 text-[#f4f4f4] font-thermal">
                 {t('contact.forgetToCall')}<br />{t('contact.forgetToCallDescription')}
               </h2>
               
-              <div className="space-y-1 text-black">
-                <p className="text-sm md:text-base font-medium">{contactInfo.companyName}</p>
-                <p className="text-sm md:text-base">{contactInfo.companySubtitle}</p>
-                <p className="text-sm md:text-base">{contactInfo.location}</p>
-              </div>
+            
+                <p className="text-sm md:text-base font-thermal font-light mb-8 text-white">{contactInfo.Descriptionfooter}</p>
+                <button className="mt-4 px-6 py-4 bg-[#f4f4f4] text-black font-light hover:bg-[#d4ddd4] transition-colors flex justify-center items-center gap-2 underline-offset-4 decoration-black underline">
+                  Let's start chatting
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                  </svg>
+                </button>
+              
             </div>
 
-            {/* Columna derecha - Formulario */}
-            <div className="relative">
-              {/* Año en la esquina superior derecha */}
-              <div className="absolute -top-8 right-0 text-sm text-gray-600">
-                {contactInfo.year}
+            {/* Columna derecha - Nueva sección de contacto con imágenes de fondo */}
+            <div className="relative w-full max-w-4xl mx-auto sm:pt-20 px-4 min-h-[600px] flex items-center justify-center">
+              
+              {/* IMAGEN DETRÁS - IZQUIERDA (El Leopardo) - Solo desktop */}
+              <div className="absolute left-0 bottom-0 w-[500px] h-[450px] z-0 hidden lg:block">
+                <Image 
+                  src="/fotoizquierda.png" 
+                  alt="Backgroundecor"
+                  fill
+                  className="object-cover shadow-xl"
+                />
               </div>
 
-              {/* Formulario con fondo verde claro */}
-              <div className="bg-[#d4ddd4] p-8 md:p-12 lg:p-16">
-                <form onSubmit={handleSubmit} className="space-y-8">
+              {/* IMAGEN DETRÁS - DERECHA/ARRIBA (Arquitectura) - Solo desktop */}
+              <div className="absolute right-0 top-10 w-96 h-[550px] z-0 hidden lg:block">
+                <Image 
+                  src="/fotoizquierda.png" 
+                  alt="Backgroundecor"
+                  fill
+                  className="object-cover shadow-xl"
+                />
+              </div>
+
+              {/* CUADRO ROJO (EL FORMULARIO) */}
+              <div className="relative z-10 bg-[#D92C01] p-8 w-full max-w-[550px] shadow-2xl">
+                <h2 
+                  ref={ctaRef}
+                  className="text-white text-4xl font-helvetica-neue font-bold mb-8"
+                >
+                  Ready to start?  
+                </h2>
+                
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                      {error}
+                    </div>
+                  )}
+                  
                   <div>
-                    <h3
-                      ref={ctaRef}
-                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black font-helvetica tracking-tight leading-tight cursor-pointer transition-transform duration-500 hover:scale-[1.01]"
-                      style={{ perspective: '1000px', wordBreak: 'keep-all', overflowWrap: 'normal' }}
+                    <input 
+                      type="text" 
+                      name="name"
+                      placeholder="Name" 
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 ${fieldErrors.name ? 'border-2 ' : ''}`}
+                    />
+                    {fieldErrors.name && (
+                      <p className="text-black text-sm mt-1">{fieldErrors.name}</p>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <select 
+                      name="country"
+                      value={formData.country}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full p-3 pr-10 bg-[#E5E5E1] outline-none text-gray-800 appearance-none cursor-pointer hover:bg-[#D8D8D4] transition-colors"
                     >
-                      {t('contact.readyToStart')}
-                    </h3>
-                    <p className="mt-4 text-sm md:text-base lg:text-lg text-black/70 font-helvetica max-w-md">
-                      {t('contact.formDescription')}
-                    </p>
+                      <option value="" disabled>Country</option>
+                      <option value="United States">United States</option>
+                      <option value="Spain">Spain</option>
+                      <option value="Venezuela">Venezuela</option>
+                      <option value="Mexico">Mexico</option>
+                      <option value="Colombia">Colombia</option>
+                      <option value="Argentina">Argentina</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <select 
+                      name="industry"
+                      value={formData.industry}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full p-3 pr-10 bg-[#E5E5E1] outline-none text-gray-800 appearance-none cursor-pointer hover:bg-[#D8D8D4] transition-colors"
+                    >
+                      <option value="" disabled>Industry</option>
+                      <option value="Technology">Technology</option>
+                      <option value="Healthcare">Healthcare</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Education">Education</option>
+                      <option value="Retail">Retail</option>
+                      <option value="Real Estate">Real Estate</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <input 
+                      type="email" 
+                      name="email"
+                      placeholder="E-mail" 
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 ${fieldErrors.email ? 'border-2' : ''}`}
+                    />
+                    {fieldErrors.email && (
+                      <p className="text-black text-sm mt-1">{fieldErrors.email}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <div className="flex">
+                      <select 
+                        name="phoneCode"
+                        value={formData.phoneCode}
+                        onChange={handleInputChange}
+                        className="p-3 bg-[#E5E5E1] w-24 outline-none text-gray-800 rounded-l border-gray-300"
+                      >
+                        <option>+1</option>
+                        <option>+34</option>
+                        <option>+58</option>
+                        <option>+52</option>
+                        <option>+57</option>
+                        <option>+54</option>
+                      </select>
+                      <input 
+                        type="tel" 
+                        name="phoneNumber"
+                        placeholder="Phone number" 
+                        value={formData.phoneNumber}
+                        onChange={handleInputChange}
+                        required
+                        className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 rounded-r ${fieldErrors.phoneNumber ? 'border-2' : ''}`}
+                      />
+                    </div>
+                    {fieldErrors.phoneNumber && (
+                      <p className="text-black text-sm mt-1">{fieldErrors.phoneNumber}</p>
+                    )}
                   </div>
 
-                  {/* Botón Enter - Abre Google Forms */}
-                  <div className="flex justify-start pt-4">
-                    <button
-                      type="submit"
-                      className="px-10 py-4 bg-black text-white hover:bg-black/80 transition-colors duration-300 text-base md:text-lg font-helvetica font-medium tracking-wide cursor-pointer"
-                    >
-                      {t('contact.goToForm')} →
-                    </button>
+                  <div className="flex items-start gap-3 py-4 text-white text-sm">
+                    <input 
+                      type="checkbox" 
+                      name="privacyAccepted"
+                      checked={formData.privacyAccepted}
+                      onChange={handleInputChange}
+                      required
+                      className="border-2 border-white bg-transparent dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-5 h-5 accent-transparent" 
+                      id="privacy" 
+                    />
+                    <label htmlFor="privacy">
+                      I accept and agree to Social Room Agency's <span className="underline cursor-pointer">Privacy Policy</span>.
+                    </label>
                   </div>
+
+                  <button 
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="bg-[#1A1A1A] text-white px-6 py-4 flex items-center gap-4 hover:bg-black transition-colors w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span className="underline-offset-4 decoration-white underline">
+                      {isSubmitting ? 'Sending...' : "Let's start creating"}
+                    </span> 
+                    {!isSubmitting && <span className="text-xl">↗</span>}
+                  </button>
                 </form>
               </div>
             </div>
@@ -145,64 +404,96 @@ export default function ContactFooterSection() {
       </section>
 
       {/* Footer negro */}
-      <footer className="w-full bg-black text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-12 lg:px-20">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8 md:mb-12">
+      <footer className="w-full bg-black text-white py-12 md:py-16 px-6 md:px-12 lg:px-20">
+        <div className="max-w-[1400px] mx-auto">
+          {/* Main footer content */}
+          <div className="flex flex-col md:flex-row justify-center items-center mb-12 max-w-4xl mx-auto gap-6">
             
-            {/* About us */}
-            <div>
-              <ul className="space-y-2">
-                {contactInfo.aboutLinks.map((link, index) => (
-                  <li key={index}>
-                    <a href={link.url} className="text-xs sm:text-sm text-white/70 hover:text-white transition-colors">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Team */}
-            <div>
-              <ul className="space-y-2">
-                {contactInfo.teamLinks.map((link, index) => (
-                  <li key={index}>
-                    <a href={link.url} className="text-xs sm:text-sm text-white/70 hover:text-white transition-colors">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h3 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">{t('contact.footerContact')}</h3>
-              <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-white/70">
-                <a 
-                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${contactInfo.email}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  {contactInfo.email}
-                </a>
-                <p>{contactInfo.phone}</p>
-                <p>{contactInfo.address}</p>
+            {/* Left side - Logo and company info */}
+            <div className="mb-8 md:mb-0 text-center md:text-left">
+              <div className="flex justify-center md:justify-start mb-4">
+               <Image src="/socialroomblanco.svg" alt="Logo" width={250} height={250} className="-mt-12" />
+              </div>
+              <div className="-mt-12 text-center sm:text-right">
+                <p className="text-white/70 text-sm">Social Room</p>
+                <p className="text-white/70 text-sm">Marketing Agency</p>
+                <p className="text-white/70 text-sm">Valencia, Miami and LA</p>
               </div>
             </div>
 
-            {/* Legal text */}
-            <div className="col-span-2 sm:col-span-2 md:col-span-1 mt-4 md:mt-0">
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#d4ddd4] leading-relaxed font-medium">
-                {t('contact.legalText')}
-              </p>
+            {/* Right side - Contact info */}
+            <div className="md:ml-4">
+              <h3 className="text-lg font-medium pb-6">Contact</h3>
+              <div className="space-y-2">
+                <div className="flex items-center justify-start gap-2">
+                  <MailOutlineIcon />
+                  <a 
+                    href={`mailto:${contactInfo.email}`}
+                    className="text-white/70 hover:text-white transition-colors text-sm md:order-1 underline"
+                  >
+                    {contactInfo.email}
+                  </a>
+                </div>
+                <div className="flex items-center justify-start gap-2">
+                 <PinDropOutlinedIcon />
+                  <span className="text-white/70 text-sm md:order-1">Valencia, Miami and LA</span>
+                </div>
+                <div className="flex items-center justify-start gap-2">
+                  
+                  <PhoneIphoneOutlinedIcon />
+                  <a 
+                    href={`tel:${contactInfo.phone}`}
+                    className="text-white/70 hover:text-white transition-colors text-sm md:order-1"
+                  >
+                    {contactInfo.phone}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
+          {/* Social media icons */}
+          <div className="flex justify-center space-x-6 mb-8">
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </svg>
+            </a>
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </a>
+          </div>
+
           {/* Copyright */}
-          <div className="pt-4 border-t border-white/10">
-            <p className="text-[10px] sm:text-xs text-white/50 text-center pt-4">
+          <div className="text-center">
+            <p className="text-xs text-white/50">
               © {contactInfo.year} {contactInfo.companyName}. All rights reserved.
             </p>
           </div>

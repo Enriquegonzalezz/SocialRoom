@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { getImageUrl } from '@/lib/supabase-images';
+import ContactFooterSection from '@/app/components/ContactFooterSection';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -186,7 +187,40 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
+      <section 
+        ref={statsRef}
+        className="pt-32 md:py-48 px-6 md:px-12 lg:px-20 bg-[#f3f3f3] relative overflow-hidden"
+      >
+        {/* Background pattern sutil */}
+        <div 
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage: `url(${pielDeJirafaUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-8">
+            {[
+              { value: '13+', labelKey: 'about.stats.years' },
+              { value: '100+', labelKey: 'about.stats.projects' },
+              { value: '50+', labelKey: 'about.stats.clients' },
+              { value: '15+', labelKey: 'about.stats.team' },
+            ].map((stat, idx) => (
+              <div key={idx} data-stat className="text-center">
+                <span className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold text-black font-helvetica block">
+                  {stat.value}
+                </span>
+                <p className="mt-2 text-xs sm:text-sm md:text-base text-black/50 font-helvetica uppercase tracking-wider">
+                  {t(stat.labelKey)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       {/* Mission Section - Diseño moderno con líneas separadas */}
       <section 
         ref={missionRef}
@@ -309,43 +343,10 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section - Diseño limpio */}
-      <section 
-        ref={statsRef}
-        className="py-32 md:py-48 px-6 md:px-12 lg:px-20 bg-[#f3f3f3] relative overflow-hidden"
-      >
-        {/* Background pattern sutil */}
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url(${pielDeJirafaUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-8">
-            {[
-              { value: '13+', labelKey: 'about.stats.years' },
-              { value: '100+', labelKey: 'about.stats.projects' },
-              { value: '50+', labelKey: 'about.stats.clients' },
-              { value: '15+', labelKey: 'about.stats.team' },
-            ].map((stat, idx) => (
-              <div key={idx} data-stat className="text-center">
-                <span className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold text-black font-helvetica block">
-                  {stat.value}
-                </span>
-                <p className="mt-2 text-xs sm:text-sm md:text-base text-black/50 font-helvetica uppercase tracking-wider">
-                  {t(stat.labelKey)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       {/* CTA Section */}
-      <section className="py-32 md:py-48 px-6 md:px-12 lg:px-20 bg-[#233a28]">
+      {/* <section className="py-32 md:py-48 px-6 md:px-12 lg:px-20 bg-[#233a28]">
         <div ref={ctaRef} className="max-w-5xl mx-auto">
           <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 font-helvetica leading-tight whitespace-pre-line">
             {t('about.ctaTitle')}
@@ -370,7 +371,8 @@ export default function AboutPage() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
+      <ContactFooterSection />
     </main>
   );
 }

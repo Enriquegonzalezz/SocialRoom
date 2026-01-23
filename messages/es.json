@@ -10,10 +10,14 @@
     "title": "Somos un",
     "subtitle": "laboratorio",
     "description": "de ideas",
-    "aboutUs": "Nosotros"
+    "aboutUs": "Sobre nosotros",
+    "menu": "Menú",
+    "labIdeas": "LAB IDEAS",
+    "socialRoom": "SOCIAL ROOM",
+    "marketingAgency": "AGENCIA MARKETING"
   },
   "team": {
-    "title": "NUESTRO EQUIPO",
+    "title": "Nuestro equipo",
     "subtitle": "LAS MENTES CREATIVAS",
     "pageDescription": "Conoce a las mentes creativas detrás de nuestro trabajo. Cada miembro aporta habilidades únicas y pasión a cada proyecto.",
     "roles": {
@@ -87,6 +91,8 @@
   "projects": {
     "title": "PROYECTOS",
     "subtitle": "Trabajos realizados",
+    "our": "NUESTROS",
+    "successCases": "Casos de éxito",
     "devinAi": "Devin AI",
     "porsche": "Porsche: Dream Machine",
     "synthetic": "Synthetic Human",
@@ -124,6 +130,8 @@
   "socialRoom": {
     "title": "Social Room",
     "description": "Bienvenido a nuestro espacio",
+    "scaleProject": "Escala tu proyecto",
+    "seeMore": "Ver más",
     "offline": {
       "title": "OFFLINE",
       "description": "Llevamos tu mensaje a medios tradicionales con video, fotografía, diseño y más."

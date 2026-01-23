@@ -24,3 +24,15 @@ export interface EquipmentLog {
   timestamp: string;
   notes?: string;
 }
+
+export interface Lead {
+  id?: string;
+  name: string;
+  country: string;
+  industry: string;
+  email: string;
+  phone_code: string;
+  phone_number: string;
+  privacy_accepted: boolean;
+  created_at?: string;
+}

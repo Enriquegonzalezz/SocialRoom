@@ -1,231 +1,210 @@
 "use client";
 
 import Image from 'next/image';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { useRouter } from 'next/navigation';
-import gsap from 'gsap';
-import SectionFooterButton from './SectionFooterButton';
-import { getImageUrl } from '@/lib/supabase-images';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import LanguageSwitcher from './LanguageSwitcher';
+import { gsap } from 'gsap';
+
+gsap.registerPlugin();
 
 export default function HeroSection() {
   const { t, locale } = useTranslation();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [isDarkBackground, setIsDarkBackground] = useState<boolean>(true);
-  const [showLogo, setShowLogo] = useState<boolean>(true);
-  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
-  const drawerRef = useRef<HTMLDivElement>(null);
-  const drawerContentRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLElement>(null);
-  
-  // Obtener URL de la imagen del botón (codificada para espacios)
-  const botonSocialRoomUrl = encodeURI('/muchachos/SOCIAL ROOM BOTON.webp');
-  
-  // Precargar imagen de fondo (optimizado para móvil)
-  useEffect(() => {
-    // En móvil, mostrar inmediatamente sin esperar precarga
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) {
-      setImageLoaded(true);
-      return;
-    }
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const videoContainerMobileRef = useRef<HTMLDivElement>(null);
+  const videoContainerDesktopRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const text = "MARCAS QUE MUEVEN CULTURA CONVERTIMOS IDEAS EN EXPERIENCIAS UNIENDO CREATIVIDAD Y ESTRATEGIA";
+  const characters = text.split("");
+  const degree = 360 / characters.length;
+
+  const handleVideoClick = (isMobile: boolean) => {
+    const container = isMobile ? videoContainerMobileRef.current : videoContainerDesktopRef.current;
+    const video = videoRef.current;
     
-    // Solo en desktop: precargar imagen
-    const img = new window.Image();
-    img.src = '/muchachos/fotovaca[1].webp';
-    img.onload = () => setImageLoaded(true);
-    img.onerror = () => setImageLoaded(true);
-  }, []);
-  
-
- useEffect(() => {
-  // Detectar si es móvil
-  const isMobile = window.innerWidth < 768;
-  
-  // ✅ En móvil: SOLO IntersectionObserver, SIN scroll listener
-  if (isMobile) {
-    setShowLogo(true);
-    setIsDarkBackground(true);
+    if (!container || isVideoPlaying) return;
     
-    const contactSection = document.querySelector('[data-section="contact"]');
+    setIsVideoPlaying(true);
     
-    if (contactSection) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            setShowLogo(!entry.isIntersecting);
-          });
-        },
-        { threshold: 0.1, rootMargin: '-100px 0px 0px 0px' }
-      );
-      
-      observer.observe(contactSection);
-      return () => observer.disconnect();
-    }
+    // Obtener posición y tamaño inicial del círculo
+    const rect = container.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
     
-    return; // ✅ CRÍTICO: Salir ANTES de crear el scroll listener
-  }
-  
-  // Solo en DESKTOP: usar scroll listener
-  let contactSection: Element | null = null;
-  let servicesSection: Element | null = null;
-  let elementsFound = false;
-  let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
-  let lastScrollTime = 0;
-  const THROTTLE_MS = 100;
-
-  const findElements = () => {
-    if (!elementsFound) {
-      contactSection = document.querySelector('[data-section="contact"]');
-      servicesSection = document.querySelector('[data-section="servicescarousel"]');
-      elementsFound = true;
-    }
-  };
-
-  const updateLogoState = () => {
-    findElements();
-    
-    const scrollPosition = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const logoHeight = 100;
-    
-    if (contactSection) {
-      const rect = contactSection.getBoundingClientRect();
-      setShowLogo(rect.top > logoHeight);
-    } else {
-      setShowLogo(true);
-    }
-    
-    if (servicesSection) {
-      const rect = servicesSection.getBoundingClientRect();
-      if (rect.top <= logoHeight && rect.bottom >= logoHeight) {
-        setIsDarkBackground(true);
-      } else {
-        setIsDarkBackground(scrollPosition < windowHeight * 0.8);
-      }
-    } else {
-      setIsDarkBackground(scrollPosition < windowHeight * 0.8);
-    }
-  };
-
-  const handleScroll = () => {
-    const now = Date.now();
-    
-    if (now - lastScrollTime < THROTTLE_MS) {
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(updateLogoState, THROTTLE_MS);
-      return;
-    }
-    
-    lastScrollTime = now;
-    updateLogoState();
-  };
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  setTimeout(updateLogoState, 100);
-
-  return () => {
-    window.removeEventListener('scroll', handleScroll);
-    if (scrollTimeout) clearTimeout(scrollTimeout);
-  };
-}, []);
-
-  // Animar drawer y textos cuando se abre (optimizado para móvil)
-  useEffect(() => {
-    if (menuOpen && drawerRef.current && drawerContentRef.current && navRef.current) {
-      // Detectar móvil
-      const isMobile = window.innerWidth < 768;
-      
-      if (isMobile) {
-        // En móvil: sin animaciones GSAP para evitar lag
-        return;
-      }
-      
-      // Solo en desktop: animaciones GSAP
-      // Animar overlay
-      const overlay = drawerRef.current.querySelector('.drawer-overlay');
-      if (overlay) {
-        gsap.from(overlay, {
-          opacity: 0,
-          duration: 0.3,
-          ease: 'power2.out',
-        });
-      }
-
-      // Animar drawer content
-      gsap.from(drawerContentRef.current, {
-        opacity: 0,
-        x: -100,
-        duration: 0.5,
-        ease: 'power3.out',
-      });
-
-      // Animar botones de navegación con stagger
-      const buttons = navRef.current.querySelectorAll('button');
-      gsap.from(buttons, {
-        opacity: 0,
-        x: -50,
-        duration: 0.5,
-        stagger: 0.1,
-        delay: 0.2,
-        ease: 'power2.out',
-      });
-    }
-  }, [menuOpen]);
-
-
-  // Mostrar pantalla de carga mientras la imagen no está lista
-  if (!imageLoaded) {
-    return (
-      <section className="relative min-h-screen bg-black text-white overflow-hidden" />
+    // Calcular la escala necesaria para cubrir toda la pantalla desde el centro del círculo
+    const maxDistance = Math.sqrt(
+      Math.pow(Math.max(centerX, window.innerWidth - centerX), 2) +
+      Math.pow(Math.max(centerY, window.innerHeight - centerY), 2)
     );
-  }
+    const scale = (maxDistance * 2) / rect.width;
+    
+    // Crear círculo expansivo
+    const expandingCircle = document.createElement('div');
+    expandingCircle.style.cssText = `
+      position: fixed;
+      top: ${centerY}px;
+      left: ${centerX}px;
+      width: ${rect.width}px;
+      height: ${rect.height}px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: black;
+      z-index: 9998;
+      pointer-events: none;
+    `;
+    document.body.appendChild(expandingCircle);
+    
+    // Crear overlay para el video
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+    `;
+    
+    // Crear video element
+    const videoElement = document.createElement('video');
+    videoElement.src = '/video-hero.mp4'; // Cambia esto por la ruta de tu video
+    videoElement.style.cssText = `
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    `;
+    videoElement.controls = false;
+    videoElement.autoplay = true;
+    videoElement.muted = false;
+    
+    // Botón de cerrar
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '✕';
+    closeButton.style.cssText = `
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    `;
+    
+    closeButton.onmouseover = () => {
+      closeButton.style.background = 'rgba(255, 255, 255, 0.4)';
+    };
+    closeButton.onmouseout = () => {
+      closeButton.style.background = 'rgba(255, 255, 255, 0.2)';
+    };
+    
+    const closeVideo = () => {
+      // Animación de cierre del círculo
+      gsap.to(expandingCircle, {
+        scale: 0,
+        duration: 0.6,
+        ease: 'power2.in'
+      });
+      
+      gsap.to(overlay, {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+          document.body.removeChild(overlay);
+          document.body.removeChild(expandingCircle);
+          setIsVideoPlaying(false);
+        }
+      });
+    };
+    
+    closeButton.onclick = closeVideo;
+    videoElement.onended = closeVideo;
+    
+    overlay.appendChild(videoElement);
+    overlay.appendChild(closeButton);
+    document.body.appendChild(overlay);
+    
+    // Animación de expansión del círculo desde su centro
+    gsap.fromTo(expandingCircle,
+      {
+        scale: 1,
+        borderRadius: '50%'
+      },
+      {
+        scale: scale,
+        borderRadius: '0%',
+        duration: 1,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          // Mostrar el video cuando el círculo termine de expandirse
+          gsap.to(overlay, {
+            opacity: 1,
+            duration: 0.3
+          });
+        }
+      }
+    );
+  };
 
   return (
-    <section
-      className="relative min-h-screen bg-black text-white overflow-hidden"
-      style={{
-        backgroundImage: `url('/pieldevaca.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
+    <section 
+      className="hero-section relative min-h-screen text-black overflow-hidden bg-center bg-no-repeat bg-cover"
     >
-      {/* Logo centrado fijo en todo el documento - Cambia de color según el fondo */}
-      {showLogo && (
-        <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 py-6 md:py-8 transition-opacity duration-700">
-          <div className={`transition-all duration-700 ease-in-out ${
-            menuOpen ? 'invert' : (isDarkBackground ? '' : 'invert')
-          }`}>
-            <Image src="/socialroomblanco.svg" alt="Logo" width={250} height={250} className="md:w-[300px]" />
-          </div>
+      {/* Header con menu y selector de idioma */}
+      <header className="absolute top-10 left-0 right-0 z-40 bg-transparent">
+        <div className="flex items-center justify-between px-6 md:px-10 py-4 md:max-w-7xl md:mx-auto md:w-full">
+          {/* Menu Hamburguesa con label a la izquierda */}
+          <button 
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="flex items-center gap-2 group"
+            aria-label="Menu"
+          >
+            <div className="flex flex-col gap-1 w-5 h-5 justify-center">
+              <span className={`w-full h-0.5 bg-black transition-all ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+              <span className={`w-full h-0.5 bg-black transition-all ${menuOpen ? 'opacity-0' : ''}`}></span>
+              <span className={`w-full h-0.5 bg-black transition-all ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+            </div>
+            <span className="text-sm font-light text-black underline decoration-1 underline-offset-4">{t('hero.menu')}</span>
+          </button>
+
+          {/* Selector de idioma a la derecha */}
+          <LanguageSwitcher />
         </div>
-      )}
+      </header>
 
-      {/* Menu Hamburguesa - A la izquierda, cambia de color con animación suave */}
-      <button 
-        onClick={() => setMenuOpen(!menuOpen)}
-        className="fixed top-6 md:top-8 left-6 md:left-12 z-50 flex flex-col gap-1.5 md:gap-2 w-8 h-8 md:w-10 md:h-10 justify-center items-center group"
-        aria-label="Menu"
-      >
-        <span className={`w-full h-0.5 transition-all duration-700 ease-in-out ${isDarkBackground ? 'bg-white' : 'bg-black'} ${menuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-        <span className={`w-full h-0.5 transition-all duration-700 ease-in-out ${isDarkBackground ? 'bg-white' : 'bg-black'} ${menuOpen ? 'opacity-0' : ''}`}></span>
-        <span className={`w-full h-0.5 transition-all duration-700 ease-in-out ${isDarkBackground ? 'bg-white' : 'bg-black'} ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
-      </button>
+      {/* Logo centrado fijo - Se mantiene visible al hacer scroll */}
+      <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 py-4">
+        <Image src="/socialroomnegro.svg" alt="Logo" width={300} height={300} className="h-20 w-auto md:h-28" />
+      </div>
 
-      {/* Drawer/Menu Lateral - Minimalista */}
+      {/* Drawer/Menu Lateral */}
       {menuOpen && (
-        <div ref={drawerRef} className="fixed inset-0 z-40 overflow-hidden">
-          {/* Overlay oscuro */}
+        <div className="fixed inset-0 z-40 overflow-hidden">
+          {/* Overlay */}
           <div 
-            className="drawer-overlay absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
           />
           
-          {/* Drawer - Más compacto y minimalista */}
+          {/* Drawer */}
           <div 
-            ref={drawerContentRef} 
             className="absolute left-0 top-0 w-full sm:w-[400px] md:w-[450px] bg-white flex flex-col"
             style={{ height: '100dvh', maxHeight: '100dvh' }}
           >
@@ -243,7 +222,7 @@ export default function HeroSection() {
             </div>
             
             {/* Navegación - Minimalista */}
-            <nav ref={navRef} className="flex-1 flex flex-col items-start justify-center px-8 sm:px-10 md:px-12 space-y-4 sm:space-y-5 md:space-y-6">
+            <nav className="flex-1 flex flex-col items-start justify-center px-8 sm:px-10 md:px-12 space-y-4 sm:space-y-5 md:space-y-6">
               <button 
                 onClick={() => setMenuOpen(false)}
                 className="text-2xl sm:text-3xl md:text-4xl font-light text-black hover:text-black/50 transition-colors font-thermal tracking-wide"
@@ -310,45 +289,162 @@ export default function HeroSection() {
         </div>
       )}
 
-      {/* Contenido Principal */}
-      <div className="relative min-h-screen flex items-center justify-start px-6 md:px-12 lg:px-18 pb-20">
-        <div className="max-w-7xl w-full">
-          <h2 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.9] md:leading-[0.9] lg:leading-[0.9] font-thermal font-thin tracking-tight">
-            {t('hero.title')}
-            <br />
-            {t('hero.subtitle')}
-            <br />
-            {t('hero.description')}
-          
-          </h2>
-          
-        </div>
-      </div>
+      {/* Contenido Principal - Mobile */}
+      <div className="lg:hidden relative min-h-screen flex flex-col items-center justify-between px-5 pt-20 pb-10">
+        {/* Contenedor superior centrado */}
+        <div className="flex-1 flex flex-col items-center justify-center">
+          {/* LAB IDEAS */}
+          <div className="text-center mb-4">
+            <h2 className="text-[#D52500] font-bold font-helvetica -tracking-widest" style={{ fontSize: 'clamp(5rem, 15vw, 5rem)', lineHeight: '0.75' }}>
+              {t('hero.labIdeas').split(' ')[0]} <br />
+              {t('hero.labIdeas').split(' ')[1]}
+            </h2>
+          </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-16 md:h-20 lg:h-24 bg-[#233a28] flex items-center justify-center">
-        <button 
-          onClick={() => {
-            // Aquí puedes agregar la navegación a About Us
-            router.push(`/${locale}/about`);
-          }}
-          className="relative px-10 py-3 transition-all duration-500 ease-in-out cursor-pointer hover:scale-105"
-          style={{
-            backgroundImage: `url(${botonSocialRoomUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            width: '180px',
-            minWidth: '160px',
-            maxWidth: '180px',
-            zIndex: 10,
-          }}
+          <div className="relative w-[320px] h-[320px] mb-8">
+          {/* Círculos decorativos alrededor */}
+          {/* Top */}
+         
+
+          {/* Círculo negro central con contenido */}
+          <div 
+            ref={videoContainerMobileRef}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full bg-black overflow-hidden flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105 z-10"
+            onClick={() => handleVideoClick(true)}
+          >
+            {/* Imagen placeholder del video */}
+            <Image 
+              src="/fondovideo1.png" 
+              alt="Video preview" 
+              fill
+              className="object-cover"
+            />
+            
+            {/* Play button */}
+            <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+              <Image 
+                src="/play.png" 
+                alt="Play" 
+                width={32} 
+                height={32}
+                className="ml-4 w-12 h-12"
+              />
+            </div>
+          </div>
+
+          {/* Texto circular giratorio alrededor */}
+          <div className="circular-text">
+            {characters.map((char, index) => (
+              <span
+                key={index}
+                style={{
+                  transform: `rotate(${degree * index}deg)`
+                }}
+              >
+                {char}
+              </span>
+            ))}
+          </div>
+          </div>
+        </div>
+
+        {/* Botón About Us */}
+        <button
+          onClick={() => router.push(`/${locale}/about`)}
+          className="flex items-center gap-2 px-6 py-4 bg-white  text-black hover:bg-black hover:text-white transition-all duration-300 cursor-pointer"
         >
-          <span className="relative text-base md:text-lg font-helvetica font-medium tracking-wide text-white whitespace-nowrap flex items-center justify-center z-10"
-            style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
-            {t('hero.aboutUs')}
-          </span>
+          <span className="text-[14px] font-light underline decoration-1 underline-offset-4 font-helvetica ">{t('hero.aboutUs')}</span>
+          <ArrowOutwardIcon />
         </button>
       </div>
+
+      {/* Contenido Principal - Desktop */}
+      <div className="hidden lg:flex relative min-h-screen flex-col items-center justify-between px-10 pt-20 pb-10">
+        <div className="flex-1 w-full max-w-7xl flex items-center justify-between">
+          {/* Lado izquierdo - SOCIAL ROOM */}
+          <div className="flex flex-col justify-center">
+            <h2 className="text-[#D52500] font-bold font-helvetica -tracking-widest" style={{ fontSize: 'clamp(8rem, 12vw, 12rem)', lineHeight: '0.85' }}>
+              {t('hero.socialRoom').split(' ')[0]} <br />
+              {t('hero.socialRoom').split(' ')[1]}
+            </h2>
+            
+            {/* LAB IDEAS pequeño abajo a la izquierda */}
+            
+          </div>
+
+          {/* Lado derecho - Círculo con video y texto circular */}
+          <div className="relative w-[450px] h-[450px]">
+            {/* Círculo negro central con contenido */}
+            <div 
+              ref={videoContainerDesktopRef}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full bg-black overflow-hidden flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105 z-10"
+              onClick={() => handleVideoClick(false)}
+            >
+              {/* Imagen placeholder del video */}
+              <Image 
+                src="/fondovideo1.png" 
+                alt="Video preview" 
+                fill
+                className="object-cover"
+              />
+              
+              {/* Play button */}
+              <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <Image 
+                  src="/play.png" 
+                  alt="Play" 
+                  width={48} 
+                  height={48}
+                  className="ml-4 w-16 h-16"
+                />
+              </div>
+            </div>
+
+            {/* Texto circular giratorio alrededor */}
+            <div className="circular-text">
+              {characters.map((char, index) => (
+                <span
+                  key={index}
+                  style={{
+                    transform: `rotate(${degree * index}deg)`
+                  }}
+                >
+                  {char}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer con LAB IDEAS, About Us y MARKETING AGENCY */}
+        <div className="w-full max-w-7xl flex items-center justify-between px-10">
+          {/* LAB IDEAS - Izquierda */}
+          <div>
+            <p className="text-[#D52500] font-bold font-helvetica" style={{ fontSize: 'clamp(1.5rem, 2vw, 2rem)', lineHeight: '0.9' }}>
+              {t('hero.labIdeas').split(' ')[0]} <br />
+              {t('hero.labIdeas').split(' ')[1]}
+            </p>
+          </div>
+
+          {/* Botón About Us - Centro */}
+          <button
+            onClick={() => router.push(`/${locale}/about`)}
+            className="flex items-center gap-2 px-6 py-4 bg-transparent border-2 border-black  text-black hover:bg-black hover:text-white transition-all duration-300 cursor-pointer"
+          >
+            <span className="text-[14px] font-light underline decoration-1 underline-offset-4 font-helvetica">{t('hero.aboutUs')}</span>
+           <ArrowOutwardIcon width={32} height={32}/>
+          </button>
+
+          {/* MARKETING AGENCY - Derecha */}
+          <div>
+            <p className="text-[#D52500] font-bold font-helvetica text-right" style={{ fontSize: 'clamp(1.5rem, 2vw, 2rem)', lineHeight: '0.9' }}>
+              {t('hero.marketingAgency').split(' ')[0]} <br />
+              {t('hero.marketingAgency').split(' ')[1]}
+            </p>
+          </div>
+        </div>
+      </div>
+     
     </section>
   );
 }

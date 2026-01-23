@@ -1,5 +1,3 @@
-'use client';
-
 export function OrganizationJsonLd() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://socialroom.es';
   

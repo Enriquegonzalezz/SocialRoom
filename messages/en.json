@@ -10,10 +10,14 @@
     "title": "We are a",
     "subtitle": "lab of ideas",
     "description": " ",
-    "aboutUs": "About Us"
+    "aboutUs": "About Us",
+    "menu": "Menu",
+    "labIdeas": "LAB IDEAS",
+    "socialRoom": "SOCIAL ROOM",
+    "marketingAgency": "MARKETING AGENCY"
   },
   "team": {
-    "title": "OUR TEAM",
+    "title": "Our Team",
     "subtitle": "THE CREATIVE MINDS",
     "pageDescription": "Meet the creative minds behind our work. Each member brings unique skills and passion to every project.",
     "roles": {
@@ -87,6 +91,8 @@
   "projects": {
     "title": "PROJECTS",
     "subtitle": "Featured work",
+    "our": "OUR",
+    "successCases": "Success cases",
     "devinAi": "Devin AI",
     "porsche": "Porsche: Dream Machine",
     "synthetic": "Synthetic Human",
@@ -124,20 +130,22 @@
   "socialRoom": {
     "title": "Social Room",
     "description": "Welcome to our space",
+    "scaleProject": "Scale your project",
+    "seeMore": "See more",
     "offline": {
-      "title": "OFFLINE",
+      "title": "Offline",
       "description": "We bring your message to traditional media with video, photography, design and more."
     },
     "online": {
-      "title": "ONLINE",
+      "title": "Online",
       "description": "We boost your digital growth with social media management, SEO, Ads and web development."
     },
     "estrategia": {
-      "title": "STRATEGY",
+      "title": "Strategy",
       "description": "We create the plan to connect your brand with your goals and ensure the desired success."
     },
     "eventos": {
-      "title": "EVENTS",
+      "title": "Events",
       "description": "We create launches, pop-ups and experiences that connect in an unforgettable way."
     }
   },
