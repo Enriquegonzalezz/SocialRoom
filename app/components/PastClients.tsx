@@ -26,14 +26,14 @@ const projects = [
     title: 'Auge',
     category: 'Branding',
     description: 'Unificamos su salud de todos los venezolanos en un solo lugar',
-    imageUrl: getImageUrl('auge', 'auge-26.jpg'),
+    imageUrl: getImageUrl('auge', 'auge-26.webp'),
   },
   {
     id: 'leap',
     title: 'Leap',
     category: 'Design',
     description: 'Plataforma digital innovadora para el futuro',
-    imageUrl: getImageUrl('L4h', 'Mesa de trabajo 54.png'),
+    imageUrl: getImageUrl('L4h', 'banner leap.webp'),
   },
   {
     id: 'leble',
@@ -49,6 +49,8 @@ const projects = [
     description: 'Estrategia digital completa',
     imageUrl: getImageUrl('lgm', 'LGM-01.jpg'),
   },
+  
+
 ];
 
 export default function PastClients() {

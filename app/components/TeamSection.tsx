@@ -201,9 +201,11 @@ const teamMembers: TeamMemberWithSize[] = [
 interface TeamCardProps {
   member: TeamMemberWithSize;
   onImageClick: (member: TeamMember) => void;
+  priority?: boolean;
+  index?: number;
 }
 
-const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
+const TeamCard = ({ member, onImageClick, priority = false, index = 0 }: TeamCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -242,11 +244,12 @@ const TeamCard = ({ member, onImageClick }: TeamCardProps) => {
             src={member.image}
             alt={member.name}
             fill
-            loading="lazy"
+            priority={priority || index < 4}
+            loading={priority || index < 4 ? 'eager' : 'lazy'}
             placeholder="blur"
             blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23f3f3f3' width='400' height='400'/%3E%3C/svg%3E"
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            quality={75}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
+            quality={80}
             className="object-cover"
            
           />
@@ -501,14 +504,14 @@ export default function TeamSection() {
               msOverflowStyle: 'none',
             }}
           >
-            {membersWithImage.map((member) => (
+            {membersWithImage.map((member, index) => (
               <div
                 key={member.id}
                 data-card
                 className="shrink-0 w-full snap-center px-8"
               >
                 <div className="w-full">
-                  <TeamCard member={member} onImageClick={handleImageClick} />
+                  <TeamCard member={member} onImageClick={handleImageClick} index={index} />
                 </div>
               </div>
             ))}
@@ -614,19 +617,19 @@ export default function TeamSection() {
         {/* Desktop Grid - Solo para pantallas lg (1024px+) */}
         <div className="hidden lg:grid grid-cols-12 grid-rows-7 gap-4">
           <div className="col-start-2 row-start-2" data-card>
-            <TeamCard member={teamMembers[0]} onImageClick={handleImageClick} />
+            <TeamCard member={teamMembers[0]} onImageClick={handleImageClick} priority={true} index={0} />
           </div>
           <div className="col-start-3 row-start-1" data-card>
-            <TeamCard member={teamMembers[2]} onImageClick={handleImageClick} />
+            <TeamCard member={teamMembers[2]} onImageClick={handleImageClick} priority={true} index={2} />
           </div>
           <div className="col-start-4 row-start-1" data-card>
-            <TeamCard member={teamMembers[4]} onImageClick={handleImageClick} />
+            <TeamCard member={teamMembers[4]} onImageClick={handleImageClick} priority={true} index={4} />
           </div>
           <div className="col-start-5 row-start-1" data-card>
-            <TeamCard member={teamMembers[5]} onImageClick={handleImageClick} />
+            <TeamCard member={teamMembers[5]} onImageClick={handleImageClick} priority={true} index={5} />
           </div>
           <div className="col-span-3 row-span-3 col-start-3 row-start-2" data-card>
-            <TeamCard member={teamMembers[1]} onImageClick={handleImageClick} />
+            <TeamCard member={teamMembers[1]} onImageClick={handleImageClick} priority={true} index={1} />
           </div>
           <div className="col-span-2 row-span-2 col-start-1 row-start-3" data-card>
             <TeamCard member={teamMembers[6]} onImageClick={handleImageClick} />
