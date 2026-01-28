@@ -10,9 +10,9 @@
     "title": "Somos un",
     "subtitle": "laboratorio",
     "description": "de ideas",
-    "aboutUs": "Sobre nosotros",
+    "aboutUs": "SOBRE NOSOTROS",
     "menu": "Menú",
-    "labIdeas": "LAB IDEAS",
+    "labIdeas": "LAB OF IDEAS",
     "socialRoom": "SOCIAL ROOM",
     "marketingAgency": "AGENCIA MARKETING"
   },
@@ -242,31 +242,110 @@
   "servicesPage": {
     "title": "SERVICIOS",
     "subtitle": "Soluciones creativas integrales diseñadas para elevar tu marca e impulsar resultados.",
-    "services": {
-      "branding": {
-        "title": "Branding",
-        "description": "Creemos que el branding es más que un logo o un eslogan: es la esencia de tu negocio. Nuestra misión es ayudarte a descubrir y articular tu identidad única, creando una marca que conecte con tu audiencia y perdure en el tiempo.",
-        "features": ["Identidad Visual", "Mensajes de Marca", "Investigación de Mercado", "Manual de Marca", "Rebranding"]
+    "categories": {
+      "offline": {
+        "title": "OFFLINE",
+        "subtitle": "Llevamos tu mensaje a medios tradicionales con video, fotografía, diseño y más.",
+        "services": {
+          "branding": {
+            "title": "Branding",
+            "description": "Creamos identidades de marca únicas que conectan con tu audiencia y perduran en el tiempo.",
+            "features": ["Identidad Visual", "Manual de Marca", "Diseño de Logo", "Papelería Corporativa"]
+          },
+          "printDesign": {
+            "title": "Diseño Impreso",
+            "description": "Diseñamos materiales impresos de alta calidad que comunican tu mensaje efectivamente.",
+            "features": ["Folletos", "Catálogos", "Revistas", "Material POP"]
+          },
+          "packaging": {
+            "title": "Packaging",
+            "description": "Creamos empaques que destacan en el punto de venta y conectan con los consumidores.",
+            "features": ["Diseño de Empaque", "Etiquetas", "Cajas", "Bolsas Personalizadas"]
+          },
+          "signage": {
+            "title": "Señalética",
+            "description": "Diseñamos sistemas de señalización que guían y comunican de forma clara y efectiva.",
+            "features": ["Señalización Interior", "Vallas Publicitarias", "Letreros", "Rotulación"]
+          }
+        }
       },
-      "visualProduction": {
-        "title": "Video y Fotografía",
-        "description": "Las imágenes hablan más que las palabras. Nuestros expertos están dedicados a crear contenido y capturar momentos que cuenten tu historia con claridad y profesionalismo. Con 13 años de experiencia, damos vida a tu visión a través de fotografía impactante y videos cautivadores.",
-        "features": ["Fotografía Profesional", "Videografía", "Tomas con Drone", "Edición y Post-Producción", "Cobertura de Eventos"]
+      "online": {
+        "title": "ONLINE",
+        "subtitle": "Impulsamos tu crecimiento digital con gestión de redes, SEO, Ads y desarrollo web.",
+        "services": {
+          "socialMedia": {
+            "title": "Manejo de Redes Sociales",
+            "description": "Gestionamos tu presencia en redes sociales para conectar con tu audiencia y generar resultados.",
+            "features": ["Estrategia de Contenido", "Publicaciones Diarias", "Engagement", "Reportes Mensuales"]
+          },
+          "communityManagement": {
+            "title": "Community Management",
+            "description": "Construimos y gestionamos comunidades activas alrededor de tu marca.",
+            "features": ["Gestión de Comentarios", "Atención al Cliente", "Moderación", "Crecimiento Orgánico"]
+          },
+          "graphicDesign": {
+            "title": "Diseño Gráfico Digital",
+            "description": "Creamos contenido visual atractivo para tus plataformas digitales.",
+            "features": ["Posts para Redes", "Stories", "Banners Web", "Infografías"]
+          },
+          "contentCreation": {
+            "title": "Creación de Contenido",
+            "description": "Producimos contenido de calidad que cuenta tu historia y conecta con tu audiencia.",
+            "features": ["Copywriting", "Fotografía Digital", "Videos Cortos", "Reels"]
+          }
+        }
       },
-      "socialMedia": {
-        "title": "Redes Sociales",
-        "description": "Con más de 13 años de experiencia en el mundo de las redes sociales, nuestros expertos te ayudan a conectar con tu audiencia, construir tu marca y generar resultados medibles. Creamos estrategias personalizadas alineadas con tus objetivos de negocio.",
-        "features": ["Estrategia de Contenido", "Community Management", "Publicidad Pagada", "Analytics e Insights", "Expertise Multi-Plataforma"]
+      "eventos": {
+        "title": "EVENTOS",
+        "subtitle": "Creamos lanzamientos, pop-ups y experiencias que conectan de forma inolvidable.",
+        "services": {
+          "weddings": {
+            "title": "Bodas",
+            "description": "Capturamos los momentos más especiales de tu día con profesionalismo y sensibilidad.",
+            "features": ["Fotografía de Boda", "Video de Boda", "Cobertura Completa", "Álbumes Personalizados"]
+          },
+          "festivals": {
+            "title": "Festivales",
+            "description": "Documentamos la energía y emoción de festivales y eventos masivos.",
+            "features": ["Cobertura Fotográfica", "Video Recap", "Transmisión en Vivo", "Contenido para Redes"]
+          },
+          "sports": {
+            "title": "Eventos Deportivos",
+            "description": "Capturamos la acción y pasión de eventos deportivos con equipos especializados.",
+            "features": ["Fotografía Deportiva", "Highlights en Video", "Cobertura Multi-Cámara", "Slow Motion"]
+          },
+          "corporate": {
+            "title": "Eventos Corporativos",
+            "description": "Documentamos tus eventos empresariales con profesionalismo y discreción.",
+            "features": ["Conferencias", "Lanzamientos", "Team Building", "Galas Corporativas"]
+          }
+        }
       },
-      "design": {
-        "title": "Diseño",
-        "description": "De lo digital a lo impreso, creamos visuales impactantes que capturan atención y comunican efectivamente.",
-        "features": ["Diseño UI/UX", "Diseño Gráfico", "Motion Graphics", "Packaging", "Editorial"]
-      },
-      "development": {
-        "title": "Desarrollo",
-        "description": "Construimos productos digitales rápidos, responsivos y escalables con experiencias excepcionales.",
-        "features": ["Desarrollo Web", "E-commerce", "Aplicaciones Web", "Integración CMS", "Desarrollo API"]
+      "estrategia": {
+        "title": "ESTRATEGIA",
+        "subtitle": "Creamos el plan para conectar tu marca con tus metas y asegurar el éxito deseado.",
+        "services": {
+          "marketingStrategy": {
+            "title": "Estrategia de Marketing",
+            "description": "Desarrollamos planes integrales para alcanzar tus objetivos de negocio.",
+            "features": ["Análisis de Mercado", "Plan de Marketing", "KPIs", "Roadmap"]
+          },
+          "brandStrategy": {
+            "title": "Estrategia de Marca",
+            "description": "Definimos el posicionamiento y personalidad de tu marca en el mercado.",
+            "features": ["Posicionamiento", "Propuesta de Valor", "Arquetipos", "Tono de Voz"]
+          },
+          "digitalStrategy": {
+            "title": "Estrategia Digital",
+            "description": "Creamos estrategias digitales que maximizan tu presencia online.",
+            "features": ["SEO", "SEM", "Email Marketing", "Marketing de Contenidos"]
+          },
+          "contentStrategy": {
+            "title": "Estrategia de Contenido",
+            "description": "Planificamos y ejecutamos contenido que resuena con tu audiencia.",
+            "features": ["Calendario Editorial", "Pilares de Contenido", "Storytelling", "Content Marketing"]
+          }
+        }
       }
     },
     "processTitle": "Nuestro Proceso",

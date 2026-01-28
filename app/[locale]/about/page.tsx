@@ -168,7 +168,7 @@ export default function AboutPage() {
         <div>
           <h1 
             ref={titleRef}
-            className="text-[60px] md:text-[120px] lg:text-[160px] xl:text-[200px] font-bold leading-[0.9] tracking-tighter text-white font-helvetica overflow-hidden"
+            className="text-[60px] md:text-[120px] lg:text-[160px] xl:text-[200px] font-bold leading-[0.9] tracking-tighter text-white font-helvetica overflow-hidden py-2"
           >
             {t('about.title')}
           </h1>

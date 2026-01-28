@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { getImageUrl } from '@/lib/supabase-images';
 import ContactFooterSection from '@/app/components/ContactFooterSection';
@@ -13,20 +13,25 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Categorías de servicios
-const categoryKeys = ['offline', 'online', 'eventos', 'estrategia'] as const;
-const categoryColors = ['#233a28', '#4a4a4a', '#8b4513', '#1a1a1a'];
+// Definición de servicios por categoría
+const servicesData = {
+  offline: ['branding', 'printDesign', 'packaging', 'signage'],
+  online: ['socialMedia', 'communityManagement', 'graphicDesign', 'contentCreation'],
+  eventos: ['weddings', 'festivals', 'sports', 'corporate'],
+  estrategia: ['marketingStrategy', 'brandStrategy', 'digitalStrategy', 'contentStrategy']
+};
 
-interface CategoryCardProps {
-  categoryKey: string;
+const serviceColors = ['#233a28', '#4a4a4a', '#8b4513', '#1a1a1a'];
+
+interface ServiceCardProps {
+  serviceKey: string;
+  category: string;
   index: number;
   color: string;
   t: (key: string) => string;
-  locale: string;
-  router: ReturnType<typeof useRouter>;
 }
 
-const CategoryCard = ({ categoryKey, index, color, t, locale, router }: CategoryCardProps) => {
+const ServiceCard = ({ serviceKey, category, index, color, t }: ServiceCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -58,16 +63,19 @@ const CategoryCard = ({ categoryKey, index, color, t, locale, router }: Category
     setIsHovered(false);
   };
 
-  const handleClick = () => {
-    router.push(`/${locale}/services/${categoryKey}`);
-  };
+  const features: string[] = [];
+  for (let i = 0; i < 5; i++) {
+    const feature = t(`servicesPage.categories.${category}.services.${serviceKey}.features.${i}`);
+    if (feature && !feature.includes('servicesPage.categories')) {
+      features.push(feature);
+    }
+  }
 
   return (
     <div
       ref={cardRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
       className="group relative rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-all duration-500"
       style={{ backgroundColor: isHovered ? color : '#ffffff' }}
     >
@@ -85,7 +93,7 @@ const CategoryCard = ({ categoryKey, index, color, t, locale, router }: Category
             isHovered ? 'text-white' : 'text-black'
           }`}
         >
-          {t(`servicesPage.categories.${categoryKey}.title`)}
+          {t(`servicesPage.categories.${category}.services.${serviceKey}.title`)}
         </h3>
 
         <p 
@@ -93,49 +101,46 @@ const CategoryCard = ({ categoryKey, index, color, t, locale, router }: Category
             isHovered ? 'text-white/80' : 'text-black/60'
           }`}
         >
-          {t(`servicesPage.categories.${categoryKey}.subtitle`)}
+          {t(`servicesPage.categories.${category}.services.${serviceKey}.description`)}
         </p>
 
-        <div 
-          className={`hidden md:block absolute bottom-8 right-8 lg:bottom-12 lg:right-12 transition-all duration-500 ${
-            isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
-          }`}
-        >
-          <svg 
-            width="32" 
-            height="32" 
-            viewBox="0 0 40 40" 
-            fill="none"
-            className={isHovered ? 'text-white' : 'text-black'}
-          >
-            <path 
-              d="M8 20H32M32 20L22 10M32 20L22 30" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            />
-          </svg>
+        <div className="hidden sm:flex flex-wrap gap-2">
+          {features.slice(0, 4).map((feature, idx) => (
+            <span
+              key={idx}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-500 ${
+                isHovered 
+                  ? 'bg-white/20 text-white' 
+                  : 'bg-black/5 text-black/70'
+              }`}
+            >
+              {feature}
+            </span>
+          ))}
         </div>
+
+        
       </div>
     </div>
   );
 };
 
-export default function ServicesPage() {
+export default function ServiceCategoryPage() {
   const router = useRouter();
+  const params = useParams();
   const { t, locale } = useTranslation();
+  const category = params.category as string;
   
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const processRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
 
   const pielDeJirafaUrl = getImageUrl('others', 'pieljirafa.jpeg');
 
+  const services = servicesData[category as keyof typeof servicesData] || servicesData.online;
+
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation
       if (titleRef.current) {
         const letters = titleRef.current.textContent?.split('') || [];
         titleRef.current.innerHTML = letters
@@ -151,7 +156,6 @@ export default function ServicesPage() {
         });
       }
 
-      // Subtitle animation
       if (subtitleRef.current) {
         gsap.from(subtitleRef.current, {
           y: 50,
@@ -162,7 +166,6 @@ export default function ServicesPage() {
         });
       }
 
-      // Process section animation
       if (processRef.current) {
         const steps = processRef.current.querySelectorAll('[data-step]');
         gsap.from(steps, {
@@ -178,31 +181,14 @@ export default function ServicesPage() {
           ease: 'power3.out',
         });
       }
-
-      // CTA animation
-      if (ctaRef.current) {
-        gsap.from(ctaRef.current, {
-          scrollTrigger: {
-            trigger: ctaRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-        });
-      }
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [category]);
 
   return (
     <main className="min-h-screen bg-[#f3f3f3]">
-      {/* Hero Section */}
       <section className="relative min-h-[60vh] sm:min-h-[70vh] flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-16 pt-20 sm:pt-0">
-        {/* Logo */}
         <button 
           onClick={() => router.push(`/${locale}`)}
           className="absolute top-6 sm:top-8 left-4 sm:left-6 md:left-12 lg:left-16 cursor-pointer hover:opacity-70 transition-opacity z-10"
@@ -216,44 +202,40 @@ export default function ServicesPage() {
           />
         </button>
 
-        {/* Hero Content */}
         <div className="mt-8 sm:mt-20">
           <h1 
             ref={titleRef}
             className="font-bold leading-[0.9] tracking-tight text-black font-helvetica whitespace-nowrap"
             style={{ fontSize: 'clamp(3rem, 18vw, 14rem)' }}
           >
-            {t('servicesPage.title')}
+            {t(`servicesPage.categories.${category}.title`)}
           </h1>
           <p 
             ref={subtitleRef}
             className="mt-4 sm:mt-8 text-base sm:text-xl md:text-2xl lg:text-3xl text-black/70 max-w-3xl font-light font-helvetica"
           >
-            {t('servicesPage.subtitle')}
+            {t(`servicesPage.categories.${category}.subtitle`)}
           </p>
         </div>
       </section>
 
-      {/* Categories Grid */}
       <section className="py-8 sm:py-12 md:py-20 px-3 sm:px-4 md:px-8 lg:px-16">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-            {categoryKeys.map((key, index) => (
-              <CategoryCard 
+            {services.map((key, index) => (
+              <ServiceCard 
                 key={key} 
-                categoryKey={key} 
+                serviceKey={key}
+                category={category}
                 index={index} 
-                color={categoryColors[index]}
+                color={serviceColors[index % serviceColors.length]}
                 t={t}
-                locale={locale}
-                router={router}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Process Section */}
       <section 
         ref={processRef}
         className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-black text-white"
@@ -281,7 +263,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
       <section 
         className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 relative overflow-hidden"
         style={{
@@ -330,31 +311,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      {/* <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#233a28]">
-        <div ref={ctaRef} className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8 font-helvetica">
-            {t('servicesPage.ctaTitle')}
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 mb-8 sm:mb-12 font-light font-helvetica">
-            {t('servicesPage.ctaSubtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <button
-              onClick={() => router.push(`/${locale}`)}
-              className="px-8 sm:px-12 py-3 sm:py-4 bg-white text-black text-base sm:text-lg font-medium rounded-full hover:bg-black hover:text-white transition-all duration-300 font-helvetica"
-            >
-              {t('servicesPage.ctaButton')}
-            </button>
-            <button
-              onClick={() => router.push(`/${locale}/projects`)}
-              className="px-8 sm:px-12 py-3 sm:py-4 bg-transparent border-2 border-white text-white text-base sm:text-lg font-medium rounded-full hover:bg-white hover:text-black transition-all duration-300 font-helvetica"
-            >
-              {t('servicesPage.ctaButtonAlt')}
-            </button>
-          </div>
-        </div>
-      </section> */}
       <ContactFooterSection />
     </main>
   );

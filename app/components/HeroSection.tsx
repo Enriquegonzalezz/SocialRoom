@@ -7,8 +7,10 @@ import { useRouter } from 'next/navigation';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import LanguageSwitcher from './LanguageSwitcher';
 import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin();
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
   const { t, locale } = useTranslation();
@@ -18,9 +20,25 @@ export default function HeroSection() {
   const videoContainerMobileRef = useRef<HTMLDivElement>(null);
   const videoContainerDesktopRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const text = "MARCAS QUE MUEVEN CULTURA CONVERTIMOS IDEAS EN EXPERIENCIAS UNIENDO CREATIVIDAD Y ESTRATEGIA";
+  const logoRef = useRef<HTMLDivElement>(null);
+  const text = "TAKE A VIEW • TAKE A VIEW • TAKE A VIEW • TAKE A VIEW • TAKE A VIEW • TAKE A VIEW • ";
   const characters = text.split("");
   const degree = 360 / characters.length;
+
+  useGSAP(() => {
+    if (logoRef.current) {
+      gsap.to(logoRef.current, {
+        scale: 1,
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: '+=200',
+          scrub: 0.5,
+          markers: false
+        }
+      });
+    }
+  }, { scope: logoRef });
 
   const handleVideoClick = (isMobile: boolean) => {
     const container = isMobile ? videoContainerMobileRef.current : videoContainerDesktopRef.current;
@@ -169,7 +187,7 @@ export default function HeroSection() {
     >
       {/* Header con menu y selector de idioma */}
       <header className="absolute top-10 left-0 right-0 z-40 bg-transparent">
-        <div className="flex items-center justify-between px-6 md:px-10 py-4 md:max-w-7xl md:mx-auto md:w-full">
+        <div className="flex items-center justify-between px-6 md:px-10 py-4  md:mx-auto md:w-full">
           {/* Menu Hamburguesa con label a la izquierda */}
           <button 
             onClick={() => setMenuOpen(!menuOpen)}
@@ -190,7 +208,7 @@ export default function HeroSection() {
       </header>
 
       {/* Logo centrado fijo - Se mantiene visible al hacer scroll */}
-      <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 py-4">
+      <div ref={logoRef} className="fixed top-3 left-1/2 -translate-x-1/2 z-50 py-4 origin-center" style={{ scale: 1.5 }}>
         <Image src="/socialroomnegro.svg" alt="Logo" width={300} height={300} className="h-20 w-auto md:h-28" />
       </div>
 
@@ -296,8 +314,9 @@ export default function HeroSection() {
           {/* LAB IDEAS */}
           <div className="text-center mb-4">
             <h2 className="text-[#D52500] font-bold font-helvetica -tracking-widest" style={{ fontSize: 'clamp(5rem, 15vw, 5rem)', lineHeight: '0.75' }}>
-              {t('hero.labIdeas').split(' ')[0]} <br />
-              {t('hero.labIdeas').split(' ')[1]}
+              {t('hero.labIdeas').split(' ')[0]} 
+               <br />
+              {t('hero.labIdeas').split(' ')[2]}
             </h2>
           </div>
 
@@ -364,8 +383,9 @@ export default function HeroSection() {
           {/* Lado izquierdo - SOCIAL ROOM */}
           <div className="flex flex-col justify-center">
             <h2 className="text-[#D52500] font-bold font-helvetica -tracking-widest" style={{ fontSize: 'clamp(8rem, 12vw, 12rem)', lineHeight: '0.85' }}>
-              {t('hero.socialRoom').split(' ')[0]} <br />
-              {t('hero.socialRoom').split(' ')[1]}
+              {t('hero.labIdeas').split(' ')[0]}
+              <br />
+              {t('hero.labIdeas').split(' ')[2]}
             </h2>
             
             {/* LAB IDEAS pequeño abajo a la izquierda */}
@@ -417,19 +437,19 @@ export default function HeroSection() {
         </div>
 
         {/* Footer con LAB IDEAS, About Us y MARKETING AGENCY */}
-        <div className="w-full max-w-7xl flex items-center justify-between px-10">
+        <div className="w-full max-w-7xl flex items-center justify-between ">
           {/* LAB IDEAS - Izquierda */}
-          <div>
-            <p className="text-[#D52500] font-bold font-helvetica" style={{ fontSize: 'clamp(1.5rem, 2vw, 2rem)', lineHeight: '0.9' }}>
+          <div className="w-[11vw]">
+            <p className="text-[#D52500] font-bold font-helvetica text-transparent" style={{ fontSize: 'clamp(1.5rem, 2vw, 2rem)', lineHeight: '0.9' }}>
               {t('hero.labIdeas').split(' ')[0]} <br />
-              {t('hero.labIdeas').split(' ')[1]}
+              {t('hero.labIdeas').split(' ')[2]}
             </p>
           </div>
 
           {/* Botón About Us - Centro */}
           <button
             onClick={() => router.push(`/${locale}/about`)}
-            className="flex items-center gap-2 px-6 py-4 bg-transparent border-2 border-black  text-black hover:bg-black hover:text-white transition-all duration-300 cursor-pointer"
+            className="flex items-center gap-2 px-6 py-4 bg-black border-2 border-black  text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
           >
             <span className="text-[14px] font-light underline decoration-1 underline-offset-4 font-helvetica">{t('hero.aboutUs')}</span>
            <ArrowOutwardIcon width={32} height={32}/>

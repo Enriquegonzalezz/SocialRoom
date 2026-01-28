@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { gsap } from 'gsap';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import Image from 'next/image';
@@ -31,7 +32,7 @@ const contactInfo = {
   ],
   
   // Información de contacto
-  email: 'socialroommarketingagency@gmail.com',
+  email: 'info@socialroomagency.com',
   phone: '+58 412 0639249',
   address: 'Valencia, Miami and LA',
   
@@ -110,15 +111,27 @@ export default function ContactFooterSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
-    if (!formData.name || !formData.country || !formData.industry || 
-        !formData.email || !formData.phoneNumber) {
-      setError('Please fill in all fields');
-      return;
+    setFieldErrors({});
+
+    const newErrors: {[key: string]: string} = {};
+
+    if (!formData.name) newErrors.name = 'Name is required';
+    if (!formData.country) newErrors.country = 'Country is required';
+    if (!formData.industry) newErrors.industry = 'Industry is required';
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
     }
-    
+    if (!formData.phoneNumber) newErrors.phoneNumber = 'Phone number is required';
+
     if (!formData.privacyAccepted) {
-      setError('Please accept the Privacy Policy');
+      newErrors.privacyAccepted = 'You must accept the privacy policy';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setFieldErrors(newErrors);
+      setError('Please correct the errors before submitting.');
       return;
     }
     
@@ -218,7 +231,7 @@ export default function ContactFooterSection() {
             
                 <p className="text-sm md:text-base font-thermal font-light mb-8 text-white">{contactInfo.Descriptionfooter}</p>
                 <button className="mt-4 px-6 py-4 bg-[#f4f4f4] text-black font-light hover:bg-[#d4ddd4] transition-colors flex justify-center items-center gap-2 underline-offset-4 decoration-black underline">
-                  Let's start chatting
+                  LET'S START CHATTING
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
                   </svg>
@@ -230,7 +243,7 @@ export default function ContactFooterSection() {
             <div className="relative w-full max-w-4xl mx-auto sm:pt-20 px-4 min-h-[600px] flex items-center justify-center">
               
               {/* IMAGEN DETRÁS - IZQUIERDA (El Leopardo) - Solo desktop */}
-              <div className="absolute left-0 bottom-0 w-[500px] h-[450px] z-0 hidden lg:block">
+              <div className="absolute -left-10 bottom-0 w-[500px] h-[450px] z-0 hidden lg:block">
                 <Image 
                   src="/fotoizquierda.png" 
                   alt="Backgroundecor"
@@ -240,7 +253,7 @@ export default function ContactFooterSection() {
               </div>
 
               {/* IMAGEN DETRÁS - DERECHA/ARRIBA (Arquitectura) - Solo desktop */}
-              <div className="absolute right-0 top-10 w-96 h-[550px] z-0 hidden lg:block">
+              <div className="absolute -right-10 top-10 w-96 h-[550px] z-0 hidden lg:block">
                 <Image 
                   src="/fotoizquierda.png" 
                   alt="Backgroundecor"
@@ -258,12 +271,8 @@ export default function ContactFooterSection() {
                   Ready to start?  
                 </h2>
                 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                      {error}
-                    </div>
-                  )}
+                <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                 
                   
                   <div>
                     <input 
@@ -273,56 +282,75 @@ export default function ContactFooterSection() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 ${fieldErrors.name ? 'border-2 ' : ''}`}
+                      className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 ${fieldErrors.name ? 'border-2 border-white' : ''}`}
                     />
                     {fieldErrors.name && (
-                      <p className="text-black text-sm mt-1">{fieldErrors.name}</p>
+                      <div className="flex items-center gap-2 mt-2 text-white">
+                        <ErrorOutlineIcon className="h-5 w-5" />
+                        <p className="text-sm">{fieldErrors.name}</p>
+                      </div>
                     )}
                   </div>
-                  <div className="relative">
-                    <select 
-                      name="country"
-                      value={formData.country}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full p-3 pr-10 bg-[#E5E5E1] outline-none text-gray-800 appearance-none cursor-pointer hover:bg-[#D8D8D4] transition-colors"
-                    >
-                      <option value="" disabled>Country</option>
-                      <option value="United States">United States</option>
-                      <option value="Spain">Spain</option>
-                      <option value="Venezuela">Venezuela</option>
-                      <option value="Mexico">Mexico</option>
-                      <option value="Colombia">Colombia</option>
-                      <option value="Argentina">Argentina</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                  <div>
+                    <div className="relative">
+                      <select 
+                        name="country"
+                        value={formData.country}
+                        onChange={handleInputChange}
+                        required
+                        className={`w-full p-3 pr-10 bg-[#E5E5E1] outline-none text-gray-800 appearance-none cursor-pointer hover:bg-[#D8D8D4] transition-colors ${fieldErrors.country ? 'border-2 border-white' : ''}`}
+                      >
+                        <option value="" disabled>Country</option>
+                        <option value="United States">United States</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Argentina">Argentina</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                     </div>
+                    {fieldErrors.country && (
+                      <div className="flex items-center gap-2 mt-2 text-white">
+                        <ErrorOutlineIcon className="h-5 w-5" />
+                        <p className="text-sm">{fieldErrors.country}</p>
+                      </div>
+                    )}
                   </div>
-                  <div className="relative">
-                    <select 
-                      name="industry"
-                      value={formData.industry}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full p-3 pr-10 bg-[#E5E5E1] outline-none text-gray-800 appearance-none cursor-pointer hover:bg-[#D8D8D4] transition-colors"
-                    >
-                      <option value="" disabled>Industry</option>
-                      <option value="Technology">Technology</option>
-                      <option value="Healthcare">Healthcare</option>
-                      <option value="Finance">Finance</option>
-                      <option value="Education">Education</option>
-                      <option value="Retail">Retail</option>
-                      <option value="Real Estate">Real Estate</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                  <div>
+                    <div className="relative">
+                      <select 
+                        name="industry"
+                        value={formData.industry}
+                        onChange={handleInputChange}
+                        required
+                        className={`w-full p-3 pr-10 bg-[#E5E5E1] outline-none text-gray-800 appearance-none cursor-pointer hover:bg-[#D8D8D4] transition-colors ${fieldErrors.industry ? 'border-2 border-white' : ''}`}
+                      >
+                        <option value="" disabled>Industry</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Education">Education</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                     </div>
+                    {fieldErrors.industry && (
+                      <div className="flex items-center gap-2 mt-2 text-white">
+                        <ErrorOutlineIcon className="h-5 w-5" />
+                        <p className="text-sm">{fieldErrors.industry}</p>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <input 
@@ -332,10 +360,13 @@ export default function ContactFooterSection() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 ${fieldErrors.email ? 'border-2' : ''}`}
+                      className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 ${fieldErrors.email ? 'border-2 border-white' : ''}`}
                     />
                     {fieldErrors.email && (
-                      <p className="text-black text-sm mt-1">{fieldErrors.email}</p>
+                      <div className="flex items-center gap-2 mt-2 text-white">
+                        <ErrorOutlineIcon className="h-5 w-5" />
+                        <p className="text-sm">{fieldErrors.email}</p>
+                      </div>
                     )}
                   </div>
                   
@@ -361,27 +392,38 @@ export default function ContactFooterSection() {
                         value={formData.phoneNumber}
                         onChange={handleInputChange}
                         required
-                        className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 rounded-r ${fieldErrors.phoneNumber ? 'border-2' : ''}`}
+                        className={`w-full p-3 bg-[#E5E5E1] outline-none text-gray-800 rounded-r ${fieldErrors.phoneNumber ? 'border-2 border-white' : ''}`}
                       />
                     </div>
                     {fieldErrors.phoneNumber && (
-                      <p className="text-black text-sm mt-1">{fieldErrors.phoneNumber}</p>
+                      <div className="flex items-center gap-2 mt-2 text-white">
+                        <ErrorOutlineIcon className="h-5 w-5" />
+                        <p className="text-sm">{fieldErrors.phoneNumber}</p>
+                      </div>
                     )}
                   </div>
 
-                  <div className="flex items-start gap-3 py-4 text-white text-sm">
-                    <input 
-                      type="checkbox" 
-                      name="privacyAccepted"
-                      checked={formData.privacyAccepted}
-                      onChange={handleInputChange}
-                      required
-                      className="border-2 border-white bg-transparent dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-5 h-5 accent-transparent" 
-                      id="privacy" 
-                    />
-                    <label htmlFor="privacy">
-                      I accept and agree to Social Room Agency's <span className="underline cursor-pointer">Privacy Policy</span>.
-                    </label>
+                  <div>
+                    <div className="flex items-start gap-3 py-4 text-white text-sm">
+                      <input 
+                        type="checkbox" 
+                        name="privacyAccepted"
+                        checked={formData.privacyAccepted}
+                        onChange={handleInputChange}
+                        required
+                        className={`border-2 bg-transparent dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-5 h-5 accent-transparent ${fieldErrors.privacyAccepted ? 'border-white' : 'border-white'}`} 
+                        id="privacy" 
+                      />
+                      <label htmlFor="privacy">
+                        I accept and agree to Social Room Agency's <span className="underline cursor-pointer">Privacy Policy</span>.
+                      </label>
+                    </div>
+                    {fieldErrors.privacyAccepted && (
+                        <div className="flex items-center gap-2 text-white">
+                          <ErrorOutlineIcon className="h-5 w-5" />
+                          <p className="text-sm">{fieldErrors.privacyAccepted}</p>
+                        </div>
+                      )}
                   </div>
 
                   <button 
@@ -390,7 +432,7 @@ export default function ContactFooterSection() {
                     className="bg-[#1A1A1A] text-white px-6 py-4 flex items-center gap-4 hover:bg-black transition-colors w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span className="underline-offset-4 decoration-white underline">
-                      {isSubmitting ? 'Sending...' : "Let's start creating"}
+                      {isSubmitting ? 'Sending...' : "LET'S START CREATING"}
                     </span> 
                     {!isSubmitting && <span className="text-xl">↗</span>}
                   </button>

@@ -283,13 +283,13 @@ export default function PastClients() {
                   onClick={() => router.push(`/${locale}/projects`)}
                   className="group flex items-center gap-3 px-10 py-6 border-2 border-white text-white hover:bg-white hover:text-[#1a2b4a] transition-all duration-300"
                 >
-                  <span className="text-base font-light font-helvetica underline decoration-white underline-offset-5">{t('projects.successCases')}</span>
+                  <span className="I text-base font-light font-helvetica underline decoration-white underline-offset-5">{t('projects.successCases')}</span>
                   <Image 
                     src={ArrowIcon} 
                     alt="Arrow" 
                     width={20} 
                     height={20}
-                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 invert group-hover:invert-0"
+                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1  group-hover:invert-0"
                   />
                 </button>
               </div>

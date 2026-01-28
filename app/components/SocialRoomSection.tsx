@@ -219,7 +219,7 @@ export default function SocialRoomSection() {
                 key={index}
                 className="shrink-0 w-full snap-start px-5"
               >
-                <Link href={`/${locale}/services`} className="block">
+                <Link href={`/${locale}/services/${serviceKeys[index]}`} className="block">
                   <div className="flex flex-col bg-transparent overflow-hidden h-full">
                     {/* Imagen estática en móvil (sin video) */}
                     <div 
@@ -351,7 +351,7 @@ export default function SocialRoomSection() {
           <div className="grid grid-cols-2 gap-6 xl:grid-cols-4">
             {services.map((service, index) => (
               <div key={index} className="group/card">
-                <Link href={`/${locale}/services`} className="block">
+                <Link href={`/${locale}/services/${serviceKeys[index]}`} className="block">
                   <div className="flex flex-col bg-transparent overflow-hidden h-full transition-transform duration-300 group-hover/card:scale-105">
                     {/* Imagen con hover para GIF/Video */}
                     <div 
@@ -405,7 +405,7 @@ export default function SocialRoomSection() {
                       <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6 flex-grow">
                         {service.description}
                       </p>
-                      <button className="flex items-center gap-2 text-black group mt-auto">
+                      <button className="flex items-center gap-2 text-black group mt-auto cursor-pointer">
                         <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
                          <Image 
                           src={ArrowIcon} 

@@ -51,8 +51,8 @@ export default function FeaturedWork({ projects }: FeaturedWorkProps) {
   }, []);
 
   return (
-    <section className="featured-work py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#f3f3f3]">
-      <div ref={gridRef} className="work-grid grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+    <section className="featured-work py-8 sm:py-12 md:py-20 px-3 sm:px-4 md:px-8 lg:px-16 bg-[#f3f3f3]">
+      <div ref={gridRef} className="work-grid max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
         {projects.map((project) => (
           <WorkItem key={project.id} project={project} locale={locale} />
         ))}

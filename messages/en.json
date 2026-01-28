@@ -10,9 +10,9 @@
     "title": "We are a",
     "subtitle": "lab of ideas",
     "description": " ",
-    "aboutUs": "About Us",
+    "aboutUs": "ABOUT US",
     "menu": "Menu",
-    "labIdeas": "LAB IDEAS",
+    "labIdeas": "LAB OF IDEAS",
     "socialRoom": "SOCIAL ROOM",
     "marketingAgency": "MARKETING AGENCY"
   },
@@ -92,7 +92,7 @@
     "title": "PROJECTS",
     "subtitle": "Featured work",
     "our": "OUR",
-    "successCases": "Success cases",
+    "successCases": "SUCCESS CASES",
     "devinAi": "Devin AI",
     "porsche": "Porsche: Dream Machine",
     "synthetic": "Synthetic Human",
@@ -242,31 +242,110 @@
   "servicesPage": {
     "title": "SERVICES",
     "subtitle": "Full-service creative solutions tailored to elevate your brand and drive results.",
-    "services": {
-      "branding": {
-        "title": "Branding",
-        "description": "We believe branding is more than just a logo or tagline—it's the essence of your business. Our mission is to help you uncover and articulate your unique identity, creating a brand that resonates with your audience and stands the test of time.",
-        "features": ["Visual Identity", "Brand Messaging", "Market Research", "Brand Guidelines", "Rebranding"]
+    "categories": {
+      "offline": {
+        "title": "OFFLINE",
+        "subtitle": "We bring your message to traditional media with video, photography, design and more.",
+        "services": {
+          "branding": {
+            "title": "Branding",
+            "description": "We create unique brand identities that connect with your audience and stand the test of time.",
+            "features": ["Visual Identity", "Brand Guidelines", "Logo Design", "Corporate Stationery"]
+          },
+          "printDesign": {
+            "title": "Print Design",
+            "description": "We design high-quality printed materials that communicate your message effectively.",
+            "features": ["Brochures", "Catalogs", "Magazines", "POP Materials"]
+          },
+          "packaging": {
+            "title": "Packaging",
+            "description": "We create packaging that stands out at the point of sale and connects with consumers.",
+            "features": ["Package Design", "Labels", "Boxes", "Custom Bags"]
+          },
+          "signage": {
+            "title": "Signage",
+            "description": "We design signage systems that guide and communicate clearly and effectively.",
+            "features": ["Interior Signage", "Billboards", "Signs", "Lettering"]
+          }
+        }
       },
-      "visualProduction": {
-        "title": "Video & Photography",
-        "description": "Visuals speak louder than words. Our experts are dedicated to creating content and capturing moments that tell your story with clarity and professionalism. With 13 years of experience, we bring your vision to life through stunning photography and compelling videos.",
-        "features": ["Professional Photography", "Videography", "Drone Shots", "Editing & Post-Production", "Event Coverage"]
+      "online": {
+        "title": "ONLINE",
+        "subtitle": "We boost your digital growth with social media management, SEO, Ads and web development.",
+        "services": {
+          "socialMedia": {
+            "title": "Social Media Management",
+            "description": "We manage your social media presence to connect with your audience and generate results.",
+            "features": ["Content Strategy", "Daily Posts", "Engagement", "Monthly Reports"]
+          },
+          "communityManagement": {
+            "title": "Community Management",
+            "description": "We build and manage active communities around your brand.",
+            "features": ["Comment Management", "Customer Service", "Moderation", "Organic Growth"]
+          },
+          "graphicDesign": {
+            "title": "Digital Graphic Design",
+            "description": "We create attractive visual content for your digital platforms.",
+            "features": ["Social Posts", "Stories", "Web Banners", "Infographics"]
+          },
+          "contentCreation": {
+            "title": "Content Creation",
+            "description": "We produce quality content that tells your story and connects with your audience.",
+            "features": ["Copywriting", "Digital Photography", "Short Videos", "Reels"]
+          }
+        }
       },
-      "socialMedia": {
-        "title": "Social Media",
-        "description": "With 13+ years of experience in the ever-evolving social media world, our experts help you connect with your audience, build your brand, and drive measurable results. We craft tailored strategies that align with your business goals.",
-        "features": ["Content Strategy", "Community Management", "Paid Advertising", "Analytics & Insights", "Multi-Platform Expertise"]
+      "eventos": {
+        "title": "EVENTS",
+        "subtitle": "We create launches, pop-ups and experiences that connect in an unforgettable way.",
+        "services": {
+          "weddings": {
+            "title": "Weddings",
+            "description": "We capture the most special moments of your day with professionalism and sensitivity.",
+            "features": ["Wedding Photography", "Wedding Video", "Full Coverage", "Custom Albums"]
+          },
+          "festivals": {
+            "title": "Festivals",
+            "description": "We document the energy and excitement of festivals and massive events.",
+            "features": ["Photo Coverage", "Video Recap", "Live Streaming", "Social Content"]
+          },
+          "sports": {
+            "title": "Sports Events",
+            "description": "We capture the action and passion of sports events with specialized equipment.",
+            "features": ["Sports Photography", "Video Highlights", "Multi-Camera Coverage", "Slow Motion"]
+          },
+          "corporate": {
+            "title": "Corporate Events",
+            "description": "We document your business events with professionalism and discretion.",
+            "features": ["Conferences", "Launches", "Team Building", "Corporate Galas"]
+          }
+        }
       },
-      "design": {
-        "title": "Design",
-        "description": "From digital to print, we craft stunning visuals that capture attention and communicate effectively.",
-        "features": ["UI/UX Design", "Graphic Design", "Motion Graphics", "Packaging", "Editorial"]
-      },
-      "development": {
-        "title": "Development",
-        "description": "We build fast, responsive, and scalable digital products with exceptional user experiences.",
-        "features": ["Web Development", "E-commerce", "Web Apps", "CMS Integration", "API Development"]
+      "estrategia": {
+        "title": "STRATEGY",
+        "subtitle": "We create the plan to connect your brand with your goals and ensure desired success.",
+        "services": {
+          "marketingStrategy": {
+            "title": "Marketing Strategy",
+            "description": "We develop comprehensive plans to achieve your business objectives.",
+            "features": ["Market Analysis", "Marketing Plan", "KPIs", "Roadmap"]
+          },
+          "brandStrategy": {
+            "title": "Brand Strategy",
+            "description": "We define the positioning and personality of your brand in the market.",
+            "features": ["Positioning", "Value Proposition", "Archetypes", "Tone of Voice"]
+          },
+          "digitalStrategy": {
+            "title": "Digital Strategy",
+            "description": "We create digital strategies that maximize your online presence.",
+            "features": ["SEO", "SEM", "Email Marketing", "Content Marketing"]
+          },
+          "contentStrategy": {
+            "title": "Content Strategy",
+            "description": "We plan and execute content that resonates with your audience.",
+            "features": ["Editorial Calendar", "Content Pillars", "Storytelling", "Content Marketing"]
+          }
+        }
       }
     },
     "processTitle": "Our Process",
