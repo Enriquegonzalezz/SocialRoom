@@ -63,7 +63,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '5',
     name: 'Enrique',
     role: 'Full Stack Developer',
-    image: '/muchachos/enrique.webp',
+    image: '/muchachos/Enrique.webp',
     color: 'bg-green-100',
     size: 'small',
     
@@ -80,7 +80,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '7',
     name: 'Carlitos',
     role: 'Designer',
-    image: '/muchachos/carlitos.webp',
+    image: '/muchachos/Carlitos.webp',
     color: 'bg-indigo-100',
     size: 'small',
   },
