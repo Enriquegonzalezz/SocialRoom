@@ -15,11 +15,11 @@ interface TeamMember {
   id: string;
   name: string;
   role: string;
-  roleKey: string;
-  memberKey: string;
+  roleKey?: string;
+  memberKey?: string;
   image: string;
   color: string;
-  accent: string;
+  accent?: string;
   size: 'small' | 'medium' | 'large'; // Para Bento Grid
   objectPosition?: string; // Para controlar el posicionamiento de la imagen
 }
