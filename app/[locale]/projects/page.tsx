@@ -46,13 +46,20 @@ const projects = [
     imageUrl: getImageUrl('lgm', 'portadalgm.webp'),
     href: '/projects/lgm',
   },
-  //  {
-  //   id: '5',
-  //   title: 'El maizal',
-  //   category: 'strategy • design • branding',
-  //   imageUrl: getImageUrl('maizal', 'arepa de pernil.webp'),
-  //   href: '/projects/elmaizal',
-  // },
+    {
+     id: '5',
+     title: 'El maizal',
+     category: 'strategy • design • branding',
+     imageUrl: getImageUrl('maizal', 'arepa de pernil.webp'),
+     href: '/projects/elmaizal',
+   },
+   {
+     id: '6',
+     title: 'Atypical',
+     category: 'strategy • design • branding',
+     imageUrl: getImageUrl('others', 'ATY portada.webp'),
+     href: '/projects/atypical',
+   },
   // {
   //   id: '5',
   //   title: 'Enfoque',
