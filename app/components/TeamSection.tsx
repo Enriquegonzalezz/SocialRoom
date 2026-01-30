@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { getImageUrl } from '@/lib/supabase-images';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,7 +73,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '6',
     name: 'Erika',
     role: 'Project Manager',
-    image: '/muchachos/erika.webp',
+    image: getImageUrl('others', 'erika.webp'),
     color: 'bg-red-100',
     size: 'large',
   },
@@ -112,7 +113,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '11',
     name: 'Maria',
     role: 'Designer',
-    image: '/muchachos/maria.webp',
+    image: getImageUrl('others', 'maria.webp'),
     color: 'bg-rose-100',
     size: 'small',
   },
@@ -168,7 +169,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '18',
     name: 'Julia',
     role: 'Designer',
-    image: '/muchachos/julia.webp',
+    image: getImageUrl('others', 'julia.webp'),
     color: 'bg-neutral-100',
     size: 'small',
   },
