@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   
   // Optimización de imágenes
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -22,13 +23,6 @@ const nextConfig: NextConfig = {
         hostname: 'dhynxqtviwosfvljzfmi.supabase.co',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 año para imágenes estáticas
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    qualities: [50, 75, 85, 90, 100],
   },
   
   // Compresión
@@ -49,25 +43,6 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=3600, s-maxage=3600',
-          },
-        ],
-      },
-      {
-        source: '/_next/image(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache para imágenes estáticas locales
-        source: '/:all*(svg|jpg|jpeg|png|webp|gif|ico)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

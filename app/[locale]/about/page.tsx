@@ -148,7 +148,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section 
         ref={heroRef}
-        className="relative min-h-screen flex flex-col justify-end px-6 md:px-12 lg:px-20 pb-24"
+        className="relative min-h-[60vh] sm:min-h-[70vh] flex flex-col justify-end px-6 md:px-12 lg:px-20 pb-24"
       >
         {/* Logo */}
         <button 
@@ -189,7 +189,7 @@ export default function AboutPage() {
       </section>
       <section 
         ref={statsRef}
-        className="pt-32 md:py-48 px-6 md:px-12 lg:px-20 bg-[#f3f3f3] relative overflow-hidden"
+        className="py-8 md:py-48 px-6 md:px-12 lg:px-20 bg-[#f3f3f3] relative overflow-hidden"
       >
         {/* Background pattern sutil */}
         <div 
@@ -224,7 +224,7 @@ export default function AboutPage() {
       {/* Mission Section - Diseño moderno con líneas separadas */}
       <section 
         ref={missionRef}
-        className="py-32 md:py-48 px-6 md:px-12 lg:px-20 bg-[#f3f3f3]"
+        className="py-8 md:py-48 px-6 md:px-12 lg:px-20 bg-[#f3f3f3]"
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-start gap-12 md:gap-24">

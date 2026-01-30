@@ -102,10 +102,10 @@ const teamMembers: TeamMemberWithSize[] = [
   },
   {
     id: '10',
-    name: 'Manuel',
-    role: 'Designer',
-    image: '/muchachos/Manuel.webp',
-    color: 'bg-teal-100',
+    name: '',
+    role: '',
+    image: '',
+    color: 'bg-transparent',
     size: 'medium',
   },
   {
@@ -244,14 +244,8 @@ const TeamCard = ({ member, onImageClick, priority = false, index = 0 }: TeamCar
             src={member.image}
             alt={member.name}
             fill
-            priority={priority || index < 4}
-            loading={priority || index < 4 ? 'eager' : 'lazy'}
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23f3f3f3' width='400' height='400'/%3E%3C/svg%3E"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
-            quality={80}
             className="object-cover"
-           
+            unoptimized={true}
           />
         ) : null}
       </div>
@@ -355,13 +349,8 @@ const TeamModal = ({ member, isOpen, onClose }: ModalProps) => {
                 src={member.image}
                 alt={member.name}
                 fill
-                loading="eager"
-                placeholder="blur"
-                blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23f9fafb' width='400' height='400'/%3E%3C/svg%3E"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                quality={75}
-                priority={true}
                 className="object-cover"
+                unoptimized={true}
               />
             </div>
 
@@ -392,9 +381,37 @@ export default function TeamSection() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [randomizedMembers, setRandomizedMembers] = useState<TeamMemberWithSize[]>([]);
   const carouselRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollTextRef = useRef<HTMLDivElement>(null);
+
+  // Randomizar posiciones al montar el componente
+  useEffect(() => {
+    // Separar miembros fijos y móviles
+    const fixedMembers = teamMembers.filter(m => m.id === '2' || m.id === '4');
+    const mobileMembers = teamMembers.filter(m => m.id !== '2' && m.id !== '4');
+    
+    // Randomizar los miembros móviles
+    const shuffled = [...mobileMembers].sort(() => Math.random() - 0.5);
+    
+    // Reconstruir el array con posiciones fijas
+    const result: TeamMemberWithSize[] = [];
+    let shuffledIndex = 0;
+    
+    teamMembers.forEach((member, index) => {
+      if (member.id === '2' || member.id === '4') {
+        // Mantener en posición fija
+        result.push(member);
+      } else {
+        // Usar miembro randomizado
+        result.push(shuffled[shuffledIndex]);
+        shuffledIndex++;
+      }
+    });
+    
+    setRandomizedMembers(result);
+  }, []);
 
   const handleImageClick = (member: TeamMember) => {
     setSelectedMember(member);
@@ -615,86 +632,88 @@ export default function TeamSection() {
         </div>
 
         {/* Desktop Grid - Solo para pantallas lg (1024px+) */}
+        {randomizedMembers.length > 0 && (
         <div className="hidden lg:grid grid-cols-12 grid-rows-7 gap-4">
           <div className="col-start-2 row-start-2" data-card>
-            <TeamCard member={teamMembers[0]} onImageClick={handleImageClick} priority={true} index={0} />
+            <TeamCard member={randomizedMembers[0]} onImageClick={handleImageClick} priority={true} index={0} />
           </div>
           <div className="col-start-3 row-start-1" data-card>
-            <TeamCard member={teamMembers[2]} onImageClick={handleImageClick} priority={true} index={2} />
+            <TeamCard member={randomizedMembers[2]} onImageClick={handleImageClick} priority={true} index={2} />
           </div>
           <div className="col-start-4 row-start-1" data-card>
-            <TeamCard member={teamMembers[4]} onImageClick={handleImageClick} priority={true} index={4} />
+            <TeamCard member={randomizedMembers[4]} onImageClick={handleImageClick} priority={true} index={4} />
           </div>
           <div className="col-start-5 row-start-1" data-card>
-            <TeamCard member={teamMembers[5]} onImageClick={handleImageClick} priority={true} index={5} />
+            <TeamCard member={randomizedMembers[5]} onImageClick={handleImageClick} priority={true} index={5} />
           </div>
           <div className="col-span-3 row-span-3 col-start-3 row-start-2" data-card>
-            <TeamCard member={teamMembers[1]} onImageClick={handleImageClick} priority={true} index={1} />
+            <TeamCard member={randomizedMembers[1]} onImageClick={handleImageClick} priority={true} index={1} />
           </div>
           <div className="col-span-2 row-span-2 col-start-1 row-start-3" data-card>
-            <TeamCard member={teamMembers[6]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[6]} onImageClick={handleImageClick} />
           </div>
           <div className="col-span-2 row-span-2 col-start-1 row-start-5" data-card>
-            <TeamCard member={teamMembers[7]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[7]} onImageClick={handleImageClick} />
           </div>
           <div className="col-span-2 row-span-2 col-start-3 row-start-5" data-card>
-            <TeamCard member={teamMembers[8]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[8]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-5 row-start-5" data-card>
-            <TeamCard member={teamMembers[9]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[9]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-5 row-start-6" data-card>
-            <TeamCard member={teamMembers[10]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[10]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-3 row-start-7" data-card>
-            <TeamCard member={teamMembers[11]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[11]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-4 row-start-7" data-card>
-            <TeamCard member={teamMembers[12]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[12]} onImageClick={handleImageClick} />
           </div>
           <div className="col-span-2 row-span-2 col-start-6 row-start-6" data-card>
-            <TeamCard member={teamMembers[13]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[13]} onImageClick={handleImageClick} />
           </div>
           <div className="col-span-2 row-span-2 col-start-6 row-start-4" data-card>
-            <TeamCard member={teamMembers[14]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[14]} onImageClick={handleImageClick} />
           </div>
           <div className="col-span-2 row-span-2 col-start-6 row-start-2" data-card>
-            <TeamCard member={teamMembers[15]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[15]} onImageClick={handleImageClick} />
           </div>
           <div className="col-span-2 row-span-2 col-start-8 row-start-2" data-card>
-            <TeamCard member={teamMembers[16]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[16]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-10 row-start-2" data-card>
-            <TeamCard member={teamMembers[17]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[17]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-11 row-start-2" data-card>
-            <TeamCard member={teamMembers[18]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[18]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-10 row-start-3" data-card>
-            <TeamCard member={teamMembers[19]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[19]} onImageClick={handleImageClick} />
           </div>
           <div className="col-span-2 row-span-2 col-start-11 row-start-3" data-card>
-            <TeamCard member={teamMembers[20]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[20]} onImageClick={handleImageClick} />
           </div>
           {/* <div className="col-span-2 row-span-2 col-start-11 row-start-5" data-card>
             <TeamCard member={teamMembers[21]} onImageClick={handleImageClick} />
           </div> */}
           <div className="col-span-3 row-span-3 col-start-8 row-start-4" data-card>
-            <TeamCard member={teamMembers[3]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[3]} onImageClick={handleImageClick} />
           </div>
           {/* <div className="col-start-8 row-start-7" data-card>
-            <TeamCard member={teamMembers[22]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[22]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-9 row-start-7" data-card>
-            <TeamCard member={teamMembers[23]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[23]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-10 row-start-7" data-card>
-            <TeamCard member={teamMembers[24]} onImageClick={handleImageClick} />
+            <TeamCard member={randomizedMembers[24]} onImageClick={handleImageClick} />
           </div>
           <div className="col-start-11 row-start-7" data-card>
-            <TeamCard member={teamMembers[25]} onImageClick={handleImageClick} /> 
+            <TeamCard member={randomizedMembers[25]} onImageClick={handleImageClick} /> 
           </div> */}
         </div>
+        )}
       </div>
 
  

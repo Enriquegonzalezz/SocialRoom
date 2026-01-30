@@ -72,7 +72,7 @@ const projectsData: Record<string, {
     year: '2024',
     client: 'Leble',
     role: 'Full Stack Development',
-    heroImage: getImageUrl('leble', 'leble-01.jpg'),
+    heroImage: getImageUrl('leble', 'portada leble.webp'),
     description: 'Desarrollo web completo para Leble con diseño moderno y funcionalidad avanzada.',
     images: [
       getImageUrl('leble', 'leble-01.jpg'),
@@ -88,7 +88,7 @@ const projectsData: Record<string, {
     year: '2025',
     client: 'LGM',
     role: 'Brand Strategy',
-    heroImage: getImageUrl('lgm', 'LGM-01.jpg'),
+    heroImage: getImageUrl('lgm', 'portadalgm.webp'),
     description: 'Estrategia de marca integral para LGM, creando una identidad sólida y diferenciadora.',
     images: [
       getImageUrl('lgm', 'LGM-01.jpg'),
@@ -233,13 +233,13 @@ export default function ProjectDetailPage() {
           {/* Título del proyecto */}
           <h1 
             ref={titleRef}
-            className="text-[80px] md:text-[120px] lg:text-[160px] font-bold leading-none tracking-tight text-black font-helvetica mb-8 overflow-hidden"
+            className="text-[80px] md:text-[120px] lg:text-[160px] font-bold leading-none tracking-tight text-black font-helvetica mb-8 overflow-hidden py-4"
           >
             {project.title}
           </h1>
 
           {/* Hero Image */}
-          <div ref={heroRef} className="relative w-full aspect-video mb-12 overflow-hidden rounded-2xl">
+          <div ref={heroRef} className="relative w-full aspect-video mb-12 overflow-hidden">
             <Image
               src={project.heroImage}
               alt={project.title}
@@ -275,7 +275,7 @@ export default function ProjectDetailPage() {
           {/* Gallery */}
           <div className="grid grid-cols-1 gap-8">
             {project.images.map((image, index) => (
-              <div key={index} className="relative w-full aspect-video overflow-hidden rounded-2xl">
+              <div key={index} className="relative w-full aspect-video overflow-hidden ">
                 <Image
                   src={image}
                   alt={`${project.title} - ${index + 1}`}

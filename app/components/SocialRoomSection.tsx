@@ -175,7 +175,7 @@ export default function SocialRoomSection() {
   return (
    <section 
       ref={scrollContainerRef}
-      className="relative w-full bg-[#f3f3f3] pt-20 pb-10 overflow-hidden"
+      className="relative w-full bg-[#f3f3f3] md:pt-20 md:pb-10 pt-8 overflow-hidden"
     >
       {/* --- MÓVIL: PNG ESTÁTICO --- */}
       <div 
@@ -212,12 +212,12 @@ export default function SocialRoomSection() {
         <div className="md:hidden">
           <div
             ref={carouselRef}
-            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-6"
           >
             {services.map((service, index) => (
               <div
                 key={index}
-                className="shrink-0 w-full snap-start px-5"
+                className="shrink-0 w-full snap-start pl-6 first:pl-6 "
               >
                 <Link href={`/${locale}/services/${serviceKeys[index]}`} className="block">
                   <div className="flex flex-col bg-transparent overflow-hidden h-full">
@@ -230,14 +230,14 @@ export default function SocialRoomSection() {
                     </div>  
                     
                     {/* Contenido con altura fija para alinear botones */}
-                    <div className="py-6 bg-transparent flex flex-col" style={{ minHeight: '240px' }}>
+                    <div className="pt-6 bg-transparent flex flex-col" style={{ minHeight: '180px' }}>
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6 flex-grow">
+                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed">
                         {service.description}
                       </p>
-                      <button className="flex items-center gap-2 text-black group mt-auto">
+                      <button className="flex items-center gap-2 text-black group mt-4">
                         <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
                          <Image 
                           src={ArrowIcon} 
@@ -255,7 +255,7 @@ export default function SocialRoomSection() {
           </div>
           
           {/* Indicadores estilo Instagram */}
-          <div className="flex justify-center items-center gap-1.5 mt-2">
+          <div className="flex justify-center items-center gap-1.5 pb-4">
             {(() => {
               const totalSlides = services.length;
               const maxDots = 5;
@@ -346,9 +346,104 @@ export default function SocialRoomSection() {
           </div>
         </div>
 
-        {/* Desktop Grid */}
-        <div className="hidden md:block px-5">
-          <div className="grid grid-cols-2 gap-6 xl:grid-cols-4">
+        {/* Tablet Carousel - 2 items at a time */}
+        <div className="hidden md:block xl:hidden ml-4">
+          <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-5 gap-6">
+            {services.map((service, index) => (
+              <div key={index} className={`shrink-0 w-[calc(50%-12px)] ${index % 2 === 0 ? 'snap-start' : ''} group/card`}>
+                <Link href={`/${locale}/services/${serviceKeys[index]}`} className="block">
+                  <div className="flex flex-col bg-transparent overflow-hidden h-full transition-transform duration-300 group-hover/card:scale-105">
+                    {/* Imagen con hover para GIF/Video */}
+                    <div 
+                      className="relative w-full bg-cover bg-center aspect-[4/5] overflow-hidden max-h-[500px]"
+                      style={{ backgroundImage: `url(${getImageUrl('others', service.filename)})` }}
+                    >
+                      <div className="absolute inset-0 bg-black/10" />
+                      
+                      {/* Video para Offline - aparece en hover */}
+                      {serviceKeys[index] === 'offline' && (
+                        <video
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
+                          src="/Offline. VIDEO mp4.mp4"
+                          muted
+                          loop
+                          playsInline
+                          preload="none"
+                          onMouseEnter={(e) => {
+                            const video = e.currentTarget;
+                            if (video.paused) {
+                              video.play().catch(() => {});
+                            }
+                          }}
+                        />
+                      )}
+                      
+                      {/* Video para Online - aparece en hover */}
+                      {serviceKeys[index] === 'online' && (
+                        <video
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
+                          src="/Online negro mp4.mp4"
+                          muted
+                          loop
+                          playsInline
+                          preload="none"
+                          onMouseEnter={(e) => {
+                            const video = e.currentTarget;
+                            if (video.paused) {
+                              video.play().catch(() => {});
+                            }
+                          }}
+                        />
+                      )}
+                      
+                      {/* Video para Eventos - aparece en hover */}
+                      {serviceKeys[index] === 'eventos' && (
+                        <video
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
+                          src="/Eventos-video.mp4"
+                          muted
+                          loop
+                          playsInline
+                          preload="none"
+                          onMouseEnter={(e) => {
+                            const video = e.currentTarget;
+                            if (video.paused) {
+                              video.play().catch(() => {});
+                            }
+                          }}
+                        />
+                      )}
+                    </div>  
+                    
+                    {/* Contenido con altura fija para alinear botones */}
+                    <div className="py-6 bg-transparent flex flex-col" style={{ minHeight: '180px' }}>
+                      <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6">
+                        {service.description}
+                      </p>
+                      <button className="flex items-center gap-2 text-black group mt-auto cursor-pointer">
+                        <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
+                         <Image 
+                          src={ArrowIcon} 
+                          alt="Arrow" 
+                          width={20} 
+                          height={20}
+                          className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 invert group-hover:invert-0"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Grid - 4 columns */}
+        <div className="hidden xl:block px-5">
+          <div className="grid grid-cols-4 gap-6">
             {services.map((service, index) => (
               <div key={index} className="group/card">
                 <Link href={`/${locale}/services/${serviceKeys[index]}`} className="block">
@@ -368,7 +463,13 @@ export default function SocialRoomSection() {
                           muted
                           loop
                           playsInline
-                          autoPlay
+                          preload="none"
+                          onMouseEnter={(e) => {
+                            const video = e.currentTarget;
+                            if (video.paused) {
+                              video.play().catch(() => {});
+                            }
+                          }}
                         />
                       )}
                       
@@ -380,7 +481,13 @@ export default function SocialRoomSection() {
                           muted
                           loop
                           playsInline
-                          autoPlay
+                          preload="none"
+                          onMouseEnter={(e) => {
+                            const video = e.currentTarget;
+                            if (video.paused) {
+                              video.play().catch(() => {});
+                            }
+                          }}
                         />
                       )}
                       
@@ -392,17 +499,23 @@ export default function SocialRoomSection() {
                           muted
                           loop
                           playsInline
-                          autoPlay
+                          preload="none"
+                          onMouseEnter={(e) => {
+                            const video = e.currentTarget;
+                            if (video.paused) {
+                              video.play().catch(() => {});
+                            }
+                          }}
                         />
                       )}
                     </div>  
                     
                     {/* Contenido con altura fija para alinear botones */}
-                    <div className="py-6 bg-transparent flex flex-col" style={{ minHeight: '240px' }}>
+                    <div className="py-6 bg-transparent flex flex-col" style={{ minHeight: '180px' }}>
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6 flex-grow">
+                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6">
                         {service.description}
                       </p>
                       <button className="flex items-center gap-2 text-black group mt-auto cursor-pointer">

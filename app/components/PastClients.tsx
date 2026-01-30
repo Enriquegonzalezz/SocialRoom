@@ -40,15 +40,16 @@ const projects = [
     title: 'Leble',
     category: 'Development',
     description: 'Experiencia de usuario excepcional',
-    imageUrl: getImageUrl('leble', 'leble-01.jpg'),
+    imageUrl: getImageUrl('leble', 'portada leble.webp'),
   },
   {
-    id: 'lgm',
-    title: 'LGM',
+    id: 'El maizal',
+    title: 'El maizal',
     category: 'Strategy',
     description: 'Estrategia digital completa',
-    imageUrl: getImageUrl('lgm', 'LGM-01.jpg'),
+    imageUrl: getImageUrl('maizal', 'arepa de pernil.webp'),
   },
+  
   
 
 ];
@@ -102,7 +103,7 @@ export default function PastClients() {
       <div className="md:hidden absolute inset-0" style={{ background: 'linear-gradient(to bottom, #1a2b4a 0%, #1a2b4a 55%, #f4f4f4 55%, #f4f4f4 100%)' }} />
       
       {/* Contenedor principal */}
-      <div className="max-w-[1800px] mx-auto py-8 md:py-0 relative past-clients-container">
+      <div className=" mx-auto py-8 md:py-0 relative past-clients-container">
         
         {/* Layout Mobile - Carrusel */}
         <div className="lg:hidden">
@@ -150,7 +151,7 @@ export default function PastClients() {
                     src={project.imageUrl}
                     alt={project.title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover transition-transform duration-700 "
                   />
                 </div>
 
@@ -364,10 +365,11 @@ export default function PastClients() {
               {/* Controles de navegación - Siempre visibles fuera del Swiper */}
               <div className="w-full max-w-[680px] mx-auto flex justify-end gap-4 -mt-12 relative z-50">
                 <button
-                  ref={nextButtonRef}
+                 ref={prevButtonRef}
                   onClick={(e) => {
                     e.stopPropagation();
-                    swiperRef.current?.slideNext();
+                    swiperRef.current?.slidePrev();
+                  
                     
                   }}
                   className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50"
@@ -376,10 +378,10 @@ export default function PastClients() {
                  <ArrowOutwardOutlined className='w-10 h-10 -rotate-90'/>
                 </button>
                 <button
-                  ref={prevButtonRef}
+                 ref={nextButtonRef}
                   onClick={(e) => {
                     e.stopPropagation();
-                    swiperRef.current?.slidePrev();
+                    swiperRef.current?.slideNext();
                   }}
                   className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50"
                   aria-label="Next slide"

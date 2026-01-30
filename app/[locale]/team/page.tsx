@@ -331,7 +331,7 @@ const CreativeTeamCard = ({
         className={`w-full md:w-1/2 ${isEven ? 'md:text-left' : 'md:text-right'} text-center`}
       >
         {/* Nombre grande */}
-        <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-black font-helvetica tracking-tight mb-4 leading-none">
+        <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-black font-helvetica tracking-tight mb-4 leading-none normal-case">
           {member.name}
         </h2>
         

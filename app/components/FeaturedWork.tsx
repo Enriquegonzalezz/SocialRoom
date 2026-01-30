@@ -285,7 +285,7 @@ function WorkItem({ project, locale }: { project: Project; locale: string }) {
         onMouseLeave={handleMouseLeave}
       >
         {/* Media Container */}
-        <div className="work-item-media relative aspect-16/10 overflow-hidden bg-white mb-4 rounded-4xl">
+        <div className="work-item-media relative aspect-16/10 overflow-hidden bg-white mb-4">
           <div
             ref={mediaContainerRef}
             className="w-full h-full"
