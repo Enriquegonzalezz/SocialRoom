@@ -136,7 +136,7 @@ export default function ProjectsPage() {
         <div className="flex items-center justify-between mt-16">
           <h1 
             ref={titleRef}
-            className="text-[80px] sm:text-[120px] md:text-[180px] lg:text-[240px] font-bold leading-none tracking-tight text-black font-helvetica overflow-hidden"
+            className="text-[70px] sm:text-[120px] md:text-[180px] lg:text-[240px] font-bold leading-none tracking-tight text-black font-helvetica overflow-hidden"
             style={{ wordBreak: 'keep-all', overflowWrap: 'normal' }}
           >
             {t('projects.title')}
