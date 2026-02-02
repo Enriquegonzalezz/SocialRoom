@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Fragment } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { useRouter } from 'next/navigation';
 import { getImageUrl } from '@/lib/supabase-images';
@@ -278,13 +278,18 @@ export default function PastClients() {
                 </h2>
                 {/* Título PROYECTOS dividido en líneas */}
                 <h2 className="text-[#4a90e2] font-bold mb-12 font-helvetica tracking-tighter" style={{ fontSize: 'clamp(3rem, 13vw, 7rem)', lineHeight: '0.85' }}>
-                  {t('projects.title').substring(0, 3)}<br/>{t('projects.title').substring(3, 6)}<br/>{t('projects.title').substring(6)}
+                  {t('projects.title').split(' ').map((word: string, index: number) => (
+                    <Fragment key={index}>
+                      {word}
+                      {index < t('projects.title').split(' ').length - 1 && <br/>}
+                    </Fragment>
+                  ))}
                 </h2>
                 
                 {/* Botón "Casos de éxito" */}
                 <button
                   onClick={() => router.push(`/${locale}/projects`)}
-                  className="group flex items-center gap-3 px-10 py-6 border-2 border-white text-white hover:bg-white hover:text-[#1a2b4a] transition-all duration-300"
+                  className="group cursor-pointer flex items-center gap-3 px-10 py-6 border-2 border-white text-white hover:bg-white hover:text-[#1a2b4a] transition-all duration-300"
                 >
                   <span className="I text-base font-light font-helvetica underline decoration-white underline-offset-5">{t('projects.successCases')}</span>
                   <Image 
@@ -372,7 +377,7 @@ export default function PastClients() {
                   
                     
                   }}
-                  className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50"
+                  className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50 cursor-pointer"
                   aria-label="Previous slide"
                 >
                  <ArrowOutwardOutlined className='w-10 h-10 -rotate-90'/>
@@ -383,7 +388,7 @@ export default function PastClients() {
                     e.stopPropagation();
                     swiperRef.current?.slideNext();
                   }}
-                  className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50"
+                  className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50 cursor-pointer"
                   aria-label="Next slide"
                 >
                  <ArrowOutwardOutlined  className='w-10 h-10 rotate-90'/>

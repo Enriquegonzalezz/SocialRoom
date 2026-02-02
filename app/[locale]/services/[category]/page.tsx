@@ -97,7 +97,7 @@ const ServiceCard = ({ serviceKey, category, index, color, t }: ServiceCardProps
         </h3>
 
         <p 
-          className={`text-xs sm:text-sm md:text-base lg:text-lg mb-4 sm:mb-6 md:mb-8 font-light font-helvetica leading-relaxed transition-colors duration-500 ${
+          className={`text-sm sm:text-sm md:text-base lg:text-lg mb-4 sm:mb-6 md:mb-8 font-light font-helvetica leading-relaxed transition-colors duration-500 ${
             isHovered ? 'text-white/80' : 'text-black/60'
           }`}
         >
@@ -108,7 +108,7 @@ const ServiceCard = ({ serviceKey, category, index, color, t }: ServiceCardProps
           {features.slice(0, 4).map((feature, idx) => (
             <span
               key={idx}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-500 ${
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-500 ${
                 isHovered 
                   ? 'bg-white/20 text-white' 
                   : 'bg-black/5 text-black/70'
@@ -188,7 +188,7 @@ export default function ServiceCategoryPage() {
 
   return (
     <main className="min-h-screen bg-[#f3f3f3]">
-      <section className="relative min-h-[60vh] sm:min-h-[70vh] flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-16 pt-20 sm:pt-0">
+      <section className="relative max-h-[60vh] sm:min-h-[70vh] flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-16 pt-20 sm:pt-0">
         <button 
           onClick={() => router.push(`/${locale}`)}
           className="absolute top-6 sm:top-8 left-4 sm:left-6 md:left-12 lg:left-16 cursor-pointer hover:opacity-70 transition-opacity z-10"
@@ -205,7 +205,7 @@ export default function ServiceCategoryPage() {
         <div className="mt-8 sm:mt-20">
           <h1 
             ref={titleRef}
-            className="font-bold leading-[0.9] tracking-tight text-black font-helvetica whitespace-nowrap"
+            className="font-bold leading-[0.9] tracking-tight text-black font-helvetica whitespace-nowrap py-2"
             style={{ fontSize: 'clamp(3rem, 18vw, 14rem)' }}
           >
             {t(`servicesPage.categories.${category}.title`)}
@@ -248,7 +248,7 @@ export default function ServiceCategoryPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {['discovery', 'strategy', 'creation', 'delivery'].map((key, idx) => (
               <div key={key} data-step className="relative">
-                <span className="text-4xl sm:text-5xl md:text-7xl font-bold text-white/10 font-helvetica">
+                <span className="text-4xl sm:text-5xl md:text-7xl font-bold text-white/30 font-helvetica">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold mt-3 sm:mt-4 mb-2 sm:mb-3 font-helvetica">
@@ -265,19 +265,19 @@ export default function ServiceCategoryPage() {
 
       <section 
         className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-16 relative overflow-hidden"
-        style={{
-          backgroundImage: `url(${pielDeJirafaUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
       >
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundColor: 'white',
+          }}
+        />
         <div className="absolute inset-0 bg-black/5" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#dcdcdc] font-helvetica">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#233a28] font-helvetica">
               {t('servicesPage.whyTitle')}
             </h2>
-            <div className="w-16 sm:w-24 h-1 bg-[#233a28] mt-4 md:mt-0" />
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
@@ -287,7 +287,7 @@ export default function ServiceCategoryPage() {
                 className="group relative bg-white p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl hover:bg-[#233a28] transition-all duration-500 border border-black/5"
               >
                 <div className="flex items-start justify-between mb-4 sm:mb-6 md:mb-8">
-                  <span className="text-4xl sm:text-5xl md:text-6xl font-bold text-black/10 group-hover:text-white/20 font-helvetica transition-colors duration-500">
+                  <span className="text-4xl sm:text-5xl md:text-6xl font-bold text-black/20 group-hover:text-white/20 font-helvetica transition-colors duration-500">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <svg 

@@ -191,7 +191,7 @@ export default function HeroSection() {
           {/* Menu Hamburguesa con label a la izquierda */}
           <button 
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2 group cursor-pointer"
             aria-label="Menu"
           >
             <div className="flex flex-col gap-1 w-5 h-5 justify-center">
@@ -315,6 +315,9 @@ export default function HeroSection() {
           <div className="text-center mb-4">
             <h2 className="text-[#D52500] font-bold font-helvetica -tracking-widest" style={{ fontSize: 'clamp(5rem, 15vw, 5rem)', lineHeight: '0.75' }}>
               {t('hero.labIdeas').split(' ')[0]} 
+              <span style={{ fontSize: '0.4em', marginLeft: '10px', letterSpacing: '0.05em' }} className="align-middle">
+                {t('hero.labIdeas').split(' ')[1]}
+              </span>
                <br />
               {t('hero.labIdeas').split(' ')[2]}
             </h2>
@@ -384,6 +387,9 @@ export default function HeroSection() {
           <div className="flex flex-col justify-center">
             <h2 className="text-[#D52500] font-bold font-helvetica -tracking-widest" style={{ fontSize: 'clamp(8rem, 12vw, 12rem)', lineHeight: '0.85' }}>
               {t('hero.labIdeas').split(' ')[0]}
+              <span style={{ fontSize: '0.4em', marginLeft: '15px', letterSpacing: '0.0em' }} className="align-middle">
+                {t('hero.labIdeas').split(' ')[1]}
+              </span>
               <br />
               {t('hero.labIdeas').split(' ')[2]}
             </h2>
@@ -437,7 +443,7 @@ export default function HeroSection() {
         </div>
 
         {/* Footer con LAB IDEAS, About Us y MARKETING AGENCY */}
-        <div className="w-full max-w-7xl flex items-center justify-between ">
+        <div className="w-full flex items-center justify-between ">
           {/* LAB IDEAS - Izquierda */}
           <div className="w-[11vw]">
             <p className="text-[#D52500] font-bold font-helvetica text-transparent" style={{ fontSize: 'clamp(1.5rem, 2vw, 2rem)', lineHeight: '0.9' }}>
@@ -451,7 +457,7 @@ export default function HeroSection() {
             onClick={() => router.push(`/${locale}/about`)}
             className="flex items-center gap-2 px-6 py-4 bg-black border-2 border-black  text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
           >
-            <span className="text-[14px] font-light underline decoration-1 underline-offset-4 font-helvetica">{t('hero.aboutUs')}</span>
+            <span className="text-[14px] font-weight-[400] underline decoration-1 underline-offset-4 font-helvetica">{t('hero.aboutUs')}</span>
            <ArrowOutwardIcon width={32} height={32}/>
           </button>
 

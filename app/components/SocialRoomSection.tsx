@@ -234,7 +234,7 @@ export default function SocialRoomSection() {
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed">
+                      <p className="text-gray-600 text-[15px] font-light font-thermal leading-relaxed">
                         {service.description}
                       </p>
                       <button className="flex items-center gap-2 text-black group mt-4">
@@ -420,7 +420,7 @@ export default function SocialRoomSection() {
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6">
+                      <p className="text-gray-600 text-[16px] font-light font-thermal leading-relaxed mb-6">
                         {service.description}
                       </p>
                       <button className="flex items-center gap-2 text-black group mt-auto cursor-pointer">
@@ -515,7 +515,7 @@ export default function SocialRoomSection() {
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-sm font-light font-thermal leading-relaxed mb-6">
+                      <p className="text-gray-600 text-[16px] font-light font-thermal leading-relaxed mb-6">
                         {service.description}
                       </p>
                       <button className="flex items-center gap-2 text-black group mt-auto cursor-pointer">

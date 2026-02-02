@@ -197,7 +197,7 @@ export default function ProjectDetailPage() {
     return (
       <div className="min-h-screen bg-[#f3f3f3] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Proyecto no encontrado</h1>
+          <h1 className="text-4xl font-bold mb-4">Pronto mostraremos lo que tenemos de {slug}</h1>
           <button
             onClick={handleBack}
             className="px-6 py-3 bg-black text-white hover:bg-black/80 transition-colors"
@@ -292,7 +292,7 @@ export default function ProjectDetailPage() {
       <section className="px-6 md:px-12 lg:px-16 pb-20">
         <button
           onClick={handleBack}
-          className="group flex items-center gap-4 text-black hover:gap-6 transition-all duration-300"
+          className="group cursor-pointer flex items-center gap-4 text-black hover:gap-6 transition-all duration-300"
         >
           <svg 
             width="60" 

@@ -20,21 +20,21 @@ const FeaturedWork = dynamic(() => import('../../components/FeaturedWork'), {
 const projects = [
   {
     id: '1',
-    title: 'Auge',
+    title: 'AUGE',
     category: 'branding • design • strategy',
     imageUrl: getImageUrl('auge', 'auge-26.webp'),
     href: '/projects/auge',
   },
   {
     id: '2',
-    title: 'Leap',
+    title: 'LEAP4HUMANITY',
     category: 'design • development • innovation',
     imageUrl: getImageUrl('L4h', 'banner leap.webp'),
     href: '/projects/leap',
   },
   {
     id: '3',
-    title: 'Leble',
+    title: 'LE BLÉ',
     category: 'web • design • development',
     imageUrl: getImageUrl('leble', 'portada leble.webp'),
     href: '/projects/leble',
@@ -48,14 +48,14 @@ const projects = [
   },
     {
      id: '5',
-     title: 'El maizal',
+     title: 'EL MAIZAL',
      category: 'strategy • design • branding',
      imageUrl: getImageUrl('maizal', 'arepa de pernil.webp'),
      href: '/projects/elmaizal',
    },
    {
      id: '6',
-     title: 'Atypical',
+     title: 'ATYPICAL',
      category: 'strategy • design • branding',
      imageUrl: getImageUrl('others', 'ATY portada.webp'),
      href: '/projects/atypical',
@@ -152,9 +152,9 @@ export default function ProjectsPage() {
           {/* Número y flecha a la derecha */}
           <div ref={numberRef} className="flex flex-col items-end gap-4">
             <span className="text-6xl md:text-7xl lg:text-8xl font-light text-black font-helvetica">
-              {projects.length}
+              {projects.length}+
             </span>
-            <svg 
+            {/* <svg 
               width="60" 
               height="60" 
               viewBox="0 0 60 60" 
@@ -168,7 +168,7 @@ export default function ProjectsPage() {
                 strokeLinecap="round" 
                 strokeLinejoin="round"
               />
-            </svg>
+            </svg> */}
           </div>
         </div>
       </section>

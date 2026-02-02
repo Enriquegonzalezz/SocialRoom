@@ -80,7 +80,7 @@ export default function TheRoomPage() {
         <div className="mt-8 sm:mt-20">
           <h1 
             ref={titleRef}
-            className="font-bold leading-[0.9] tracking-tight text-black font-helvetica whitespace-nowrap"
+            className="font-bold leading-[0.9] tracking-tight text-black font-helvetica whitespace-nowrap py-2"
             style={{ fontSize: 'clamp(2.5rem, 15vw, 12rem)' }}
           >
             {t('theRoom.title')}
@@ -125,7 +125,7 @@ export default function TheRoomPage() {
                 key={category.key}
                 className="group relative p-4 sm:p-6 md:p-8 bg-white/5 rounded-xl sm:rounded-2xl hover:bg-[#233a28] transition-all duration-500 border border-white/10"
               >
-                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-white/10 group-hover:text-white/20 font-helvetica block mb-2 sm:mb-4 transition-colors duration-500">
+                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-white/30 group-hover:text-white/20 font-helvetica block mb-2 sm:mb-4 transition-colors duration-500">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 font-helvetica">
@@ -144,12 +144,13 @@ export default function TheRoomPage() {
       <section 
         ref={featuresRef}
         className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-12 lg:px-20 relative overflow-hidden"
-        style={{
-          backgroundImage: `url(${pielDeJirafaUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
       >
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundColor: 'white',
+          }}
+        />
         <div className="absolute inset-0 bg-black/5" />
         <div className="max-w-7xl mx-auto relative z-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 sm:mb-10 md:mb-16 font-helvetica">
@@ -162,7 +163,7 @@ export default function TheRoomPage() {
                 key={key}
                 className="group p-4 sm:p-6 md:p-8 bg-white rounded-xl sm:rounded-2xl hover:bg-[#233a28] transition-all duration-500"
               >
-                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-black/10 group-hover:text-white/20 font-helvetica block mb-2 sm:mb-3 md:mb-4 transition-colors duration-500">
+                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-black/20 group-hover:text-white/20 font-helvetica block mb-2 sm:mb-3 md:mb-4 transition-colors duration-500">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <h3 className="text-sm sm:text-base md:text-lg font-bold text-black group-hover:text-white mb-1 sm:mb-2 font-helvetica transition-colors duration-500">
