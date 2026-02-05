@@ -451,7 +451,7 @@ export default function ContactFooterSection() {
                     <span className="underline-offset-4 decoration-white underline ">
                       {isSubmitting ? 'Sending...' : "LET'S START CREATING"}
                     </span> 
-                    {!isSubmitting && <span className="text-xl">↗</span>}
+                    {!isSubmitting && <span className="text-xl font-helvetica">↗︎</span>}
                   </button>
                 </form>
               </div>
