@@ -222,7 +222,7 @@ export default function HeroSection() {
         className="fixed left-1/2 -translate-x-1/2 z-50 py-4 origin-center"
         style={{
           scale: isMobile ? 1 : 1.5,
-          
+          top: isMobile ? 'calc(env(safe-area-inset-top, 0px) + 12px)' : '12px',
         }}
       >
         <Image src="/socialroomnegro.svg" alt="Logo" width={300} height={300} className="h-20 w-auto md:h-28" />
@@ -334,7 +334,7 @@ export default function HeroSection() {
         {/* Contenedor superior centrado */}
         <div className="flex-1 flex flex-col items-center justify-center">
           {/* LAB IDEAS */}
-          <div className="text-center mb-4">
+          <div className="text-center mb-4" style={{ marginTop: '30px' }}>
             <h2 className="text-[#D52500] font-bold font-helvetica -tracking-widest" style={{ fontSize: 'clamp(5rem, 15vw, 5rem)', lineHeight: '0.75' }}>
               {t('hero.labIdeas').split(' ')[0]} 
               <span style={{ fontSize: '0.4em', marginLeft: '10px', letterSpacing: '0.05em' }} className="align-middle">
