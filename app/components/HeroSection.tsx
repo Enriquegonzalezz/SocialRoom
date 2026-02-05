@@ -221,8 +221,8 @@ export default function HeroSection() {
         ref={logoRef}
         className="fixed left-1/2 -translate-x-1/2 z-50 py-4 origin-center"
         style={{
-          scale: 1.5,
-          top: isMobile ? 'calc(env(safe-area-inset-top, 0px) + 12px)' : '12px',
+          scale: isMobile ? 1 : 1.5,
+          
         }}
       >
         <Image src="/socialroomnegro.svg" alt="Logo" width={300} height={300} className="h-20 w-auto md:h-28" />
