@@ -308,7 +308,13 @@ export default function HeroSection() {
       )}
 
       {/* Contenido Principal - Mobile */}
-      <div className="lg:hidden relative min-h-screen flex flex-col items-center justify-between px-5 pt-20 pb-10">
+      <div
+        className="lg:hidden relative min-h-svh flex flex-col items-center justify-between px-5 pb-10"
+        style={{
+          minHeight: '100svh',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 80px)',
+        }}
+      >
         {/* Contenedor superior centrado */}
         <div className="flex-1 flex flex-col items-center justify-center">
           {/* LAB IDEAS */}
