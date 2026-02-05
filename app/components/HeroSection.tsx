@@ -208,7 +208,7 @@ export default function HeroSection() {
               <span className={`w-full h-0.5 bg-black transition-all ${menuOpen ? 'opacity-0' : ''}`}></span>
               <span className={`w-full h-0.5 bg-black transition-all ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
             </div>
-            <span className="text-sm font-light text-black underline decoration-1 underline-offset-4">{t('hero.menu')}</span>
+            <span className="hidden sm:inline text-sm font-light text-black underline decoration-1 underline-offset-4">{t('hero.menu')}</span>
           </button>
 
           {/* Selector de idioma a la derecha */}
@@ -480,7 +480,7 @@ export default function HeroSection() {
             className="flex items-center gap-2 px-6 py-4 bg-black border-2 border-black  text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
           >
             <span className="text-[14px] font-weight-[400] underline decoration-1 underline-offset-4 font-helvetica">{t('hero.aboutUs')}</span>
-           <ArrowOutwardIcon width={32} height={32}/>
+           <ArrowOutwardIcon width={16} height={16}/>
           </button>
 
           {/* MARKETING AGENCY - Derecha */}

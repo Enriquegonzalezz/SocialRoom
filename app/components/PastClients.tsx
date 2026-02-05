@@ -276,14 +276,19 @@ export default function PastClients() {
                 <h2 className="text-white text-[38px] font-bold font-helvetica mb-2">
                   {t('projects.our')}
                 </h2>
-                {/* Título PROYECTOS dividido en líneas */}
+                {/* Título PROYECTOS dividido en líneas - específico por idioma */}
                 <h2 className="text-[#4a90e2] font-bold mb-12 font-helvetica tracking-tighter" style={{ fontSize: 'clamp(3rem, 13vw, 7rem)', lineHeight: '0.85' }}>
-                  {t('projects.title').split(' ').map((word: string, index: number) => (
-                    <Fragment key={index}>
-                      {word}
-                      {index < t('projects.title').split(' ').length - 1 && <br/>}
-                    </Fragment>
-                  ))}
+                  {locale === 'es' ? (
+                    <>
+                      PRO<br/>
+                      YEC<br/>
+                      TOS
+                    </>
+                  ) : (
+                    <>
+                      WORK
+                    </>
+                  )}
                 </h2>
                 
                 {/* Botón "Casos de éxito" */}

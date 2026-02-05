@@ -119,13 +119,15 @@
     "copyright": "© 2025 Cascade. Todos los derechos reservados.",
     "forgetToCall": "¿Olvidaste llamar?",
     "forgetToCallDescription": "Nosotros te llamamos",
-    "readyToStart": "¿Listo para empezar?",
+    "readyToStart": "¿LISTO PARA EMPEZAR?",
     "formDescription": "Haz clic en el botón y completa nuestro formulario. ¡Te contactaremos!",
     "goToForm": "Ir al chat",
     "legalText": "Sin fronteras. Sin límites. Donde quiera que tu marca quiera ir, lo haremos posible.",
     "footerAbout": "Sobre nosotros",
     "footerTeam": "Equipo",
-    "footerContact": "Contacto"
+    "footerContact": "Contacto",
+    "startChatting": "EMPECEMOS A CHATEAR",
+    "startCreating": "EMPECEMOS A CREAR"
   },
   "socialRoom": {
     "title": "Social Room",
