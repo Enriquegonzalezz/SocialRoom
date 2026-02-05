@@ -219,7 +219,7 @@ export default function HeroSection() {
       {/* Logo centrado fijo - Se mantiene visible al hacer scroll */}
       <div
         ref={logoRef}
-        className="fixed left-1/2 -translate-x-1/2 z-50 py-4 origin-center"
+        className="fixed left-1/2 -translate-x-1/2 md:-translate-x-[50%] z-50 py-4 origin-center"
         style={{
           scale: isMobile ? 1 : 1.5,
           top: isMobile ? 'calc(env(safe-area-inset-top, 0px) + 12px)' : '12px',
