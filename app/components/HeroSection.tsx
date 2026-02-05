@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { useRouter } from 'next/navigation';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
@@ -17,6 +17,7 @@ export default function HeroSection() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const videoContainerMobileRef = useRef<HTMLDivElement>(null);
   const videoContainerDesktopRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,6 +40,14 @@ export default function HeroSection() {
       });
     }
   }, { scope: logoRef });
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 1023px)');
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile(e.matches);
+    handler(mql);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
 
   const handleVideoClick = (isMobile: boolean) => {
     const container = isMobile ? videoContainerMobileRef.current : videoContainerDesktopRef.current;
@@ -208,7 +217,14 @@ export default function HeroSection() {
       </header>
 
       {/* Logo centrado fijo - Se mantiene visible al hacer scroll */}
-      <div ref={logoRef} className="fixed top-3 left-1/2 -translate-x-1/2 z-50 py-4 origin-center" style={{ scale: 1.5 }}>
+      <div
+        ref={logoRef}
+        className="fixed left-1/2 -translate-x-1/2 z-50 py-4 origin-center"
+        style={{
+          scale: 1.5,
+          top: isMobile ? 'calc(env(safe-area-inset-top, 0px) + 12px)' : '12px',
+        }}
+      >
         <Image src="/socialroomnegro.svg" alt="Logo" width={300} height={300} className="h-20 w-auto md:h-28" />
       </div>
 
@@ -311,7 +327,7 @@ export default function HeroSection() {
       <div
         className="lg:hidden relative min-h-svh flex flex-col items-center justify-between px-5 pb-10"
         style={{
-          minHeight: '100svh',
+          minHeight: '100dvh',
           paddingTop: 'calc(env(safe-area-inset-top, 0px) + 80px)',
         }}
       >
