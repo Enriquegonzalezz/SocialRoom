@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { getImageUrl } from '@/lib/supabase-images';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
