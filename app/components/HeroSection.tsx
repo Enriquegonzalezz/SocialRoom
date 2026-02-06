@@ -395,7 +395,7 @@ export default function HeroSection() {
         {/* Botón About Us */}
         <button
           onClick={() => router.push(`/${locale}/about`)}
-          className="flex items-center gap-2 px-6 py-4 bg-white  text-black hover:bg-black hover:text-white transition-all duration-300 cursor-pointer border-2 border-black"
+          className="flex items-center gap-2 px-6 py-4 bg-white  text-black hover:bg-black hover:text-white transition-all duration-300 cursor-pointer border-[1px] border-black"
         >
           <span className="text-[14px] font-light underline decoration-1 underline-offset-4 font-helvetica ">{t('hero.aboutUs')}</span>
           <ArrowOutwardIcon />
