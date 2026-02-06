@@ -105,7 +105,7 @@ const teamMembers: TeamMemberWithSize[] = [
     id: '10',
     name: '',
     role: '',
-    image: '',
+    image: '/muchachos/Emiliana.webp',
     color: 'bg-transparent',
     size: 'medium',
   },
