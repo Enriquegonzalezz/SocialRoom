@@ -14,11 +14,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Keys para las traducciones y filenames
 const serviceKeys = ['offline', 'online', 'estrategia', 'eventos'] as const;
-const serviceFilenames = ['OFFLINE.jpg', 'ONLINE.jpg', 'ESTRATEGIA.jpg', 'EVENTOS.jpg'];
+const serviceFilenames = ['OFFLINE.png', 'ONLINE.png', 'ESTRATEGIA.png', 'EVENTOS.png'];
 
 interface ServiceData {
   title: string;
-  description: string;
+  items: string[];
   filename: string;
 }
 
@@ -92,16 +92,18 @@ const ServiceCard = ({ service, longestTitle }: { service: ServiceData; longestT
           >
             {service.title}
           </h3>
-          <p 
-            className="text-white/90 font-light font-helvetica leading-relaxed"
+          <ul 
+            className="text-white/90 font-light font-helvetica leading-relaxed list-disc list-inside"
             style={{
               fontSize: 'clamp(0.75rem, 2.5vw, 1.125rem)',
               lineHeight: 'clamp(1rem, 3.5vw, 1.75rem)',
               maxWidth: 'clamp(200px, 90%, 500px)',
             }}
           >
-            {service.description}
-          </p>
+            {service.items.map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
@@ -118,7 +120,7 @@ export default function SocialRoomSection() {
   // Generar servicios desde las traducciones
   const services: ServiceData[] = serviceKeys.map((key, index) => ({
     title: t(`socialRoom.${key}.title`),
-    description: t(`socialRoom.${key}.description`),
+    items: t(`socialRoom.${key}.items`) as string[],
     filename: serviceFilenames[index],
   }));
 
@@ -234,9 +236,11 @@ export default function SocialRoomSection() {
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-[15px] font-light font-thermal leading-relaxed">
-                        {service.description}
-                      </p>
+                      <ul className="text-gray-600 text-[15px] font-light font-thermal leading-relaxed list-disc list-inside mb-4">
+                        {service.items.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
                       <button className="flex items-center gap-2 text-black group mt-4">
                         <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
                          <Image 
@@ -420,9 +424,11 @@ export default function SocialRoomSection() {
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-[16px] font-light font-thermal leading-relaxed mb-6">
-                        {service.description}
-                      </p>
+                      <ul className="text-gray-600 text-[16px] font-light font-thermal leading-relaxed mb-6 list-disc list-inside">
+                        {service.items.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
                       <button className="flex items-center gap-2 text-black group mt-auto cursor-pointer">
                         <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
                          <Image 
@@ -515,9 +521,11 @@ export default function SocialRoomSection() {
                       <h3 className="text-3xl font-bold text-black mb-4 font-helvetica">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-[16px] font-light font-thermal leading-relaxed mb-6">
-                        {service.description}
-                      </p>
+                      <ul className="text-gray-600 text-[16px] font-light font-thermal leading-relaxed mb-6 list-disc list-inside">
+                        {service.items.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
                       <button className="flex items-center gap-2 text-black group mt-auto cursor-pointer">
                         <span className="text-[14px] font-light underline underline-offset-4 font-helvetica pb-1">{t('socialRoom.seeMore')}</span>
                          <Image 

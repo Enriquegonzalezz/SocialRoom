@@ -136,19 +136,39 @@
     "seeMore": "See more",
     "offline": {
       "title": "Offline",
-      "description": "We bring your message to traditional media with video, photography, design and more."
+      "items": [
+        "Brand Activations",
+        "POP/Merch Material",
+        "Guerrilla Marketing",
+        "Radio / TV"
+      ]
     },
     "online": {
       "title": "Online",
-      "description": "We boost your digital growth with social media management, SEO, Ads and web development."
+      "items": [
+        "Social Media",
+        "Web / App",
+        "Email Marketing",
+        "KPIs"
+      ]
     },
     "estrategia": {
       "title": "Strategy",
-      "description": "We create the plan to connect your brand with your goals and ensure the desired success."
+      "items": [
+        "Idea",
+        "Planning",
+        "Organization",
+        "Tracking"
+      ]
     },
     "eventos": {
       "title": "Events",
-      "description": "We create launches, pop-ups and experiences that connect in an unforgettable way."
+      "items": [
+        "Launch",
+        "Experiences",
+        "Music",
+        "Art"
+      ]
     }
   },
   "servicesCarousel": {
@@ -264,10 +284,15 @@
             "description": "We create packaging that stands out at the point of sale and connects with consumers.",
             "features": ["Package Design", "Labels", "Boxes", "Custom Bags"]
           },
-          "signage": {
-            "title": "Signage",
-            "description": "We design signage systems that guide and communicate clearly and effectively.",
-            "features": ["Interior Signage", "Billboards", "Signs", "Lettering"]
+          "radioTv": {
+            "title": "Radio / TV",
+            "description": "Production and placement of radio and TV spots to expand your brand reach.",
+            "features": ["Scriptwriting", "Spot Production", "Media Buying", "On-air Reporting"]
+          },
+          "videoPhotography": {
+            "title": "Video & Photography",
+            "description": "High-impact photo and video production for campaigns, launches, and brand storytelling.",
+            "features": ["Studio/Location Shoots", "Product Shots", "Interviews", "Editing & Color"]
           }
         }
       },
@@ -278,7 +303,7 @@
           "socialMedia": {
             "title": "Social Media Management",
             "description": "We manage your social media presence to connect with your audience and generate results.",
-            "features": ["Content Strategy", "Daily Posts", "Engagement", "Monthly Reports"]
+            "features": ["Content Strategy", "Daily Posts", "Engagement", "Ads", "Monthly Reports"]
           },
           "communityManagement": {
             "title": "Community Management",
@@ -294,6 +319,16 @@
             "title": "Content Creation",
             "description": "We produce quality content that tells your story and connects with your audience.",
             "features": ["Copywriting", "Digital Photography", "Short Videos", "Reels"]
+          },
+          "uxUiDesign": {
+            "title": "UX/UI Design",
+            "description": "We design intuitive digital experiences that align business goals with user needs.",
+            "features": ["User Flows", "Wireframes", "High-fidelity UI", "Design Systems"]
+          },
+          "webDevelopment": {
+            "title": "Web Development",
+            "description": "We build fast, scalable websites and apps tailored to your brand and audience.",
+            "features": ["Responsive Web", "Performance", "CMS Integration", "Maintenance"]
           }
         }
       },

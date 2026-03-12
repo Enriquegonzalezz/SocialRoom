@@ -136,19 +136,39 @@
     "seeMore": "Ver más",
     "offline": {
       "title": "OFFLINE",
-      "description": "Llevamos tu mensaje a medios tradicionales con video, fotografía, diseño y más."
+      "items": [
+        "Activaciones de marca",
+        "Material POP/Merch",
+        "Bayas",
+        "Radio / TV"
+      ]
     },
     "online": {
       "title": "ONLINE",
-      "description": "Impulsamos tu crecimiento digital con gestión de redes, SEO, Ads y desarrollo web."
+      "items": [
+        "Redes sociales",
+        "Web / App",
+        "Email Marketing",
+        "KPIs"
+      ]
     },
     "estrategia": {
       "title": "ESTRATEGIA",
-      "description": "Creamos el plan para conectar tu marca con tus metas y asegurar el éxito deseado."
+      "items": [
+        "Idea",
+        "Planificación",
+        "Organización",
+        "Seguimiento"
+      ]
     },
     "eventos": {
       "title": "EVENTOS",
-      "description": "Creamos lanzamientos, pop-ups y experiencias que conectan de forma inolvidable."
+      "items": [
+        "Lanzamiento",
+        "Experiencias",
+        "Música",
+        "Art"
+      ]
     }
   },
   "servicesCarousel": {
@@ -264,10 +284,15 @@
             "description": "Creamos empaques que destacan en el punto de venta y conectan con los consumidores.",
             "features": ["Diseño de Empaque", "Etiquetas", "Cajas", "Bolsas Personalizadas"]
           },
-          "signage": {
-            "title": "Señalética",
-            "description": "Diseñamos sistemas de señalización que guían y comunican de forma clara y efectiva.",
-            "features": ["Señalización Interior", "Vallas Publicitarias", "Letreros", "Rotulación"]
+          "radioTv": {
+            "title": "Radio / TV",
+            "description": "Producción y pauta de spots en radio y TV para ampliar el alcance de tu marca.",
+            "features": ["Guion", "Producción de spots", "Compra de medios", "Salidas al aire"]
+          },
+          "videoPhotography": {
+            "title": "Video & Fotografía",
+            "description": "Producción de foto y video de alto impacto para campañas, lanzamientos y storytelling de marca.",
+            "features": ["Sesiones en estudio/on-site", "Foto de producto", "Entrevistas", "Edición y color"]
           }
         }
       },
@@ -276,9 +301,9 @@
         "subtitle": "Impulsamos tu crecimiento digital con gestión de redes, SEO, Ads y desarrollo web.",
         "services": {
           "socialMedia": {
-            "title": "Manejo de Redes Sociales",
-            "description": "Gestionamos tu presencia en redes sociales para conectar con tu audiencia y generar resultados.",
-            "features": ["Estrategia de Contenido", "Publicaciones Diarias", "Engagement", "Reportes Mensuales"]
+            "title": "Gestión de Redes Sociales",
+            "description": "Gestionamos tu presencia en redes para conectar con tu audiencia y generar resultados.",
+            "features": ["Estrategia de contenido", "Posts diarios", "Engagement", "Ads", "Reportes mensuales"]
           },
           "communityManagement": {
             "title": "Community Management",
@@ -293,7 +318,17 @@
           "contentCreation": {
             "title": "Creación de Contenido",
             "description": "Producimos contenido de calidad que cuenta tu historia y conecta con tu audiencia.",
-            "features": ["Copywriting", "Fotografía Digital", "Videos Cortos", "Reels"]
+            "features": ["Copywriting", "Fotografía digital", "Videos cortos", "Reels"]
+          },
+          "uxUiDesign": {
+            "title": "UX/UI Design",
+            "description": "Diseñamos experiencias digitales intuitivas que alinean objetivos de negocio y necesidades del usuario.",
+            "features": ["User Flows", "Wireframes", "UI de alta fidelidad", "Design Systems"]
+          },
+          "webDevelopment": {
+            "title": "Desarrollo Web",
+            "description": "Construimos sitios y apps rápidos y escalables adaptados a tu marca y audiencia.",
+            "features": ["Web responsiva", "Performance", "Integración CMS", "Mantenimiento"]
           }
         }
       },

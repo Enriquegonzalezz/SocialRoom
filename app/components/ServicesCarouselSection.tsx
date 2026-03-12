@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Keys y filenames para los servicios
 const serviceKeys = ['studio', 'podcast'] as const;
-const serviceFilenames = ['STUDIO.jpg', 'PODCAST2.jpg'];
+const serviceFilenames = ['STUDIO.jpg', 'PODCAST2.webp'];
 
 export default function ServicesCarouselSection() {
   const { t, locale } = useTranslation();

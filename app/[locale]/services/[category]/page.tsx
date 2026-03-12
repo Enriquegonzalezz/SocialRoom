@@ -15,9 +15,9 @@ if (typeof window !== 'undefined') {
 
 // Definición de servicios por categoría
 const servicesData = {
-  offline: ['branding', 'printDesign', 'packaging', 'signage'],
-  online: ['socialMedia', 'communityManagement', 'graphicDesign', 'contentCreation'],
-  eventos: ['weddings', 'festivals', 'sports', 'corporate'],
+  offline: ['branding', 'printDesign', 'packaging', 'radioTv', 'videoPhotography'],
+  online: ['socialMedia', 'communityManagement', 'graphicDesign', 'contentCreation', 'uxUiDesign', 'webDevelopment'],
+  eventos: ['corporate', 'festivals', 'weddings', 'sports'],
   estrategia: ['marketingStrategy', 'brandStrategy', 'digitalStrategy', 'contentStrategy']
 };
 
@@ -188,7 +188,7 @@ export default function ServiceCategoryPage() {
 
   return (
     <main className="min-h-screen bg-[#f3f3f3]">
-      <section className="relative max-h-[60vh] sm:min-h-[70vh] flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-16 pt-20 sm:pt-0">
+      <section className="relative min-h-[70vh] flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-16 pt-20 sm:pt-0">
         <button 
           onClick={() => router.push(`/${locale}`)}
           className="absolute top-6 sm:top-8 left-4 sm:left-6 md:left-12 lg:left-16 cursor-pointer hover:opacity-70 transition-opacity z-10"

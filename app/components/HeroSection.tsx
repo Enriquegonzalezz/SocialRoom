@@ -208,7 +208,7 @@ export default function HeroSection() {
               <span className={`w-full h-0.5 bg-black transition-all ${menuOpen ? 'opacity-0' : ''}`}></span>
               <span className={`w-full h-0.5 bg-black transition-all ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
             </div>
-            <span className="hidden sm:inline text-sm font-light text-black underline decoration-1 underline-offset-4">{t('hero.menu')}</span>
+            <span className="hidden sm:inline text-sm font-light text-black underline decoration-1 underline-offset-4 mb-[4px]">{t('hero.menu')}</span>
           </button>
 
           {/* Selector de idioma a la derecha */}
@@ -219,7 +219,7 @@ export default function HeroSection() {
       {/* Logo centrado fijo - Se mantiene visible al hacer scroll */}
       <div
         ref={logoRef}
-        className="fixed left-1/2 -translate-x-1/2 md:-translate-x-[50%] z-50 py-4 origin-center"
+        className="fixed left-1/2 -translate-x-1/2 md:-translate-x-[48%] z-50 py-4 origin-center"
         style={{
           scale: isMobile ? 1 : 1.5,
           top: isMobile ? 'calc(env(safe-area-inset-top, 0px) + 12px)' : '12px',

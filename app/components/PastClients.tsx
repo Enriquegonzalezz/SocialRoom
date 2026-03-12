@@ -26,7 +26,7 @@ const projects = [
     title: 'Auge',
     category: 'Branding',
     description: 'Unificamos su salud de todos los venezolanos en un solo lugar',
-    imageUrl: getImageUrl('auge', 'auge-26.webp'),
+    imageUrl: getImageUrl('auge', 'AUGE.webp'),
   },
   {
     id: 'leap',
@@ -43,11 +43,11 @@ const projects = [
     imageUrl: getImageUrl('leble', 'portada leble.webp'),
   },
   {
-    id: 'El maizal',
-    title: 'El maizal',
+    id: 'Atypical',
+    title: 'Atypical',
     category: 'Strategy',
     description: 'Estrategia digital completa',
-    imageUrl: getImageUrl('maizal', 'arepa de pernil.webp'),
+    imageUrl: getImageUrl('others', 'ATY portada.webp'),
   },
   
   
@@ -112,7 +112,7 @@ export default function PastClients() {
             <h2 className="text-white text-2xl font-bold font-helvetica">
               {t('projects.our')}
             </h2>
-            <h2 className="text-[#4a90e2] text-6xl font-bold mb-6 font-helvetica tracking-tighter whitespace-nowrap text-[clamp(2rem,14vw,10rem)]">
+            <h2 className="text-[#ffffff] text-6xl font-bold mb-6 font-helvetica tracking-tighter whitespace-nowrap text-[clamp(2rem,14vw,10rem)]">
               {t('projects.title')}
             </h2>
             
@@ -277,7 +277,7 @@ export default function PastClients() {
                   {t('projects.our')}
                 </h2>
                 {/* Título PROYECTOS dividido en líneas - específico por idioma */}
-                <h2 className="text-[#4a90e2] font-bold mb-12 font-helvetica tracking-tighter" style={{ fontSize: 'clamp(3rem, 13vw, 7rem)', lineHeight: '0.85' }}>
+                <h2 className="text-[#ffffff] font-bold mb-12 font-helvetica tracking-tighter" style={{ fontSize: 'clamp(3rem, 13vw, 7rem)', lineHeight: '0.85' }}>
                   {locale === 'es' ? (
                     <>
                       PRO<br/>
@@ -378,7 +378,8 @@ export default function PastClients() {
                  ref={prevButtonRef}
                   onClick={(e) => {
                     e.stopPropagation();
-                    swiperRef.current?.slidePrev();
+                     swiperRef.current?.slideNext();
+                    
                   
                     
                   }}
@@ -391,7 +392,8 @@ export default function PastClients() {
                  ref={nextButtonRef}
                   onClick={(e) => {
                     e.stopPropagation();
-                    swiperRef.current?.slideNext();
+                     swiperRef.current?.slidePrev();
+                  
                   }}
                   className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50 cursor-pointer"
                   aria-label="Next slide"
