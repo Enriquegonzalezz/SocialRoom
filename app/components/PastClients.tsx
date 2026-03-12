@@ -25,7 +25,7 @@ const projects = [
     id: 'auge',
     title: 'Auge',
     category: 'Branding',
-    description: 'Unificamos su salud de todos los venezolanos en un solo lugar',
+    description: 'Estrategia digital completa',
     imageUrl: getImageUrl('auge', 'AUGE.webp'),
   },
   {
@@ -47,7 +47,28 @@ const projects = [
     title: 'Atypical',
     category: 'Strategy',
     description: 'Estrategia digital completa',
-    imageUrl: getImageUrl('others', 'ATY portada.webp'),
+    imageUrl: getImageUrl('others', 'ATY portada.png'),
+  },
+  {
+    id: 'Pinnaca',
+    title: 'Pinnaca',
+    category: 'Branding',
+    description: 'Estrategia digital completa',
+    imageUrl: getImageUrl('others', 'baldepinnaca.png'),
+  },
+  {
+    id: 'La guerra mendez',
+    title: 'La guerra mendez',
+    category: 'Branding',
+    description: 'Unificamos su salud de todos los venezolanos en un solo lugar',
+    imageUrl: getImageUrl('others', 'laguerramendez.png'),
+  },
+  {
+    id: 'Kitchly',
+    title: 'Kitchly',
+    category: 'Branding',
+    description: 'Estrategia digital completa',
+    imageUrl: getImageUrl('others', 'kitcly.png'),
   },
   
   
