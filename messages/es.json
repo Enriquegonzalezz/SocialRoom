@@ -435,7 +435,11 @@
     "ctaTitle": "Comencemos Tu Proyecto",
     "ctaSubtitle": "¿Listo para transformar tu marca? Estamos aquí para ayudar.",
     "ctaButton": "Solicitar Cotización",
-    "ctaButtonAlt": "Ver Nuestro Trabajo"
+    "ctaButtonAlt": "Ver Nuestro Trabajo",
+    "whatWeOffer": "Lo que ofrecemos",
+    "multimediaContent": "Contenido multimedia próximamente",
+    "readyToStart": "¿Listo para comenzar?",
+    "contactUs": "Contáctanos y llevemos tu proyecto al siguiente nivel"
   },
   "theRoom": {
     "title": "THE ROOM",

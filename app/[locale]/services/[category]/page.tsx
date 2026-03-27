@@ -29,9 +29,11 @@ interface ServiceCardProps {
   index: number;
   color: string;
   t: (key: string) => string;
+  locale: string;
+  router: any;
 }
 
-const ServiceCard = ({ serviceKey, category, index, color, t }: ServiceCardProps) => {
+const ServiceCard = ({ serviceKey, category, index, color, t, locale, router }: ServiceCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -63,6 +65,13 @@ const ServiceCard = ({ serviceKey, category, index, color, t }: ServiceCardProps
     setIsHovered(false);
   };
 
+  const handleClick = () => {
+    // Only navigate for offline and online categories
+    if (category === 'offline' || category === 'online') {
+      router.push(`/${locale}/services/${category}/${serviceKey}`);
+    }
+  };
+
   const features: string[] = [];
   for (let i = 0; i < 5; i++) {
     const feature = t(`servicesPage.categories.${category}.services.${serviceKey}.features.${i}`);
@@ -76,6 +85,7 @@ const ServiceCard = ({ serviceKey, category, index, color, t }: ServiceCardProps
       ref={cardRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       className="group relative rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-all duration-500"
       style={{ backgroundColor: isHovered ? color : '#ffffff' }}
     >
@@ -230,11 +240,33 @@ export default function ServiceCategoryPage() {
                 index={index} 
                 color={serviceColors[index % serviceColors.length]}
                 t={t}
+                locale={locale}
+                router={router}
               />
             ))}
           </div>
         </div>
       </section>
+
+      {/* Multimedia Content Section - Only for estrategia and eventos */}
+      {(category === 'estrategia' || category === 'eventos') && (
+        <section className="px-4 sm:px-6 md:px-12 lg:px-16 py-12 sm:py-16 md:py-20">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 flex items-center justify-center min-h-[500px]">
+              <div className="text-center">
+                <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-black/5 flex items-center justify-center">
+                  <svg className="w-16 h-16 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <p className="text-xl text-black/60">
+                  {t('servicesPage.multimediaContent')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section 
         ref={processRef}
