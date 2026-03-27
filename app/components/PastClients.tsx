@@ -25,60 +25,57 @@ const projects = [
     id: 'auge',
     title: 'Auge',
     category: 'Branding',
-    description: 'Estrategia digital completa',
     imageUrl: getImageUrl('auge', 'AUGE.webp'),
   },
   {
     id: 'leap',
     title: 'Leap',
     category: 'Design',
-    description: 'Plataforma digital innovadora para el futuro',
     imageUrl: getImageUrl('L4h', 'banner leap.webp'),
   },
   {
     id: 'leble',
     title: 'Leble',
     category: 'Development',
-    description: 'Experiencia de usuario excepcional',
     imageUrl: getImageUrl('leble', 'portada leble.webp'),
   },
   {
-    id: 'Atypical',
+    id: 'atypical',
     title: 'Atypical',
     category: 'Strategy',
-    description: 'Estrategia digital completa',
     imageUrl: getImageUrl('others', 'ATY portada.png'),
   },
   {
-    id: 'Pinnaca',
+    id: 'pinnaca',
     title: 'Pinnaca',
     category: 'Branding',
-    description: 'Estrategia digital completa',
     imageUrl: getImageUrl('others', 'baldepinnaca.png'),
   },
   {
-    id: 'La guerra mendez',
+    id: 'laguerramendez',
     title: 'La guerra mendez',
     category: 'Branding',
-    description: 'Unificamos su salud de todos los venezolanos en un solo lugar',
     imageUrl: getImageUrl('others', 'laguerramendez.png'),
   },
   {
-    id: 'Kitchly',
+    id: 'kitchly',
     title: 'Kitchly',
     category: 'Branding',
-    description: 'Estrategia digital completa',
     imageUrl: getImageUrl('others', 'kitcly.png'),
   },
-  
-  
-
+  {
+    id: 'fiat',
+    title: 'Fiat',
+    category: 'Branding',
+    imageUrl: getImageUrl('others', 'fiat.png'),
+  }
 ];
 
 export default function PastClients() {
   const { t, locale } = useTranslation();
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   const swiperRef = useRef<SwiperType | null>(null);
   const prevButtonRef = useRef<HTMLButtonElement>(null);
@@ -182,7 +179,7 @@ export default function PastClients() {
                     {project.title}
                   </h3>
                   <p className="text-gray-600 text-sm md:text-base font-light font-helvetica leading-relaxed">
-                    {project.description}
+                    {t(`projects.descriptions.${project.id}`)}
                   </p>
                 </div>
               </div>
@@ -356,9 +353,11 @@ export default function PastClients() {
                 }}
                 onSwiper={(swiper: SwiperType) => {
                   swiperRef.current = swiper;
+                  setCurrentSlideIndex(swiper.activeIndex);
                 }}
-                onSlideChange={() => {
+                onSlideChange={(swiper: SwiperType) => {
                   animateSlideContent();
+                  setCurrentSlideIndex(swiper.activeIndex);
                 }}
                 className="w-full overflow-visible"
                 style={{ overflow: 'visible' }}
@@ -383,7 +382,7 @@ export default function PastClients() {
                               {project.title}
                             </h3>
                             <p className="slide-description text-gray-600 text-sm md:text-base font-light leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
-                              {project.description}
+                              {t(`projects.descriptions.${project.id}`)}
                             </p>
                           </div>
                         )}
@@ -400,11 +399,13 @@ export default function PastClients() {
                   onClick={(e) => {
                     e.stopPropagation();
                      swiperRef.current?.slideNext();
-                    
-                  
-                    
                   }}
-                  className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50 cursor-pointer"
+                  disabled={currentSlideIndex === projects.length - 1}
+                  className={`w-12 h-12 transition-colors duration-300 flex items-center justify-center relative z-50 ${
+                    currentSlideIndex === projects.length - 1
+                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                      : 'bg-black text-white hover:bg-gray-800 cursor-pointer'
+                  }`}
                   aria-label="Previous slide"
                 >
                  <ArrowOutwardOutlined className='w-10 h-10 -rotate-90'/>
@@ -414,9 +415,13 @@ export default function PastClients() {
                   onClick={(e) => {
                     e.stopPropagation();
                      swiperRef.current?.slidePrev();
-                  
                   }}
-                  className="w-12 h-12 bg-black text-white hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center relative z-50 cursor-pointer"
+                  disabled={currentSlideIndex === 0}
+                  className={`w-12 h-12 transition-colors duration-300 flex items-center justify-center relative z-50 ${
+                    currentSlideIndex === 0
+                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                      : 'bg-black text-white hover:bg-gray-800 cursor-pointer'
+                  }`}
                   aria-label="Next slide"
                 >
                  <ArrowOutwardOutlined  className='w-10 h-10 rotate-90'/>

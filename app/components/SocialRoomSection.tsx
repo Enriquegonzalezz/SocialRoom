@@ -364,76 +364,7 @@ export default function SocialRoomSection() {
                     >
                       <div className="absolute inset-0 bg-black/10" />
                       
-                      {/* Video para Offline - aparece en hover */}
-                      {serviceKeys[index] === 'offline' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Offline. VIDEO mp4.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
                       
-                      {/* Video para Online - aparece en hover */}
-                      {serviceKeys[index] === 'online' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Online negro mp4.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
-                      {/* Video para Estrategia - aparece en hover */}
-                      {serviceKeys[index] === 'estrategia' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Estrategia.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
-                      
-                      {/* Video para Eventos - aparece en hover */}
-                      {serviceKeys[index] === 'eventos' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Eventos-video.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
                     </div>  
                     
                     {/* Contenido con altura fija para alinear botones */}
@@ -478,77 +409,7 @@ export default function SocialRoomSection() {
                     >
                       <div className="absolute inset-0 bg-black/10" />
                       
-                      {/* Video para Offline - aparece en hover */}
-                      {serviceKeys[index] === 'offline' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Offline. VIDEO mp4.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
-                      
-                      {/* Video para Online - aparece en hover */}
-                      {serviceKeys[index] === 'online' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Online negro mp4.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
-                      
-                      {/* Video para Estrategia - aparece en hover */}
-                      {serviceKeys[index] === 'estrategia' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Estrategia.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
-                      
-                      {/* Video para Eventos - aparece en hover */}
-                      {serviceKeys[index] === 'eventos' && (
-                        <video
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
-                          src="/Eventos-video.mp4"
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
-                          onMouseEnter={(e) => {
-                            const video = e.currentTarget;
-                            if (video.paused) {
-                              video.play().catch(() => {});
-                            }
-                          }}
-                        />
-                      )}
+                     
                     </div>  
                     
                     {/* Contenido con altura fija para alinear botones */}

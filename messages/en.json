@@ -27,7 +27,10 @@
       "photographer": "Photographer",
       "fullstackDeveloper": "Full Stack Developer",
       "videoEditor": "Video Editor",
-      "coFounder": "Co-Founder"
+      "coFounder": "Co-Founder",
+      "creativeDirector": "Creative Director",
+      "handyman": "Handyman",
+      "logistics": "Logistics"
     },
     "members": {
       "jeli": {
@@ -98,7 +101,17 @@
     "synthetic": "Synthetic Human",
     "meta": "Meta: Spatial Fusion",
     "viewProject": "View Project",
-    "category": "Category"
+    "category": "Category",
+    "descriptions": {
+      "auge": "Complete digital strategy",
+      "leap": "Innovative digital platform for the future",
+      "leble": "Exceptional user experience",
+      "atypical": "Complete digital strategy",
+      "pinnaca": "Complete digital strategy",
+      "laguerramendez": "We unified the health of all Venezuelans in one place",
+      "kitchly": "Complete digital strategy",
+      "fiat": "Complete digital strategy"
+    }
   },
   "services": {
     "title": "Our Services",
@@ -139,7 +152,7 @@
       "items": [
         "Brand Activations",
         "POP/Merch Material",
-        "Guerrilla Marketing",
+        "Advertising",
         "Radio / TV"
       ]
     },

@@ -27,7 +27,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '1',
     name: 'Fabian',
-    role: 'Photographer',
+    role: 'photographer',
     image: '/muchachos/Favian.webp',
     color: 'bg-amber-100',
     size: 'medium',
@@ -36,7 +36,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '2',
     name: 'Manuel',
-    role: 'CEO',
+    role: 'coFounder',
     image: '/muchachos/Manuel.webp',
     color: 'bg-blue-100',
     size: 'small',
@@ -45,7 +45,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '3',
     name: 'Eduardo',
-    role: 'Logistics',
+    role: 'logistics',
     image: '/muchachos/Eduardo.webp',
     color: 'bg-emerald-100',
     size: 'small',
@@ -54,7 +54,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '4',
     name: 'Jorge',
-    role: 'CSO',
+    role: 'creativeDirector',
     image: '/muchachos/Jorge.webp',
     color: 'bg-purple-100',
     size: 'medium',
@@ -63,7 +63,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '5',
     name: 'Enrique',
-    role: 'Full Stack Developer',
+    role: 'fullstackDeveloper',
     image: '/muchachos/Enrique.webp',
     color: 'bg-green-100',
     size: 'small',
@@ -72,7 +72,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '6',
     name: 'Erika',
-    role: 'Project Manager',
+    role: 'projectCoordinator',
     image: '/muchachos/Erika.webp',
     color: 'bg-red-100',
     size: 'large',
@@ -80,7 +80,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '7',
     name: 'Carlitos',
-    role: 'Designer',
+    role: 'designer',
     image: '/muchachos/Carlos.webp',
     color: 'bg-indigo-100',
     size: 'small',
@@ -88,7 +88,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '8',
     name: 'Jeli',
-    role: 'Community Manager',
+    role: 'communityManager',
     image: getImageUrl('others', 'Jeli.webp'),
     color: 'bg-cyan-100',
     size: 'small',
@@ -96,7 +96,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '9',
     name: 'Eli',
-    role: 'Project-Coordinator',
+    role: 'projectCoordinator',
     image: '/muchachos/Eli.webp',
     color: 'bg-red-100',
     size: 'small',
@@ -104,7 +104,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '10',
     name: 'Emiliana',
-    role: 'Project Manager',
+    role: 'projectCoordinator',
     image: '/muchachos/Emiliana.webp',
     color: 'bg-transparent',
     size: 'medium',
@@ -112,7 +112,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '11',
     name: 'Maria',
-    role: 'Designer',
+    role: 'designer',
     image: getImageUrl('others', 'Maria.webp'),
     color: 'bg-rose-100',
     size: 'small',
@@ -120,7 +120,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '12',
     name: 'Mavi',
-    role: 'Community Manager',
+    role: 'communityManager',
     image: '/muchachos/Mavi.webp',
     color: 'bg-amber-100',
     size: 'small',
@@ -128,7 +128,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '13',
     name: 'Victor',
-    role: 'Photographer',
+    role: 'photographer',
     image: '/muchachos/Victor.webp',
     color: 'bg-violet-100',
     size: 'small',
@@ -136,7 +136,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '14',
     name: 'Mariangel',
-    role: 'Administration and RRHH',
+    role: 'projectCoordinator',
     image: getImageUrl('others', 'Mariangel.webp'),
     color: 'bg-fuchsia-100',
     size: 'small',
@@ -144,7 +144,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '15',
     name: 'Angela',
-    role: 'Designer',
+    role: 'designer',
     image: '/muchachos/Angela.webp',
     color: 'bg-slate-100',
     size: 'small',
@@ -152,7 +152,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '16',
     name: 'Antonio',
-    role: 'Designer',
+    role: 'designer',
     image: getImageUrl('others', 'Antonio.webp'),
     color: 'bg-orange-100',
     size: 'small',
@@ -160,7 +160,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '17',
     name: 'Dani',
-    role: 'Community Manager',
+    role: 'communityManager',
     image: '/muchachos/Daniela.webp',
     color: 'bg-gray-100',
     size: 'small',
@@ -168,7 +168,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '18',
     name: 'Julia',
-    role: 'Designer',
+    role: 'designer',
     image: '/muchachos/Julia.webp',
     color: 'bg-neutral-100',
     size: 'small',
@@ -176,7 +176,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '19',
     name: 'Luis Felipe',
-    role: 'Editor',
+    role: 'videoEditor',
     image: '/muchachos/Luis Felipe.webp',
     color: 'bg-zinc-100',
     size: 'small',
@@ -184,7 +184,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '20',
     name: 'Nicola',
-    role: 'Designer',
+    role: 'designer',
     image: getImageUrl('others', 'Nicola.webp'),
     color: 'bg-stone-100',
     size: 'small',
@@ -192,7 +192,7 @@ const teamMembers: TeamMemberWithSize[] = [
   {
     id: '21',
     name: 'Wilder',
-    role: 'Designer UI/UX',
+    role: 'designer',
     image: '/muchachos/Willder.webp',
     color: 'bg-lime-100',
     size: 'small',
@@ -258,9 +258,10 @@ interface ModalProps {
   member: TeamMember | null;
   isOpen: boolean;
   onClose: () => void;
+  t: (key: string) => string;
 }
 
-const TeamModal = ({ member, isOpen, onClose }: ModalProps) => {
+const TeamModal = ({ member, isOpen, onClose, t }: ModalProps) => {
   const backdropRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -356,18 +357,19 @@ const TeamModal = ({ member, isOpen, onClose }: ModalProps) => {
             </div>
 
             {/* Info - lado derecho */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-12">
-              <h2
+            <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 lg:p-12">
+             {/* <h2
                 ref={nameRef}
                 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-4"
               >
                 {member.name}
-              </h2>
+              </h2>*/}
               <p
                 ref={roleRef}
-                className="text-xl md:text-2xl text-[#666666] font-light"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-4 leading-tight overflow-hidden"
+                style={{ wordBreak: 'break-word', hyphens: 'auto', whiteSpace: 'normal' }}
               >
-                {member.role}
+                {t(`team.roles.${member.role}`)}
               </p>
             </div>
           </div>
@@ -724,6 +726,7 @@ export default function TeamSection() {
         member={selectedMember}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        t={t}
       />
     </section>
   );

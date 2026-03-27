@@ -19,6 +19,7 @@
     "gsap": "^3.14.2",
     "html5-qrcode": "^2.3.8",
     "next": "^16.0.7",
+    "nodemailer": "^6.9.7",
     "next-intl": "^4.5.8",
     "react": "19.2.0",
     "react-dom": "19.2.0",

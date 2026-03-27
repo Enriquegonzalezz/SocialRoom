@@ -27,7 +27,10 @@
       "photographer": "Fotógrafo",
       "fullstackDeveloper": "Desarrollador Full Stack",
       "videoEditor": "Editor de Video",
-      "coFounder": "Co-Fundador"
+      "coFounder": "Co-Fundador",
+      "creativeDirector": "Director Creativo",
+      "handyman": "Handyman",
+      "logistics": "Logística"
     },
     "members": {
       "jeli": {
@@ -98,7 +101,17 @@
     "synthetic": "Synthetic Human",
     "meta": "Meta: Spatial Fusion",
     "viewProject": "Ver Proyecto",
-    "category": "Categoría"
+    "category": "Categoría",
+    "descriptions": {
+      "auge": "Estrategia digital completa",
+      "leap": "Plataforma digital innovadora para el futuro",
+      "leble": "Experiencia de usuario excepcional",
+      "atypical": "Estrategia digital completa",
+      "pinnaca": "Estrategia digital completa",
+      "laguerramendez": "Unificamos su salud de todos los venezolanos en un solo lugar",
+      "kitchly": "Estrategia digital completa",
+      "fiat": "Estrategia digital completa"
+    }
   },
   "services": {
     "title": "Nuestros Servicios",
@@ -138,7 +151,7 @@
       "title": "OFFLINE",
       "items": [
         "Activaciones de marca",
-        "Material POP/Merch",
+        "Material POP/Mercancía",
         "Bayas",
         "Radio / TV"
       ]
